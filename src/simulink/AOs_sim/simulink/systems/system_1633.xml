@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-6, -6, 1287, 767]</P>
+  <Block BlockType="Inport" Name="Pe" SID="1634">
+    <P Name="Position">[115, 93, 145, 107]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="ActionPort" Name="Action Port" SID="1635">
+    <P Name="Position">[170, 15, 229, 43]</P>
+    <P Name="ZOrder">-2</P>
+    <P Name="ActionPortLabel">elseif(u1&lt;-1.5708 &amp; u2&gt;1.5708)</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant" SID="1636">
+    <P Name="Position">[115, 130, 145, 160]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">2*pi</P>
+  </Block>
+  <Block BlockType="Sum" Name="Minus" SID="1637">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[185, 92, 215, 123]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe_tilde" SID="1638">
+    <P Name="Position">[250, 103, 280, 117]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1636#out:1</P>
+    <P Name="Points">[15, 0; 0, -30]</P>
+    <P Name="Dst">1637#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1637#out:1</P>
+    <P Name="Dst">1638#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">1634#out:1</P>
+    <P Name="Dst">1637#in:1</P>
+  </Line>
+</System>

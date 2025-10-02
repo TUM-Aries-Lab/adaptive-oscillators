@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-6, -6, 1287, 767]</P>
+  <P Name="ZoomFactor">125</P>
+  <Block BlockType="Inport" Name="Pe_tilde(tk)" SID="1940">
+    <P Name="Position">[-60, 28, -30, 42]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="TriggerPort" Name="Trigger" SID="1941">
+    <PortCounts/>
+    <P Name="Position">[42, -50, 62, -30]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariantControl">Variant</P>
+    <P Name="StatesWhenEnabling">held</P>
+    <P Name="PortDimensions">1</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe_tilde(tk-1)" SID="1942">
+    <P Name="Position">[150, 28, 180, 42]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1940#out:1</P>
+    <P Name="Dst">1942#in:1</P>
+  </Line>
+</System>

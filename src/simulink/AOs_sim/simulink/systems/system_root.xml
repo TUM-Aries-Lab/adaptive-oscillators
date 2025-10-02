@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">127</P>
+  <P Name="ReportName">simulink-default.rpt</P>
+  <P Name="SIDHighWatermark">2519</P>
+  <Block BlockType="SubSystem" Name="Ankle joint" SID="1688">
+    <PortCounts in="1" out="7"/>
+    <P Name="Position">[170, 394, 410, 576]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ estimate</P>
+      </Port>
+      <Port Type="out" Index="2">
+        <P Name="PropagatedSignals">Gait Phase</P>
+      </Port>
+      <Port Type="out" Index="3">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+      <Port Type="out" Index="5">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1688"/>
+  </Block>
+  <Block BlockType="FromWorkspace" Name="From&#xA;Workspace1" SID="1">
+    <P Name="Position">[-15, 13, 50, 37]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">DATA_HIP</P>
+    <P Name="SampleTime">-1</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">θ (IMU signal)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="FromWorkspace" Name="From&#xA;Workspace2" SID="1395">
+    <P Name="Position">[-15, 243, 50, 267]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">DATA_KNEE</P>
+    <P Name="SampleTime">-1</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">θ (IMU signal)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="FromWorkspace" Name="From&#xA;Workspace3" SID="1687">
+    <P Name="Position">[-15, 473, 50, 497]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">DATA_ANKLE</P>
+    <P Name="SampleTime">-1</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">θ (IMU signal)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="SubSystem" Name="Hip joint" SID="2">
+    <PortCounts in="1" out="7"/>
+    <P Name="Position">[170, -66, 410, 116]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ estimate</P>
+      </Port>
+      <Port Type="out" Index="2">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+      <Port Type="out" Index="4">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+      <Port Type="out" Index="7">
+        <P Name="PropagatedSignals">Gait Phase</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_2"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="Knee joint" SID="1396">
+    <PortCounts in="1" out="7"/>
+    <P Name="Position">[170, 164, 410, 346]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ estimate</P>
+      </Port>
+      <Port Type="out" Index="2">
+        <P Name="PropagatedSignals">Gait Phase</P>
+      </Port>
+      <Port Type="out" Index="3">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+      <Port Type="out" Index="5">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1396"/>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator1" SID="1680">
+    <P Name="Position">[430, 170, 450, 190]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator10" SID="1972">
+    <P Name="Position">[440, 400, 460, 420]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator11" SID="1973">
+    <P Name="Position">[440, 475, 460, 495]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator12" SID="1974">
+    <P Name="Position">[440, 500, 460, 520]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator13" SID="1975">
+    <P Name="Position">[440, 525, 460, 545]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator14" SID="1976">
+    <P Name="Position">[440, 550, 460, 570]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator2" SID="348">
+    <P Name="Position">[430, -10, 450, 10]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator3" SID="349">
+    <P Name="Position">[430, 15, 450, 35]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator4" SID="350">
+    <P Name="Position">[430, 40, 450, 60]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator5" SID="351">
+    <P Name="Position">[430, 65, 450, 85]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator6" SID="1681">
+    <P Name="Position">[430, 245, 450, 265]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator7" SID="1682">
+    <P Name="Position">[430, 270, 450, 290]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator8" SID="1683">
+    <P Name="Position">[430, 295, 450, 315]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator9" SID="1684">
+    <P Name="Position">[430, 320, 450, 340]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace" SID="352">
+    <PortCounts in="1"/>
+    <P Name="Position">[450, 85, 540, 115]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">GP_HIP</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace1" SID="353">
+    <PortCounts in="1"/>
+    <P Name="Position">[450, -40, 540, -10]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">omega_HIP</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace2" SID="1685">
+    <PortCounts in="1"/>
+    <P Name="Position">[470, 165, 560, 195]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">GP_KNEE</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace3" SID="1686">
+    <PortCounts in="1"/>
+    <P Name="Position">[470, 215, 560, 245]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">omega_KNEE</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace4" SID="1977">
+    <PortCounts in="1"/>
+    <P Name="Position">[480, 395, 570, 425]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">GP_ANKLE</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace5" SID="1978">
+    <PortCounts in="1"/>
+    <P Name="Position">[480, 445, 570, 475]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">omega_ANKLE</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Block BlockType="ToWorkspace" Name="To Workspace6" SID="1995">
+    <PortCounts in="1"/>
+    <P Name="Position">[450, -80, 540, -50]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariableName">EST_HIP</P>
+    <P Name="MaxDataPoints">inf</P>
+    <P Name="FixptAsFi">on</P>
+    <P Name="SampleTime">-1</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">2#out:4</P>
+    <P Name="Dst">349#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">2#out:3</P>
+    <P Name="Dst">348#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">75</P>
+    <P Name="Src">2#out:1</P>
+    <P Name="Points">[15, 0; 0, -15]</P>
+    <P Name="Dst">1995#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">2#out:6</P>
+    <P Name="Dst">351#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">76</P>
+    <P Name="Src">2#out:7</P>
+    <P Name="Dst">352#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">2#out:5</P>
+    <P Name="Dst">350#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">2#out:2</P>
+    <P Name="Dst">353#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">θ (IMU signal)</P>
+    <P Name="ZOrder">89</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1#out:1</P>
+    <P Name="Dst">2#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">37</P>
+    <P Name="Src">1396#out:5</P>
+    <P Name="Dst">1682#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">38</P>
+    <P Name="Src">1396#out:4</P>
+    <P Name="Dst">1681#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">39</P>
+    <P Name="Src">1396#out:7</P>
+    <P Name="Dst">1684#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">41</P>
+    <P Name="Src">1396#out:2</P>
+    <P Name="Points">[40, 0]</P>
+    <P Name="Dst">1685#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">42</P>
+    <P Name="Src">1396#out:6</P>
+    <P Name="Dst">1683#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">43</P>
+    <P Name="Src">1396#out:3</P>
+    <P Name="Dst">1686#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">44</P>
+    <P Name="Src">1396#out:1</P>
+    <P Name="Dst">1680#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">45</P>
+    <P Name="Src">1688#out:2</P>
+    <P Name="Points">[50, 0]</P>
+    <P Name="Dst">1977#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">46</P>
+    <P Name="Src">1688#out:3</P>
+    <P Name="Dst">1978#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">47</P>
+    <P Name="Src">1688#out:6</P>
+    <P Name="Dst">1975#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">48</P>
+    <P Name="Src">1688#out:7</P>
+    <P Name="Dst">1976#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">49</P>
+    <P Name="Src">1688#out:4</P>
+    <P Name="Dst">1973#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">50</P>
+    <P Name="Src">1688#out:5</P>
+    <P Name="Dst">1974#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">51</P>
+    <P Name="Src">1688#out:1</P>
+    <P Name="Dst">1972#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">θ (IMU signal)</P>
+    <P Name="ZOrder">52</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1687#out:1</P>
+    <P Name="Dst">1688#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">θ (IMU signal)</P>
+    <P Name="FontName">Helvetica</P>
+    <P Name="FontSize">9</P>
+    <P Name="FontWeight">normal</P>
+    <P Name="FontAngle">normal</P>
+    <P Name="ZOrder">90</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1395#out:1</P>
+    <P Name="Dst">1396#in:1</P>
+  </Line>
+</System>

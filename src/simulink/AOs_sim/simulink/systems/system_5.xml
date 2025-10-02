@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">194</P>
+  <Block BlockType="Inport" Name="IMU signal" SID="6">
+    <P Name="Position">[105, 33, 135, 47]</P>
+    <P Name="ZOrder">100000</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ (IMU signal)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Clock" Name="Clock" SID="7">
+    <P Name="Position">[415, 92, 440, 118]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant" SID="8">
+    <P Name="Position">[740, -25, 770, 5]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant1" SID="9">
+    <P Name="Position">[740, 65, 770, 95]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">0</P>
+  </Block>
+  <Block BlockType="Delay" Name="Delay" SID="10">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[840, 188, 875, 222]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BlockMirror">on</P>
+    <P Name="InputPortMap">u0</P>
+    <P Name="DelayLength">1</P>
+  </Block>
+  <Block BlockType="HitCross" Name="Hit &#xA;Crossing1" SID="11">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[380, 35, 410, 65]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="HitCrossingOffset">0.2</P>
+    <P Name="HitCrossingDirection">falling</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="Input derivative1" SID="12">
+    <PortCounts in="1" out="2"/>
+    <P Name="Position">[170, 19, 270, 61]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <Mask>
+      <Display>disp(&apos;Second-Order\nLow-Pass Filter&apos;);</Display>
+      <MaskParameter Name="wn" Type="edit">
+        <Prompt>Cut-off frequency (rad/s)</Prompt>
+        <Value>40</Value>
+      </MaskParameter>
+      <MaskParameter Name="zt" Type="edit">
+        <Prompt>Damping ratio</Prompt>
+        <Value>1</Value>
+      </MaskParameter>
+      <MaskParameter Name="x0" Type="edit">
+        <Prompt>Initial Condition</Prompt>
+        <Value>0</Value>
+      </MaskParameter>
+      <DialogControl Type="Group" Name="DescGroupVar">
+        <Prompt>%&lt;MaskType&gt;</Prompt>
+        <DialogControl Type="Text" Name="DescTextVar">
+          <Prompt>%&lt;MaskDescription&gt;</Prompt>
+        </DialogControl>
+      </DialogControl>
+      <DialogControl Type="Group" Name="ParameterGroupVar">
+        <Prompt>Simulink:studio:ToolBarParametersMenu</Prompt>
+        <DialogControl Type="Edit" Name="wn">
+          <Prompt>Cut-off frequency (rad/s)</Prompt>
+          <ControlOptions PromptLocation="left"/>
+        </DialogControl>
+        <DialogControl Type="Edit" Name="zt">
+          <Prompt>Damping ratio</Prompt>
+          <ControlOptions PromptLocation="left"/>
+        </DialogControl>
+        <DialogControl Type="Edit" Name="x0">
+          <Prompt>Initial Condition</Prompt>
+          <ControlOptions PromptLocation="left"/>
+        </DialogControl>
+      </DialogControl>
+    </Mask>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">N</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_12"/>
+  </Block>
+  <Block BlockType="Memory" Name="Memory" SID="27">
+    <P Name="Position">[660, 60, 690, 90]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Sum" Name="Minus" SID="28">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[710, 22, 740, 53]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">+-</P>
+  </Block>
+  <Block BlockType="Switch" Name="Switch" SID="29">
+    <P Name="Position">[790, 20, 840, 60]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Criteria">u2 &gt; Threshold</P>
+    <P Name="InputSameDT">off</P>
+    <P Name="SaturateOnIntegerOverflow">off</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator1" SID="30">
+    <P Name="Position">[305, 20, 325, 40]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="From" Name="omega" SID="31">
+    <P Name="Position">[690, 111, 755, 139]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Omega_hip</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="SubSystem" Name="t* detection" SID="32">
+    <PortCounts in="1" out="1" trigger="1"/>
+    <P Name="Position">[505, 76, 625, 134]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_32"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="tk detection" SID="36">
+    <PortCounts in="3" out="1" trigger="1"/>
+    <P Name="Position">[800, 91, 915, 159]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_36"/>
+  </Block>
+  <Block BlockType="Outport" Name="t*" SID="55">
+    <P Name="Position">[660, 268, 690, 282]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="tk" SID="56">
+    <P Name="Position">[975, 268, 1005, 282]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="Outport" Name="tk-1" SID="57">
+    <P Name="Position">[800, 268, 830, 282]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">3</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">7#out:1</P>
+    <P Name="Dst">32#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">11#out:1</P>
+    <P Name="Points">[150, 0]</P>
+    <P Name="Dst">32#trigger</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">32#out:1</P>
+    <P Name="Points">[4, 0]</P>
+    <Branch>
+      <P Name="ZOrder">4</P>
+      <P Name="Dst">36#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">5</P>
+      <P Name="Points">[0, 170]</P>
+      <P Name="Dst">55#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">6</P>
+      <P Name="Points">[0, -30]</P>
+      <Branch>
+        <P Name="ZOrder">7</P>
+        <P Name="Points">[0, -45]</P>
+        <P Name="Dst">28#in:1</P>
+      </Branch>
+      <Branch>
+        <P Name="ZOrder">8</P>
+        <P Name="Dst">27#in:1</P>
+      </Branch>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">31#out:1</P>
+    <P Name="Dst">36#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">10</P>
+    <P Name="Src">8#out:1</P>
+    <P Name="Points">[6, 0; 0, 35]</P>
+    <P Name="Dst">29#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">11</P>
+    <P Name="Src">9#out:1</P>
+    <P Name="Dst">29#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">28#out:1</P>
+    <P Name="Dst">29#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">13</P>
+    <P Name="Src">27#out:1</P>
+    <P Name="Dst">28#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">14</P>
+    <P Name="Src">29#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">36#trigger</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">15</P>
+    <P Name="Src">10#out:1</P>
+    <P Name="Points">[-50, 0]</P>
+    <Branch>
+      <P Name="ZOrder">16</P>
+      <P Name="Dst">36#in:3</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">17</P>
+      <P Name="Dst">57#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">18</P>
+    <P Name="Src">36#out:1</P>
+    <P Name="Points">[29, 0; 0, 80]</P>
+    <Branch>
+      <P Name="ZOrder">19</P>
+      <P Name="Points">[0, 70]</P>
+      <P Name="Dst">56#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">20</P>
+      <P Name="Dst">10#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">21</P>
+    <P Name="Src">12#out:2</P>
+    <P Name="Dst">11#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">22</P>
+    <P Name="Src">6#out:1</P>
+    <P Name="Dst">12#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">N</P>
+    <P Name="ZOrder">23</P>
+    <P Name="Labels">[0, 0]</P>
+    <P Name="Src">12#out:1</P>
+    <P Name="Dst">30#in:1</P>
+  </Line>
+</System>

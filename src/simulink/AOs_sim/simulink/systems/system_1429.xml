@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">125</P>
+  <Block BlockType="Inport" Name="t*" SID="1430">
+    <P Name="Position">[340, 123, 370, 137]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Inport" Name="omega" SID="1431">
+    <P Name="Position">[20, 218, 50, 232]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Inport" Name="tk-1" SID="1432">
+    <P Name="Position">[340, 273, 370, 287]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">3</P>
+  </Block>
+  <Block BlockType="TriggerPort" Name="Trigger" SID="1433">
+    <PortCounts/>
+    <P Name="Position">[397, 45, 417, 65]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariantControl">Variant</P>
+    <P Name="StatesWhenEnabling">held</P>
+    <P Name="PortDimensions">1</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant2" SID="1434">
+    <P Name="Position">[55, 270, 85, 300]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">eps</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant3" SID="1435">
+    <P Name="Position">[20, 150, 50, 180]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">2*pi</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant4" SID="1436">
+    <P Name="Position">[490, 150, 520, 180]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant5" SID="1437">
+    <P Name="Position">[490, 235, 520, 265]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">0</P>
+  </Block>
+  <Block BlockType="Product" Name="Divide" SID="1438">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[190, 186, 220, 219]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">*/</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">T(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Sum" Name="Minus" SID="1439">
+    <PortCounts in="3" out="1"/>
+    <P Name="Position">[415, 188, 445, 222]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">+--</P>
+  </Block>
+  <Block BlockType="Sum" Name="Sum" SID="1440">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[125, 215, 145, 235]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">|++</P>
+  </Block>
+  <Block BlockType="Switch" Name="Switch1" SID="1441">
+    <P Name="Position">[545, 185, 595, 225]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="InputSameDT">off</P>
+    <P Name="SaturateOnIntegerOverflow">off</P>
+  </Block>
+  <Block BlockType="Gain" Name="ro" SID="1442">
+    <P Name="Position">[265, 182, 305, 228]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">lightBlue</P>
+    <P Name="Gain">0.7</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="tk+1 detection" SID="1443">
+    <PortCounts in="1" out="1" enable="1"/>
+    <P Name="Position">[660, 224, 760, 266]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1443"/>
+  </Block>
+  <Block BlockType="Outport" Name="tk" SID="1447">
+    <P Name="Position">[780, 238, 810, 252]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1437#out:1</P>
+    <P Name="Points">[5, 0]</P>
+    <P Name="Dst">1441#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1440#out:1</P>
+    <P Name="Points">[19, 0; 0, -15]</P>
+    <P Name="Dst">1438#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">1435#out:1</P>
+    <P Name="Points">[108, 0; 0, 30]</P>
+    <P Name="Dst">1438#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">1436#out:1</P>
+    <P Name="Points">[5, 0]</P>
+    <P Name="Dst">1441#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">1434#out:1</P>
+    <P Name="Points">[45, 0]</P>
+    <P Name="Dst">1440#in:2</P>
+  </Line>
+  <Line>
+    <P Name="Name">T(t)</P>
+    <P Name="ZOrder">6</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1438#out:1</P>
+    <P Name="Dst">1442#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">1430#out:1</P>
+    <P Name="Points">[29, 0]</P>
+    <Branch>
+      <P Name="ZOrder">8</P>
+      <P Name="Points">[0, 65]</P>
+      <P Name="Dst">1439#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">9</P>
+      <P Name="Points">[224, 0; 0, 115]</P>
+      <P Name="Dst">1443#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">10</P>
+    <P Name="Src">1432#out:1</P>
+    <P Name="Points">[17, 0; 0, -65]</P>
+    <P Name="Dst">1439#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">11</P>
+    <P Name="Src">1442#out:1</P>
+    <P Name="Dst">1439#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">1443#out:1</P>
+    <P Name="Dst">1447#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">13</P>
+    <P Name="Src">1441#out:1</P>
+    <P Name="Points">[110, 0]</P>
+    <P Name="Dst">1443#enable</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">14</P>
+    <P Name="Src">1439#out:1</P>
+    <P Name="Dst">1441#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">15</P>
+    <P Name="Src">1431#out:1</P>
+    <P Name="Dst">1440#in:1</P>
+  </Line>
+</System>

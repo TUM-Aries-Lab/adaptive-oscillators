@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">166</P>
+  <Block BlockType="Goto" Name="Amplitude0" SID="1454">
+    <P Name="Position">[400, 2, 455, 28]</P>
+    <P Name="ZOrder">469</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Alpha0_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="From" Name="F(t)" SID="1455">
+    <P Name="Position">[100, 96, 140, 124]</P>
+    <P Name="ZOrder">470</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Ft_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Integrator" Name="Integrator1" SID="1456">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[250, 50, 280, 80]</P>
+    <P Name="ZOrder">472</P>
+    <P Name="InitialCondition">0.01</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">α0(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Product" Name="Product" SID="1457">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[170, 47, 200, 78]</P>
+    <P Name="ZOrder">465</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">α0_dot(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="η" SID="1458">
+    <P Name="Position">[100, 41, 140, 69]</P>
+    <P Name="ZOrder">471</P>
+    <P Name="GotoTag">Eta_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Outport" Name="α0" SID="1459">
+    <P Name="Position">[405, 58, 435, 72]</P>
+    <P Name="ZOrder">467</P>
+  </Block>
+  <Line>
+    <P Name="Name">α0_dot(t)</P>
+    <P Name="ZOrder">1</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1457#out:1</P>
+    <P Name="Dst">1456#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1458#out:1</P>
+    <P Name="Dst">1457#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">1455#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">1457#in:2</P>
+  </Line>
+  <Line>
+    <P Name="Name">α0(t)</P>
+    <P Name="ZOrder">4</P>
+    <P Name="Labels">[0, 0]</P>
+    <P Name="Src">1456#out:1</P>
+    <P Name="Points">[89, 0]</P>
+    <Branch>
+      <P Name="ZOrder">5</P>
+      <P Name="Points">[0, -50]</P>
+      <P Name="Dst">1454#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">6</P>
+      <P Name="Dst">1459#in:1</P>
+    </Branch>
+  </Line>
+</System>

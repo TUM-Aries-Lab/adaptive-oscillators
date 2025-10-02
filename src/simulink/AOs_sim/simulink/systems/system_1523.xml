@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">150</P>
+  <Block BlockType="Goto" Name="Amplitude3" SID="1524">
+    <P Name="Position">[390, 212, 445, 238]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Alpha4_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="From" Name="From" SID="1525">
+    <P Name="Position">[415, 466, 455, 494]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Phi1_knee</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From1" SID="1526">
+    <P Name="Position">[85, 426, 125, 454]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha0_knee</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α0(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From2" SID="1527">
+    <P Name="Position">[85, 456, 125, 484]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha1_knee</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α1(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From3" SID="1528">
+    <P Name="Position">[85, 491, 125, 519]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha2_knee</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α2(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From4" SID="1529">
+    <P Name="Position">[85, 521, 125, 549]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha3_knee</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α2(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From5" SID="2450">
+    <P Name="Position">[85, 551, 125, 579]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha4_knee</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α3(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Goto" Name="Goto9" SID="1530">
+    <P Name="Position">[710, 532, 755, 558]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Omega_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Integrator" Name="Integrator" SID="1531">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[285, 315, 315, 345]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContinuousStateAttributes">&apos;Phase&apos;</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">Φ3(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Integrator" Name="Integrator1" SID="1532">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[285, 230, 315, 260]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContinuousStateAttributes">&apos;Amplitude&apos;</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">α3(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Integrator" Name="Integrator2" SID="1533">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[590, 465, 620, 495]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="WrapState">on</P>
+    <P Name="WrappedStateUpperValue">10*pi</P>
+    <P Name="WrappedStateLowerValue">0</P>
+    <P Name="ContinuousStateAttributes">&apos;Omega&apos;</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">ω(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Mux" Name="Mux" SID="1534">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[105, 242, 110, 358]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ShowName">off</P>
+    <P Name="Inputs">2</P>
+    <P Name="DisplayOption">bar</P>
+  </Block>
+  <Block BlockType="Mux" Name="Mux1" SID="1535">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[415, 268, 420, 312]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ShowName">off</P>
+    <P Name="Inputs">2</P>
+    <P Name="DisplayOption">bar</P>
+  </Block>
+  <Block BlockType="Sum" Name="Sum" SID="1536">
+    <PortCounts in="5" out="1"/>
+    <P Name="Position">[230, 451, 245, 559]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">+++++</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">Σαi</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Goto" Name="Σαi" SID="1537">
+    <P Name="Position">[285, 492, 350, 518]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">SumAlpha_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="Φ3_dot(t)" SID="1538">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[185, 306, 245, 354]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1538"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="α_dot(t)" SID="1551">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[185, 221, 245, 269]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1551"/>
+  </Block>
+  <Block BlockType="Fcn" Name="θ_estimated" SID="1558">
+    <P Name="Position">[445, 275, 515, 305]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Expr">u(1)*sin(u(2))</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">θ_estimated</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="SubSystem" Name="ω_dot(t)" SID="1559">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[480, 451, 540, 509]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">ω(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1559"/>
+  </Block>
+  <Block BlockType="Outport" Name="θ_est3" SID="1568">
+    <P Name="Position">[600, 283, 630, 297]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="omega" SID="1569">
+    <P Name="Position">[740, 473, 770, 487]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Line>
+    <P Name="Name">θ_estimated</P>
+    <P Name="ZOrder">1</P>
+    <P Name="Labels">[0, 0]</P>
+    <P Name="Src">1558#out:1</P>
+    <P Name="Dst">1568#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1551#out:1</P>
+    <P Name="Dst">1532#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">Φ3(t)</P>
+    <P Name="ZOrder">3</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1531#out:1</P>
+    <P Name="Points">[29, 0]</P>
+    <Branch>
+      <P Name="ZOrder">4</P>
+      <P Name="Points">[0, 60; -268, 0; 0, -60]</P>
+      <P Name="Dst">1534#in:2</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">5</P>
+      <P Name="Points">[0, -30]</P>
+      <P Name="Dst">1535#in:2</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">1535#out:1</P>
+    <P Name="Dst">1558#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">1538#out:1</P>
+    <P Name="Dst">1531#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">α3(t)</P>
+    <P Name="ZOrder">8</P>
+    <P Name="Labels">[0, 0]</P>
+    <P Name="Src">1532#out:1</P>
+    <P Name="Points">[28, 0]</P>
+    <Branch>
+      <P Name="ZOrder">9</P>
+      <P Name="Points">[0, -48; -267, 0; 0, 73]</P>
+      <P Name="Dst">1534#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">10</P>
+      <P Name="Points">[27, 0]</P>
+      <P Name="Dst">1524#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">11</P>
+      <P Name="Points">[0, 35]</P>
+      <P Name="Dst">1535#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">1534#out:1</P>
+    <P Name="Points">[22, 0]</P>
+    <Branch>
+      <P Name="ZOrder">13</P>
+      <P Name="Points">[0, 30]</P>
+      <P Name="Dst">1538#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">14</P>
+      <P Name="Points">[0, -55]</P>
+      <P Name="Dst">1551#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">15</P>
+    <P Name="Src">1527#out:1</P>
+    <P Name="Points">[24, 0; 0, 15]</P>
+    <P Name="Dst">1536#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">16</P>
+    <P Name="Src">1528#out:1</P>
+    <P Name="Dst">1536#in:3</P>
+  </Line>
+  <Line>
+    <P Name="Name">Σαi</P>
+    <P Name="ZOrder">17</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1536#out:1</P>
+    <P Name="Dst">1537#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">18</P>
+    <P Name="Src">1529#out:1</P>
+    <P Name="Points">[25, 0; 0, -10]</P>
+    <P Name="Dst">1536#in:4</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">19</P>
+    <P Name="Src">1526#out:1</P>
+    <P Name="Points">[35, 0; 0, 25]</P>
+    <P Name="Dst">1536#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">ω(t)</P>
+    <P Name="ZOrder">20</P>
+    <P Name="Labels">[0, 0]</P>
+    <P Name="Src">1559#out:1</P>
+    <P Name="Dst">1533#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">21</P>
+    <P Name="Src">1525#out:1</P>
+    <P Name="Dst">1559#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">ω(t)</P>
+    <P Name="ZOrder">22</P>
+    <P Name="Labels">[0, 0]</P>
+    <P Name="Src">1533#out:1</P>
+    <P Name="Points">[45, 0]</P>
+    <Branch>
+      <P Name="ZOrder">23</P>
+      <P Name="Points">[0, 65]</P>
+      <P Name="Dst">1530#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">24</P>
+      <P Name="Dst">1569#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">25</P>
+    <P Name="Src">2450#out:1</P>
+    <P Name="Points">[34, 0; 0, -20]</P>
+    <P Name="Dst">1536#in:5</P>
+  </Line>
+</System>

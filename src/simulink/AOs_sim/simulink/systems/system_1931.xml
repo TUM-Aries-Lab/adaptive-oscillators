@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-6, -6, 1287, 767]</P>
+  <Block BlockType="Inport" Name="Pe" SID="1932">
+    <P Name="Position">[115, 103, 145, 117]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="ActionPort" Name="Action Port" SID="1933">
+    <P Name="Position">[170, 15, 229, 43]</P>
+    <P Name="ZOrder">-2</P>
+    <P Name="ActionPortLabel">else</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe_tilde" SID="1934">
+    <P Name="Position">[250, 103, 280, 117]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1932#out:1</P>
+    <P Name="Dst">1934#in:1</P>
+  </Line>
+</System>

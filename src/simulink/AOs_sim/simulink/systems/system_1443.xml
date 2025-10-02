@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-6, -6, 1287, 767]</P>
+  <P Name="ZoomFactor">250</P>
+  <Block BlockType="Inport" Name="t*" SID="1444">
+    <P Name="Position">[445, 143, 475, 157]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="EnablePort" Name="Enable" SID="1445">
+    <PortCounts/>
+    <P Name="Position">[550, 70, 570, 90]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="tk" SID="1446">
+    <P Name="Position">[680, 143, 710, 157]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1444#out:1</P>
+    <P Name="Dst">1446#in:1</P>
+  </Line>
+</System>

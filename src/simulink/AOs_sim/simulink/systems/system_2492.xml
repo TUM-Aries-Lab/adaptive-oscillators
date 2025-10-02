@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">150</P>
+  <Block BlockType="Inport" Name="In1" SID="2493">
+    <P Name="Position">[40, 228, 70, 242]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant" SID="2494">
+    <P Name="Position">[85, -30, 115, 0]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">2</P>
+  </Block>
+  <Block BlockType="Product" Name="Divide" SID="2495">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[85, 147, 115, 178]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">*/</P>
+  </Block>
+  <Block BlockType="From" Name="F(t)" SID="2496">
+    <P Name="Position">[-5, 133, 55, 157]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Ft_ankle</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="From" Name="From" SID="2497">
+    <P Name="Position">[-70, 151, -25, 179]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha0_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α0(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From1" SID="2498">
+    <P Name="Position">[-70, 181, -25, 209]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha1_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α1(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From2" SID="2499">
+    <P Name="Position">[-70, 211, -25, 239]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha2_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α2(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From3" SID="2500">
+    <P Name="Position">[-70, 241, -25, 269]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha3_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α2(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="From4" SID="2518">
+    <P Name="Position">[-70, 271, -25, 299]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Alpha4_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α2(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Product" Name="Product" SID="2501">
+    <PortCounts in="3" out="1"/>
+    <P Name="Position">[215, 114, 245, 146]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">3</P>
+  </Block>
+  <Block BlockType="Product" Name="Product1" SID="2502">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[215, 11, 245, 44]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Sum" Name="Sum" SID="2503">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[395, 65, 415, 85]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+  </Block>
+  <Block BlockType="Sum" Name="Sum1" SID="2504">
+    <PortCounts in="5" out="1"/>
+    <P Name="Position">[5, 181, 20, 269]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">+++++</P>
+  </Block>
+  <Block BlockType="Fcn" Name="cos(Φ2(t))" SID="2505">
+    <P Name="Position">[90, 220, 165, 250]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Expr">cos(u(2))</P>
+  </Block>
+  <Block BlockType="From" Name="omega" SID="2506">
+    <P Name="Position">[85, 21, 150, 49]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Omega_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="From" Name="v Φ" SID="2507">
+    <P Name="Position">[75, 81, 115, 109]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">vphi_ankle</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Outport" Name="Φ2_dot(t)" SID="2508">
+    <P Name="Position">[465, 68, 495, 82]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="NameLocation">top</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">2503#out:1</P>
+    <P Name="Dst">2508#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">2493#out:1</P>
+    <P Name="Dst">2505#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">2507#out:1</P>
+    <P Name="Points">[60, 0; 0, 25]</P>
+    <P Name="Dst">2501#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">2505#out:1</P>
+    <P Name="Points">[20, 0; 0, -95]</P>
+    <P Name="Dst">2501#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">2501#out:1</P>
+    <P Name="Points">[105, 0; 0, -50]</P>
+    <P Name="Dst">2503#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">2494#out:1</P>
+    <P Name="Points">[70, 0; 0, 35]</P>
+    <P Name="Dst">2502#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">2506#out:1</P>
+    <P Name="Dst">2502#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">2502#out:1</P>
+    <P Name="Points">[105, 0; 0, 40]</P>
+    <P Name="Dst">2503#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">2496#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">2495#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">10</P>
+    <P Name="Src">2504#out:1</P>
+    <P Name="Points">[0, -26; 32, 0; 0, -29]</P>
+    <P Name="Dst">2495#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">11</P>
+    <P Name="Src">2495#out:1</P>
+    <P Name="Points">[34, 0; 0, -35]</P>
+    <P Name="Dst">2501#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">2497#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">2504#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">13</P>
+    <P Name="Src">2499#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">2504#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">14</P>
+    <P Name="Src">2498#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">2504#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">15</P>
+    <P Name="Src">2500#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">2504#in:4</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">16</P>
+    <P Name="Src">2518#out:1</P>
+    <P Name="Points">[9, 0; 0, -30]</P>
+    <P Name="Dst">2504#in:5</P>
+  </Line>
+</System>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="Open">on</P>
+  <P Name="ZoomFactor">150</P>
+  <Block BlockType="Inport" Name="θ (IMU signal)" SID="1397">
+    <P Name="Position">[115, 88, 145, 102]</P>
+    <P Name="ZOrder">100000</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ (IMU signal)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Goto" Name=" η1" SID="2178">
+    <P Name="Position">[70, 270, 130, 300]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Eta_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="(1) Gait Event detector" SID="1398">
+    <PortCounts in="1" out="3"/>
+    <P Name="Position">[235, 37, 385, 153]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1398"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="(2) AOs3" SID="1451">
+    <PortCounts in="1" out="3"/>
+    <P Name="Position">[220, 257, 440, 333]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">θ estimate</P>
+        <P Name="PropagatedSignals">θ_estimate</P>
+      </Port>
+      <Port Type="out" Index="2">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+      <Port Type="out" Index="3">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1451"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="(3) Phase Error Compensation" SID="1577">
+    <PortCounts in="1" out="3"/>
+    <P Name="Position">[550, 182, 705, 278]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">Φn</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1577"/>
+  </Block>
+  <Block BlockType="Constant" Name="Constant4" SID="1669">
+    <P Name="Position">[800, 300, 830, 330]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">pi</P>
+  </Block>
+  <Block BlockType="Sum" Name="Minus" SID="1670">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[850, 262, 880, 293]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">+-</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">Gait Phase</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Mux" Name="Mux1" SID="1671">
+    <PortCounts in="3" out="1"/>
+    <P Name="Position">[455, 35, 460, 155]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">3</P>
+    <P Name="DisplayOption">bar</P>
+  </Block>
+  <Block BlockType="Terminator" Name="Terminator3" SID="1672">
+    <P Name="Position">[480, 85, 500, 105]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Goto" Name="v Φ1" SID="2179">
+    <P Name="Position">[70, 325, 130, 355]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">vphi_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Goto" Name="v ω1" SID="2180">
+    <P Name="Position">[70, 385, 130, 415]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">vomega_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Constant" Name="vΦ1" SID="2181">
+    <P Name="Position">[30, 327, 60, 353]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">lightBlue</P>
+    <P Name="Value">0.5</P>
+  </Block>
+  <Block BlockType="Constant" Name="vω1" SID="2182">
+    <P Name="Position">[30, 387, 60, 413]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">lightBlue</P>
+    <P Name="Value">0.5</P>
+  </Block>
+  <Block BlockType="Constant" Name="η1" SID="2183">
+    <P Name="Position">[30, 270, 60, 300]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">lightBlue</P>
+    <P Name="Value">0.05</P>
+  </Block>
+  <Block BlockType="Outport" Name="θ estimate" SID="1673">
+    <P Name="Position">[475, 263, 505, 277]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="Gait Phase" SID="1674">
+    <P Name="Position">[995, 273, 1025, 287]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="Outport" Name="omega" SID="1675">
+    <P Name="Position">[475, 288, 505, 302]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">3</P>
+  </Block>
+  <Block BlockType="Outport" Name="Tk" SID="1676">
+    <P Name="Position">[635, 133, 665, 147]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">4</P>
+  </Block>
+  <Block BlockType="Outport" Name="Phi_1" SID="1677">
+    <P Name="Position">[475, 313, 505, 327]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">5</P>
+  </Block>
+  <Block BlockType="Outport" Name="Phie" SID="1678">
+    <P Name="Position">[740, 223, 770, 237]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">6</P>
+  </Block>
+  <Block BlockType="Outport" Name="Φn" SID="1679">
+    <P Name="Position">[740, 263, 770, 277]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">7</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1669#out:1</P>
+    <P Name="Dst">1670#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1671#out:1</P>
+    <P Name="Dst">1672#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">θ estimate</P>
+    <P Name="ZOrder">3</P>
+    <P Name="Labels">[1, 0]</P>
+    <P Name="Src">1451#out:1</P>
+    <P Name="Dst">1673#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">1398#out:3</P>
+    <P Name="Dst">1671#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">1398#out:1</P>
+    <P Name="Dst">1671#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">1397#out:1</P>
+    <P Name="Points">[35, 0]</P>
+    <Branch>
+      <P Name="ZOrder">7</P>
+      <P Name="Dst">1398#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">8</P>
+      <P Name="Points">[0, 200]</P>
+      <P Name="Dst">1451#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">1577#out:1</P>
+    <P Name="Points">[100, 0; 0, 70]</P>
+    <P Name="Dst">1670#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">Gait Phase</P>
+    <P Name="ZOrder">10</P>
+    <P Name="Labels">[1, 1]</P>
+    <P Name="Src">1670#out:1</P>
+    <P Name="Dst">1674#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">11</P>
+    <P Name="Src">1451#out:2</P>
+    <P Name="Dst">1675#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">1398#out:2</P>
+    <P Name="Points">[42, 0]</P>
+    <Branch>
+      <P Name="ZOrder">13</P>
+      <P Name="Points">[0, 135; 52, 0]</P>
+      <Branch>
+        <P Name="ZOrder">14</P>
+        <P Name="Points">[0, -90]</P>
+        <P Name="Dst">1676#in:1</P>
+      </Branch>
+      <Branch>
+        <P Name="ZOrder">15</P>
+        <P Name="Dst">1577#in:1</P>
+      </Branch>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">16</P>
+      <P Name="Dst">1671#in:2</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">17</P>
+    <P Name="Src">1451#out:3</P>
+    <P Name="Dst">1677#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">18</P>
+    <P Name="Src">1577#out:2</P>
+    <P Name="Dst">1678#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">19</P>
+    <P Name="Src">1577#out:3</P>
+    <P Name="Points">[13, 0; 0, 10]</P>
+    <P Name="Dst">1679#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">20</P>
+    <P Name="Src">2183#out:1</P>
+    <P Name="Dst">2178#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">21</P>
+    <P Name="Src">2182#out:1</P>
+    <P Name="Dst">2180#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">22</P>
+    <P Name="Src">2181#out:1</P>
+    <P Name="Dst">2179#in:1</P>
+  </Line>
+</System>

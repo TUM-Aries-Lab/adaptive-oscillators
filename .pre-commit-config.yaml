@@ -10,28 +10,38 @@ repos:
     hooks:
     -   id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: ^(src/simulink)
     -   id: end-of-file-fixer
+        exclude: ^(src/simulink)
     -   id: check-yaml
+        exclude: ^(src/simulink)
     -   id: debug-statements
+        exclude: ^(src/simulink)
     -   id: name-tests-test
+        exclude: ^(src/simulink)
     -   id: requirements-txt-fixer
+        exclude: ^(src/simulink)
 -   repo: https://github.com/PyCQA/flake8
     rev: 7.1.2
     hooks:
     -   id: flake8
         args: ['--max-line-length=88', '--ignore=W503,E203']
+        exclude: ^(src/simulink)
 -   repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.15.0
     hooks:
     -   id: mypy
         additional_dependencies: [types-pyyaml]
+        exclude: ^(src/simulink)
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.9.10
   hooks:
     - id: ruff
       types_or: [ python, pyi ]
       args: [ --fix]
+      exclude: ^(src/simulink)
 
     - id: ruff-format
       types_or: [ python, pyi ]
       args: [ --line-length=88]
+      exclude: ^(src/simulink)
