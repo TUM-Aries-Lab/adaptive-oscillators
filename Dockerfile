@@ -1,7 +1,7 @@
 FROM python:3.12-slim
 
 ARG PKG=adaptive_oscillator
-ARG VER=0.0.1a
+ARG VER=latest
 ENV PKG=${PKG} VER=${VER}
 
 RUN python -m pip install --upgrade pip && \
