@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from adaptive_oscillator.definitions import LogFileKeys
-from adaptive_oscillator.parser_utils import (
+from adaptive_oscillator.utils.parser_utils import (
     AngleParser,
     IMUParser,
     LogFiles,

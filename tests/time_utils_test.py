@@ -2,7 +2,7 @@
 
 import pytest
 
-from adaptive_oscillator.time_utils import time_str_to_seconds
+from adaptive_oscillator.utils.time_utils import time_str_to_seconds
 
 
 @pytest.mark.parametrize(

@@ -11,8 +11,8 @@ from adaptive_oscillator.oscillator import (
     GaitPhaseEstimator,
     LowLevelController,
 )
-from adaptive_oscillator.parser_utils import LogFiles, LogParser
-from adaptive_oscillator.plot_utils import (
+from adaptive_oscillator.utils.parser_utils import LogFiles, LogParser
+from adaptive_oscillator.utils.plot_utils import (
     RealtimeAOPlotter,
     plot_log_data,
     plot_sim_results,
