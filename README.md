@@ -1,9 +1,8 @@
-# IIT Rehab Collaboration
-This project is a collaboration with IIT.
-Our team was tasked with integrating our controller into their software for their exo-suit.
+# Adaptive Oscillator
+Os can be described as a mathematical tool able to synchronize with a rhythmic and periodic signal by continuously estimating its fundamental features (i.e. frequency, amplitude, phase, and offset). For their properties, AOs found applications in gait pattern estimation strategies, where they are used to mimic the dynamics of the neuromechanical oscillators in charge of the rhythmical human locomotion. In addition, as gait periodicity can be captured by sensors recording joint kinematics, their application does not require a complex sensory network.
 
 ## Install
-To install the library run: `pip install iit-rehab`
+To install the library run: `pip install adaptive-oscillator`
 
 ## Development
 0. Install [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
@@ -11,7 +10,7 @@ To install the library run: `pip install iit-rehab`
 2. `make format` to format the code and check for errors
 3. `make test` to run the test suite
 4. `make clean` to delete the temporary files and directories
-5. `poetry publish --build` to build and publish to https://pypi.org/project/iit-rehab
+5. `poetry publish --build` to build and publish to https://pypi.org/project/adaptive-oscillator
 
 
 ## Usage
@@ -36,18 +35,6 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-```
-
-## Connecting to RaspberryPi
-There is no static IP address, so you will need to connect the device to a monitor first.
-On powerup, the IP address is shown so if you are quick, you won't need a keyboard or mouse to find it with `ifconfig -a`
-
-I suggest copying files with rsync:
-```rsync -auv rehab@<IP_ADDR>:~/Desktop ~/Desktop/rehab_iit```
-
-Connect to rehab with the above IP address while using featherexo as the password.
-```
-ssh rehab@10.183.89.195
 ```
 
 ## Results

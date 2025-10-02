@@ -7,7 +7,7 @@ import pandas as pd
 from loguru import logger
 from matplotlib import pyplot as plt
 
-from iit_rehab.base_classes import (
+from adaptive_oscillator.base_classes import (
     AngleXYZ,
     Body,
     Joint,
@@ -17,7 +17,7 @@ from iit_rehab.base_classes import (
     SensorFile,
     VectorXYZ,
 )
-from iit_rehab.definitions import (
+from adaptive_oscillator.definitions import (
     ALPHA,
     ANGLES_SEGMENT_FIELDS,
     FIG_SIZE,
@@ -27,7 +27,7 @@ from iit_rehab.definitions import (
     LogFileKeys,
     QuaternionHeader,
 )
-from iit_rehab.time_utils import time_str_to_seconds
+from adaptive_oscillator.time_utils import time_str_to_seconds
 
 
 class LogFiles:

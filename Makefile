@@ -8,7 +8,7 @@ init:
 	@echo "Created virtual environment"
 
 test:
-	poetry run pytest --cov=src/iit_rehab --cov-report=term-missing --no-cov-on-fail
+	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail
 
 format:
 	ruff format

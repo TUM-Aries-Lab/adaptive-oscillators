@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 from numpy.typing import NDArray
 
-from iit_rehab.definitions import LOG_FILE_EXT
+from adaptive_oscillator.definitions import LOG_FILE_EXT
 
 
 @dataclass

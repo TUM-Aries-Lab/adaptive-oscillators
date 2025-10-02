@@ -8,7 +8,7 @@ from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 from scipy.interpolate import CubicSpline
 
-from iit_rehab.definitions import ETA, N_HARMONICS, NU_OMEGA, NU_PHI
+from adaptive_oscillator.definitions import ETA, N_HARMONICS, NU_OMEGA, NU_PHI
 
 
 # -----------------------------------------------------------------------------

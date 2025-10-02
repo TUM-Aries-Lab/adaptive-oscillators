@@ -6,13 +6,17 @@ from pathlib import Path
 import numpy as np
 from loguru import logger
 
-from iit_rehab.adaptive_oscillator import (
+from adaptive_oscillator.oscillator import (
     AOParameters,
     GaitPhaseEstimator,
     LowLevelController,
 )
-from iit_rehab.parser_utils import LogFiles, LogParser
-from iit_rehab.plot_utils import RealtimeAOPlotter, plot_log_data, plot_sim_results
+from adaptive_oscillator.parser_utils import LogFiles, LogParser
+from adaptive_oscillator.plot_utils import (
+    RealtimeAOPlotter,
+    plot_log_data,
+    plot_sim_results,
+)
 
 
 class AOController:

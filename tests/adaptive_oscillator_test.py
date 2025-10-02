@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from iit_rehab.adaptive_oscillator import (
+from adaptive_oscillator.oscillator import (
     AOParameters,
     GaitPhaseEstimator,
     LowLevelController,

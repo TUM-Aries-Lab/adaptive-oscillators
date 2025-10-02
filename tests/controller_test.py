@@ -1,6 +1,6 @@
 """Integration test for the controller.py module."""
 
-from iit_rehab.controller import AOController
+from adaptive_oscillator.controller import AOController
 
 
 def test_ao_controller():

@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from iit_rehab.definitions import TIME_FORMAT
+from adaptive_oscillator.definitions import TIME_FORMAT
 
 
 def time_str_to_seconds(time_str: str) -> float:

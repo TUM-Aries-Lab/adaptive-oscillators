@@ -5,8 +5,8 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from iit_rehab.definitions import LogFileKeys
-from iit_rehab.parser_utils import (
+from adaptive_oscillator.definitions import LogFileKeys
+from adaptive_oscillator.parser_utils import (
     AngleParser,
     IMUParser,
     LogFiles,

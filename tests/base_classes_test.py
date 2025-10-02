@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from iit_rehab.base_classes import AngleXYZ, Quaternion, VectorXYZ
+from adaptive_oscillator.base_classes import AngleXYZ, Quaternion, VectorXYZ
 
 
 def test_angle_xyz():

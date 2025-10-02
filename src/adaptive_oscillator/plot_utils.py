@@ -11,7 +11,7 @@ from dash.dependencies import Input, Output
 from loguru import logger
 from numpy.typing import NDArray
 
-from iit_rehab.parser_utils import IMUParser, QuaternionParser
+from adaptive_oscillator.parser_utils import IMUParser, QuaternionParser
 
 
 @dataclass
