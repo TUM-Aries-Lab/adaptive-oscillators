@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">175</P>
+  <Block BlockType="Inport" Name="Input" SID="1483">
+    <P Name="Position">[50, 108, 80, 122]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="From" Name="F(t)" SID="1484">
+    <P Name="Position">[115, 51, 155, 79]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Ft_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Product" Name="Product" SID="1485">
+    <PortCounts in="3" out="1"/>
+    <P Name="Position">[225, 49, 255, 81]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">3</P>
+  </Block>
+  <Block BlockType="Fcn" Name="α_dot" SID="1486">
+    <P Name="Position">[110, 100, 170, 130]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Expr">sin(u(2))</P>
+  </Block>
+  <Block BlockType="From" Name="η" SID="1487">
+    <P Name="Position">[115, -9, 155, 19]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Eta_knee</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Outport" Name="α_dot(t)" SID="1488">
+    <P Name="Position">[310, 58, 340, 72]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1485#out:1</P>
+    <P Name="Dst">1488#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1487#out:1</P>
+    <P Name="Points">[38, 0; 0, 50]</P>
+    <P Name="Dst">1485#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">1486#out:1</P>
+    <P Name="Points">[27, 0; 0, -40]</P>
+    <P Name="Dst">1485#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">1484#out:1</P>
+    <P Name="Dst">1485#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">1483#out:1</P>
+    <P Name="Dst">1486#in:1</P>
+  </Line>
+</System>

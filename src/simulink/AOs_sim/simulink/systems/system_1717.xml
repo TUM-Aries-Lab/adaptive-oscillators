@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-8, -8, 1928, 1048]</P>
+  <P Name="ZoomFactor">442</P>
+  <Block BlockType="Inport" Name="clock" SID="1718">
+    <P Name="Position">[445, 143, 475, 157]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="TriggerPort" Name="Trigger" SID="1719">
+    <PortCounts/>
+    <P Name="Position">[572, 85, 592, 105]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariantControl">Variant</P>
+    <P Name="StatesWhenEnabling">held</P>
+    <P Name="PortDimensions">1</P>
+  </Block>
+  <Block BlockType="Outport" Name="t*" SID="1720">
+    <P Name="Position">[680, 143, 710, 157]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1718#out:1</P>
+    <P Name="Dst">1720#in:1</P>
+  </Line>
+</System>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-6, -6, 1287, 767]</P>
+  <P Name="ZoomFactor">125</P>
+  <Block BlockType="Inport" Name="phi_e(t)" SID="265">
+    <P Name="Position">[200, 63, 230, 77]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="TriggerPort" Name="Trigger" SID="266">
+    <PortCounts/>
+    <P Name="Position">[277, -35, 297, -15]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariantControl">Variant</P>
+    <P Name="StatesWhenEnabling">held</P>
+    <P Name="PortDimensions">1</P>
+  </Block>
+  <Block BlockType="Outport" Name="phi_e(tk)" SID="267">
+    <P Name="Position">[370, 63, 400, 77]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">265#out:1</P>
+    <P Name="Dst">267#in:1</P>
+  </Line>
+</System>

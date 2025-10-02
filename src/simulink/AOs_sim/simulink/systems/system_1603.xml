@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <Block BlockType="Inport" Name="Φn" SID="1604">
+    <P Name="Position">[85, 113, 115, 127]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Inport" Name="Pe_tilde(tk-1)" SID="1605">
+    <P Name="Position">[430, 193, 460, 207]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="TriggerPort" Name="Trigger" SID="1606">
+    <PortCounts/>
+    <P Name="Position">[282, -110, 302, -90]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="VariantControl">Variant</P>
+    <P Name="StatesWhenEnabling">held</P>
+    <P Name="PortDimensions">1</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="PE" SID="1607">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[220, 90, 320, 150]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1607"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="PE Further Updated" SID="1623">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[500, 155, 600, 215]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1623"/>
+  </Block>
+  <Block BlockType="Outport" Name="Pe(tk)" SID="1645">
+    <P Name="Position">[445, 113, 475, 127]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe_tilde(tk)" SID="1646">
+    <P Name="Position">[635, 178, 665, 192]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1607#out:1</P>
+    <P Name="Points">[93, 0]</P>
+    <Branch>
+      <P Name="ZOrder">2</P>
+      <P Name="Points">[0, 50]</P>
+      <P Name="Dst">1623#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">3</P>
+      <P Name="Dst">1645#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">1623#out:1</P>
+    <P Name="Dst">1646#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">1605#out:1</P>
+    <P Name="Dst">1623#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">1604#out:1</P>
+    <P Name="Dst">1607#in:1</P>
+  </Line>
+</System>

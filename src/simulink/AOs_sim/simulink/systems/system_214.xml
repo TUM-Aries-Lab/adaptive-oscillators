@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">116</P>
+  <Block BlockType="Inport" Name="Φn(tk)" SID="215">
+    <P Name="Position">[-160, -82, -130, -68]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="If" Name="If" SID="216">
+    <PortCounts in="1" out="2"/>
+    <P Name="Position">[-75, -89, 45, -31]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IfExpression">u1&gt;=0 &amp; u1&lt;3.14</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="If Action&#xA;Subsystem" SID="217">
+    <PortCounts in="1" out="1" ifaction="1"/>
+    <P Name="Position">[215, -56, 310, 6]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="TreatAsAtomicUnit">on</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_217"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="If Action&#xA;Subsystem1" SID="222">
+    <PortCounts in="1" out="1" ifaction="1"/>
+    <P Name="Position">[225, 61, 330, 119]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="TreatAsAtomicUnit">on</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_222"/>
+  </Block>
+  <Block BlockType="Merge" Name="Merge" SID="228">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[375, 60, 415, 100]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe(tk)" SID="229">
+    <P Name="Position">[460, 73, 490, 87]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">215#out:1</P>
+    <P Name="Points">[35, 0; 0, 15]</P>
+    <Branch>
+      <P Name="ZOrder">2</P>
+      <P Name="Points">[0, 35]</P>
+      <Branch>
+        <P Name="ZOrder">3</P>
+        <P Name="Points">[0, 115]</P>
+        <P Name="Dst">222#in:1</P>
+      </Branch>
+      <Branch>
+        <P Name="ZOrder">4</P>
+        <P Name="Dst">217#in:1</P>
+      </Branch>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">5</P>
+      <P Name="Dst">216#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">216#out:2</P>
+    <P Name="Points">[80, 0; 0, 78; 145, 0]</P>
+    <P Name="Dst">222#ifaction</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">217#out:1</P>
+    <P Name="Points">[33, 0; 0, 95]</P>
+    <P Name="Dst">228#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">228#out:1</P>
+    <P Name="Dst">229#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">216#out:1</P>
+    <P Name="Points">[210, 0]</P>
+    <P Name="Dst">217#ifaction</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">10</P>
+    <P Name="Src">222#out:1</P>
+    <P Name="Dst">228#in:2</P>
+  </Line>
+</System>

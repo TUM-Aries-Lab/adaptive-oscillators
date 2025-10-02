@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">251</P>
+  <Block BlockType="Inport" Name="Input" SID="1852">
+    <P Name="Position">[20, 183, 50, 197]</P>
+    <P Name="ZOrder">100000</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Product" Name="Divide" SID="1853">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[110, 97, 140, 128]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">*/</P>
+  </Block>
+  <Block BlockType="From" Name="F(t)" SID="1854">
+    <P Name="Position">[20, 83, 80, 107]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">Ft_ankle</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Product" Name="Product" SID="1855">
+    <PortCounts in="3" out="1"/>
+    <P Name="Position">[205, 89, 235, 121]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">3</P>
+  </Block>
+  <Block BlockType="Fcn" Name="cos(Φ1(t))" SID="1856">
+    <P Name="Position">[95, 175, 155, 205]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Expr">cos(u(1))</P>
+  </Block>
+  <Block BlockType="From" Name="vω " SID="1857">
+    <P Name="Position">[65, 18, 130, 52]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">vomega_ankle</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="From" Name="Σαi" SID="1858">
+    <P Name="Position">[20, 128, 80, 152]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BackgroundColor">automatic</P>
+    <P Name="GotoTag">SumAlpha_ankle</P>
+    <P Name="TagVisibility">global</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">Σαi</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Outport" Name="ω_dot(t)" SID="1859">
+    <P Name="Position">[370, 98, 400, 112]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1855#out:1</P>
+    <P Name="Dst">1859#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1857#out:1</P>
+    <P Name="Points">[37, 0; 0, 60]</P>
+    <P Name="Dst">1855#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">3</P>
+    <P Name="Src">1852#out:1</P>
+    <P Name="Dst">1856#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">4</P>
+    <P Name="Src">1856#out:1</P>
+    <P Name="Points">[20, 0; 0, -75]</P>
+    <P Name="Dst">1855#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">1854#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">1853#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">1853#out:1</P>
+    <P Name="Points">[15, 0; 0, -10]</P>
+    <P Name="Dst">1855#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">1858#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">1853#in:2</P>
+  </Line>
+</System>

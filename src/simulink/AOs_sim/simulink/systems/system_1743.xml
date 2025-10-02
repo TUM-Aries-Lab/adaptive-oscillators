@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">175</P>
+  <Block BlockType="Inport" Name="θ (IMU signal)" SID="1744">
+    <P Name="Position">[20, 263, 50, 277]</P>
+    <P Name="ZOrder">100000</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ (IMU signal)</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="SubSystem" Name="AO0" SID="1745">
+    <PortCounts out="1"/>
+    <P Name="Position">[385, 140, 445, 190]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">α0(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1745"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="AO1" SID="1752">
+    <PortCounts out="2"/>
+    <P Name="Position">[385, 208, 445, 257]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ_estimated</P>
+      </Port>
+      <Port Type="out" Index="2">
+        <P Name="PropagatedSignals">Φ1(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1752"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="AO2" SID="1784">
+    <PortCounts out="1"/>
+    <P Name="Position">[385, 281, 445, 329]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ_estimated</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1784"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="AO3" SID="2076">
+    <PortCounts out="1"/>
+    <P Name="Position">[385, 346, 445, 394]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ_estimated</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_2076"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="AO4" SID="1815">
+    <PortCounts out="2"/>
+    <P Name="Position">[385, 514, 445, 556]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ_estimated</P>
+      </Port>
+      <Port Type="out" Index="2">
+        <P Name="PropagatedSignals">ω(t)</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_1815"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="AO5" SID="2486">
+    <PortCounts out="1"/>
+    <P Name="Position">[385, 426, 445, 474]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="PropagatedSignals">θ_estimated</P>
+      </Port>
+    </PortProperties>
+    <System Ref="system_2486"/>
+  </Block>
+  <Block BlockType="Goto" Name="F(t)" SID="1862">
+    <P Name="Position">[265, 255, 305, 285]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="GotoTag">Ft_ankle</P>
+    <P Name="TagVisibility">global</P>
+  </Block>
+  <Block BlockType="Sum" Name="Sum" SID="1863">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[170, 260, 190, 280]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ShowName">off</P>
+    <P Name="Inputs">|+-</P>
+  </Block>
+  <Block BlockType="Sum" Name="Sum1" SID="1864">
+    <PortCounts in="6" out="1"/>
+    <P Name="Position">[565, 140, 575, 560]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ShowName">off</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">6</P>
+    <PortProperties>
+      <Port Type="out" Index="1">
+        <P Name="Name">θ_estimate</P>
+      </Port>
+    </PortProperties>
+  </Block>
+  <Block BlockType="Outport" Name="θ_estimate" SID="1865">
+    <P Name="Position">[720, 298, 750, 312]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="omega" SID="1866">
+    <P Name="Position">[480, 538, 510, 552]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="Outport" Name="Phi_1" SID="1867">
+    <P Name="Position">[465, 258, 495, 272]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">3</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1745#out:1</P>
+    <P Name="Points">[50, 0; 0, 10]</P>
+    <P Name="Dst">1864#in:1</P>
+  </Line>
+  <Line>
+    <P Name="Name">θ_estimate</P>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">1864#out:1</P>
+    <P Name="Points">[39, 0]</P>
+    <Branch>
+      <P Name="ZOrder">22</P>
+      <P Name="Labels">[2, 0]</P>
+      <P Name="Points">[0, -45]</P>
+      <P Name="Dst">1865#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">20</P>
+      <P Name="Points">[0, 243; -439, 0]</P>
+      <P Name="Dst">1863#in:2</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">21</P>
+    <P Name="Src">1815#out:1</P>
+    <P Name="Dst">1864#in:6</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">1752#out:1</P>
+    <P Name="Points">[56, 0; 0, 25]</P>
+    <P Name="Dst">1864#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">1863#out:1</P>
+    <P Name="Dst">1862#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">1784#out:1</P>
+    <P Name="Points">[82, 0; 0, 10]</P>
+    <P Name="Dst">1864#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">1744#out:1</P>
+    <P Name="Dst">1863#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">10</P>
+    <P Name="Src">1815#out:2</P>
+    <P Name="Dst">1866#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">11</P>
+    <P Name="Src">1752#out:2</P>
+    <P Name="Points">[5, 0; 0, 20]</P>
+    <P Name="Dst">1867#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">14</P>
+    <P Name="Src">2076#out:1</P>
+    <P Name="Points">[66, 0; 0, 15]</P>
+    <P Name="Dst">1864#in:4</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">23</P>
+    <P Name="Src">2486#out:1</P>
+    <P Name="Points">[50, 0; 0, 5]</P>
+    <P Name="Dst">1864#in:5</P>
+  </Line>
+  <Annotation SID="1868">
+    <P Name="Name">                                Pool of Adaptive Oscillators
+</P>
+    <P Name="Position">[220, 115, 610, 575]</P>
+    <P Name="InternalMargins">[0, 0, 0, 0]</P>
+    <P Name="FixedHeight">on</P>
+    <P Name="FixedWidth">on</P>
+    <P Name="ForegroundColor">[0.952941, 0.952941, 0.952941]</P>
+    <P Name="BackgroundColor">[0.952941, 0.952941, 0.952941]</P>
+    <P Name="DropShadow">on</P>
+    <P Name="AnnotationType">area_annotation</P>
+    <P Name="ZOrder">29</P>
+    <P Name="FontSize">12</P>
+  </Annotation>
+</System>

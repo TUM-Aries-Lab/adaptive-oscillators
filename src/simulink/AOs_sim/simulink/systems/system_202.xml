@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">179</P>
+  <Block BlockType="Inport" Name="Φn" SID="203">
+    <P Name="Position">[175, 88, 205, 102]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Inport" Name="tk" SID="204">
+    <P Name="Position">[175, 28, 205, 42]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant" SID="205">
+    <P Name="Position">[305, -65, 335, -35]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Constant" Name="Constant2" SID="206">
+    <P Name="Position">[305, 30, 335, 60]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Value">0</P>
+  </Block>
+  <Block BlockType="Delay" Name="Delay" SID="207">
+    <PortCounts in="1" out="1"/>
+    <P Name="Position">[520, 178, 555, 212]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BlockMirror">on</P>
+    <P Name="NameLocation">top</P>
+    <P Name="InputPortMap">u0</P>
+    <P Name="DelayLength">1</P>
+  </Block>
+  <Block BlockType="Memory" Name="Memory" SID="208">
+    <P Name="Position">[240, 20, 270, 50]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Sum" Name="Minus" SID="209">
+    <PortCounts in="2" out="1"/>
+    <P Name="Position">[290, -18, 320, 13]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="IconShape">rectangular</P>
+    <P Name="Inputs">+-</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="Subsystem" SID="210">
+    <PortCounts in="2" out="2" trigger="1"/>
+    <P Name="Position">[395, 80, 500, 140]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_210"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="Subsystem1" SID="254">
+    <PortCounts in="1" out="1" trigger="1"/>
+    <P Name="Position">[385, 182, 490, 208]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="BlockMirror">on</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_254"/>
+  </Block>
+  <Block BlockType="Switch" Name="Switch" SID="258">
+    <P Name="Position">[365, -20, 415, 20]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Criteria">u2 &gt; Threshold</P>
+    <P Name="InputSameDT">off</P>
+    <P Name="SaturateOnIntegerOverflow">off</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe(tk)" SID="259">
+    <P Name="Position">[540, 63, 570, 77]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe_tilde(tk)" SID="260">
+    <P Name="Position">[540, 103, 570, 117]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">210#out:1</P>
+    <P Name="Points">[3, 0; 0, -25]</P>
+    <P Name="Dst">259#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">2</P>
+    <P Name="Src">204#out:1</P>
+    <P Name="Points">[11, 0]</P>
+    <Branch>
+      <P Name="ZOrder">3</P>
+      <P Name="Dst">208#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">4</P>
+      <P Name="Points">[0, -45]</P>
+      <P Name="Dst">209#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">5</P>
+    <P Name="Src">208#out:1</P>
+    <P Name="Dst">209#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">6</P>
+    <P Name="Src">209#out:1</P>
+    <P Name="Dst">258#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">7</P>
+    <P Name="Src">206#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">258#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">205#out:1</P>
+    <P Name="Points">[10, 0]</P>
+    <P Name="Dst">258#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">210#out:2</P>
+    <P Name="Points">[14, 0]</P>
+    <Branch>
+      <P Name="ZOrder">10</P>
+      <P Name="Points">[0, -15]</P>
+      <P Name="Dst">260#in:1</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">11</P>
+      <P Name="Points">[0, 23; 60, 0; 0, 47]</P>
+      <P Name="Dst">207#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">203#out:1</P>
+    <P Name="Dst">210#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">13</P>
+    <P Name="Src">254#out:1</P>
+    <P Name="Points">[-19, 0; 0, -70]</P>
+    <P Name="Dst">210#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">14</P>
+    <P Name="Src">258#out:1</P>
+    <P Name="Points">[25, 0; 0, 50]</P>
+    <Branch>
+      <P Name="ZOrder">15</P>
+      <P Name="Points">[-64, 0; 0, 111; 54, 0]</P>
+      <P Name="Dst">254#trigger</P>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">16</P>
+      <P Name="Dst">210#trigger</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">17</P>
+    <P Name="Src">207#out:1</P>
+    <P Name="Dst">254#in:1</P>
+  </Line>
+</System>

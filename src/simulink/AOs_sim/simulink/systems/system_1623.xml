@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<System>
+  <P Name="Location">[-1, -7, 2753, 1105]</P>
+  <P Name="ZoomFactor">116</P>
+  <Block BlockType="Inport" Name="Pe(tk)" SID="1624">
+    <P Name="Position">[-160, -82, -130, -68]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Block BlockType="Inport" Name="Pe_tilde(tk-1)" SID="1625">
+    <P Name="Position">[-160, -52, -130, -38]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Port">2</P>
+  </Block>
+  <Block BlockType="If" Name="If" SID="1626">
+    <PortCounts in="2" out="3"/>
+    <P Name="Position">[-75, -89, 45, -31]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="NumInputs">2</P>
+    <P Name="IfExpression">u1&gt;1.5708 &amp; u2&lt;-1.5708</P>
+    <P Name="ElseIfExpressions">u1&lt;-1.5708 &amp; u2&gt;1.5708</P>
+  </Block>
+  <Block BlockType="SubSystem" Name="If Action&#xA;Subsystem" SID="1627">
+    <PortCounts in="1" out="1" ifaction="1"/>
+    <P Name="Position">[215, -56, 310, 6]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="TreatAsAtomicUnit">on</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1627"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="If Action&#xA;Subsystem1" SID="1633">
+    <PortCounts in="1" out="1" ifaction="1"/>
+    <P Name="Position">[215, 51, 320, 109]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="TreatAsAtomicUnit">on</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1633"/>
+  </Block>
+  <Block BlockType="SubSystem" Name="If Action&#xA;Subsystem2" SID="1639">
+    <PortCounts in="1" out="1" ifaction="1"/>
+    <P Name="Position">[215, 141, 320, 199]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="TreatAsAtomicUnit">on</P>
+    <P Name="ContentPreviewEnabled">on</P>
+    <System Ref="system_1639"/>
+  </Block>
+  <Block BlockType="Merge" Name="Merge" SID="1643">
+    <PortCounts in="3" out="1"/>
+    <P Name="Position">[375, 60, 415, 100]</P>
+    <P Name="ZOrder">100000</P>
+    <P Name="Inputs">3</P>
+  </Block>
+  <Block BlockType="Outport" Name="Pe_tilde(tk)" SID="1644">
+    <P Name="Position">[460, 73, 490, 87]</P>
+    <P Name="ZOrder">100000</P>
+  </Block>
+  <Line>
+    <P Name="ZOrder">1</P>
+    <P Name="Src">1624#out:1</P>
+    <P Name="Points">[35, 0]</P>
+    <Branch>
+      <P Name="ZOrder">2</P>
+      <P Name="Points">[0, 50]</P>
+      <Branch>
+        <P Name="ZOrder">3</P>
+        <P Name="Points">[0, 105]</P>
+        <Branch>
+          <P Name="ZOrder">4</P>
+          <P Name="Points">[0, 90]</P>
+          <P Name="Dst">1639#in:1</P>
+        </Branch>
+        <Branch>
+          <P Name="ZOrder">5</P>
+          <P Name="Dst">1633#in:1</P>
+        </Branch>
+      </Branch>
+      <Branch>
+        <P Name="ZOrder">6</P>
+        <P Name="Dst">1627#in:1</P>
+      </Branch>
+    </Branch>
+    <Branch>
+      <P Name="ZOrder">7</P>
+      <P Name="Dst">1626#in:1</P>
+    </Branch>
+  </Line>
+  <Line>
+    <P Name="ZOrder">8</P>
+    <P Name="Src">1626#out:2</P>
+    <P Name="Points">[93, 0; 0, 89; 122, 0]</P>
+    <P Name="Dst">1633#ifaction</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">9</P>
+    <P Name="Src">1627#out:1</P>
+    <P Name="Points">[28, 0; 0, 90]</P>
+    <P Name="Dst">1643#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">10</P>
+    <P Name="Src">1643#out:1</P>
+    <P Name="Dst">1644#in:1</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">11</P>
+    <P Name="Src">1626#out:1</P>
+    <P Name="Points">[210, 0]</P>
+    <P Name="Dst">1627#ifaction</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">12</P>
+    <P Name="Src">1633#out:1</P>
+    <P Name="Dst">1643#in:2</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">13</P>
+    <P Name="Src">1626#out:3</P>
+    <P Name="Points">[21, 0; 0, 163; 194, 0]</P>
+    <P Name="Dst">1639#ifaction</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">14</P>
+    <P Name="Src">1639#out:1</P>
+    <P Name="Points">[23, 0; 0, -75]</P>
+    <P Name="Dst">1643#in:3</P>
+  </Line>
+  <Line>
+    <P Name="ZOrder">15</P>
+    <P Name="Src">1625#out:1</P>
+    <P Name="Dst">1626#in:2</P>
+  </Line>
+</System>
