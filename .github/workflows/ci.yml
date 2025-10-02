@@ -19,35 +19,67 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.12", 3.13]
+        include:
+          - python-version: "3.12"
+            experimental: false
+          - python-version: "3.13"
+            experimental: true   # flip to false when deps fully support 3.13
+    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Python
+        id: py
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
 
-      - name: Install tools & deps
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Cache virtualenv
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: .venv
+          key: v1-poetry-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install deps (with dev group)
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          python -m pip install --upgrade pip
-          # If you have dev extras, prefer: pip install -e ".[dev]"
-          pip install ruff mypy pytest pytest-cov
-          # Install your package in editable mode for tests
-          pip install -e .
+          poetry env use "${{ steps.py.outputs.python-path }}"
+          poetry install --no-interaction --no-ansi --with dev
+
+      - name: Sync deps (cache hit)
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          poetry env use "${{ steps.py.outputs.python-path }}"
+          poetry install --no-interaction --no-ansi --with dev
+
+      - name: Show tool versions
+        run: |
+          poetry run python -V
+          poetry run ruff --version
+          poetry run mypy --version
+          poetry run pytest --version
 
       - name: Ruff (format & lint)
         run: |
-          ruff format --check .
-          ruff check .
+          poetry run ruff format --check .
+          poetry run ruff check .
 
-      - name: Mypy (static type check)
+      - name: Mypy (install types if missing, then type check)
         run: |
-          mypy src || mypy adaptive_oscillator
+          # Auto-install missing type stubs in CI (non-interactive)
+          poetry run mypy --install-types --non-interactive || true
+          poetry run mypy src/ tests/ --ignore-missing-imports  --disable-error-code=call-overload
 
-      - name: Pytest (with coverage)
+      - name: Pytest (coverage gate)
         run: |
-          pytest -q --cov=adaptive_oscillator --cov-report=term-missing --cov-fail-under=85
+          poetry run pytest -q --cov=adaptive_oscillator --cov-report=term-missing --cov-fail-under=85

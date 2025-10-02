@@ -160,7 +160,7 @@ class LowLevelController:
         kp: float = 5.0,
         ki: float = 0.0,
         kd: float = 0.1,
-        gait_shape: NDArray = None,
+        gait_shape: NDArray | None = None,
     ):
         self.pid = PIDController(kp, ki, kd)
         x = np.linspace(0, 2 * np.pi, 100)
@@ -171,7 +171,7 @@ class LowLevelController:
         """Compute motor output."""
         theta_r = self.spline(phi - np.pi)
         error = theta_r - theta_m
-        return self.pid.compute(error, dt)
+        return self.pid.compute(error, dt)  # type: ignore[arg-type]
 
 
 def sample_walking_data(

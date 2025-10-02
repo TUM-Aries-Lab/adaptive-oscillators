@@ -215,7 +215,7 @@ def plot_sim_results(
     """Plot results from the simulation."""
     logger.info("Plotting results")
 
-    fig, axs = plt.subplots(3, 1, figsize=(15, 8), sharex=True)
+    _, axs = plt.subplots(3, 1, figsize=(15, 8), sharex=True)
 
     axs[0].plot(t_vals, theta_il, label="θ_IL (input)")
     axs[0].plot(t_vals, theta_hat_output, label="θ̂_IL (estimated)")
