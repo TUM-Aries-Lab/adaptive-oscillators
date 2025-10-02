@@ -20,6 +20,14 @@ scipy = "^1.15.3"
 plotly = "^6.2.0"
 dash = "^3.1.1"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.9"
+mypy = "^1.11"
+pytest = "^8.3"
+pytest-cov = "^6.0"
+pandas-stubs = "^2.2"
+scipy-stubs = "^1.11"
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 
