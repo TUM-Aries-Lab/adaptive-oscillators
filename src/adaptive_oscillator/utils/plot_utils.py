@@ -9,7 +9,6 @@ import plotly.graph_objects as go
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 from loguru import logger
-from numpy.typing import NDArray
 
 from adaptive_oscillator.utils.parser_utils import IMUParser, QuaternionParser
 
@@ -203,41 +202,6 @@ class RealtimeAOPlotter:
         else:
             self.app.run(debug=False, use_reloader=False)
         logger.info("Dash app started. Open http://127.0.0.1:8050 in a browser.")
-
-
-def plot_sim_results(
-    t_vals: NDArray,
-    theta_il: NDArray,
-    theta_hat_output: list[float],
-    omega_estimate: list[float],
-    phi_gp_output: list[float],
-) -> None:  # pragma: no cover
-    """Plot results from the simulation."""
-    logger.info("Plotting results")
-
-    _, axs = plt.subplots(3, 1, figsize=(15, 8), sharex=True)
-
-    axs[0].plot(t_vals, theta_il, label="θ_IL (input)")
-    axs[0].plot(t_vals, theta_hat_output, label="θ̂_IL (estimated)")
-    axs[0].set_ylabel("Angle (rad)")
-    axs[0].set_title("Input vs Estimated Hip Angle")
-
-    axs[1].plot(t_vals, omega_estimate, label="Motor θ", color="green")
-    axs[1].set_ylabel("Angle (rad)")
-    axs[1].set_title("Omega Estimate")
-
-    axs[2].plot(t_vals, phi_gp_output, label="φ_GP (Gait Phase)", color="purple")
-    axs[2].set_ylabel("Phase (rad)")
-    axs[2].set_xlabel("Time (s)")
-    axs[2].set_title("Estimated Gait Phase")
-
-    legend_loc = "upper right"
-    for i in range(3):
-        axs[i].legend(loc=legend_loc)
-        axs[i].grid(True)
-
-    plt.tight_layout()
-    plt.show()
 
 
 def plot_log_data(log_files) -> None:  # pragma: no cover

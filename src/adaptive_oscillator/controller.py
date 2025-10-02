@@ -1,6 +1,5 @@
 """Controller module for the Adaptive Oscillator."""
 
-import time
 from pathlib import Path
 
 import numpy as np
@@ -15,7 +14,6 @@ from adaptive_oscillator.utils.parser_utils import LogFiles, LogParser
 from adaptive_oscillator.utils.plot_utils import (
     RealtimeAOPlotter,
     plot_log_data,
-    plot_sim_results,
 )
 
 
@@ -72,36 +70,6 @@ class AOController:
 
             self.step(t=t, dt=dt, th=th, dth=dth)
 
-            # Update live plot if enabled
-            if self.plot_results and self.plotter:  # pragma: no cover
-                self.plotter.update_data(
-                    t,
-                    th,
-                    self.estimator.ao.theta_hat,
-                    self.estimator.ao.omega,
-                    self.estimator.phi_gp,
-                )
-                time.sleep(dt)
-
-        if self.plot_results:  # pragma: no cover
-            t0 = time_vec[0]
-            time_data = time_vec[:-1] - t0
-            theta_il = np.array(
-                [
-                    log_data.data.left.hip.angles[t][self.ang_idx]
-                    for t in range(len(time_data))
-                ]
-            )
-            theta_il = np.deg2rad(theta_il)
-
-            plot_sim_results(
-                time_data,
-                theta_il,
-                self.theta_hat_output,
-                self.omegas,
-                self.phi_gp_output,
-            )
-
     def run(self) -> None:
         """Run the AO simulation loop."""
         # TODO: implement the controller that doesn't replay data
@@ -112,15 +80,6 @@ class AOController:
 
                 self.step(t=t, dt=dt, th=th, dth=dth)
 
-                # Update live plot if enabled
-                if self.plot_results and self.plotter:  # pragma: no cover
-                    self.plotter.update_data(
-                        t,
-                        th,
-                        self.estimator.ao.theta_hat,
-                        self.estimator.ao.omega,
-                        self.estimator.phi_gp,
-                    )
         except KeyboardInterrupt:
             logger.info("Stopping AO simulation.")
             return
@@ -136,3 +95,13 @@ class AOController:
         self.theta_hat_output.append(self.estimator.ao.theta_hat)
         self.phi_gp_output.append(self.estimator.phi_gp)
         self.omegas.append(self.estimator.ao.omega)
+
+        # Update live plot if enabled
+        if self.plotter is not None:  # pragma: no cover
+            self.plotter.update_data(
+                t,
+                th,
+                self.estimator.ao.theta_hat,
+                self.estimator.ao.omega,
+                self.estimator.phi_gp,
+            )
