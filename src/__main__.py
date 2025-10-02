@@ -25,10 +25,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Run the AO controller with optional plotting."""
     args = parse_args()
-    controller = AOController(
-        real_time=args.real_time,
-        plot=args.plot,
-    )
+    controller = AOController(real_time=args.real_time)
     controller.replay(log_dir=args.log_dir)
 
 
