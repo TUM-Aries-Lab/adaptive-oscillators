@@ -40,6 +40,3 @@ if __name__ == "__main__":
 ## Results
 The plot below shows the results being plotted in real time.
 <img width="1491" height="1521" alt="Screenshot 2025-09-25 at 4 21 48 PM" src="https://github.com/user-attachments/assets/bd593195-ae56-4f48-97dd-728f58ae1dae" />
-
-The plot below shows the results of plotting an entire saved dataset.
-<img width="1500" height="800" alt="iit_plot" src="https://github.com/user-attachments/assets/25463eb0-8bcd-4935-8d53-d33c4e290a91" />
