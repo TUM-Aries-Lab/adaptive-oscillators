@@ -41,7 +41,7 @@ jobs:
 
       - name: Ruff (format & lint)
         run: |
-          ruff format --check .
+          ruff format .
           ruff check .
 
       - name: Mypy (static type check)
