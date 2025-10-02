@@ -11,9 +11,9 @@ test:
 	poetry run pytest --cov=src/iit_rehab --cov-report=term-missing --no-cov-on-fail
 
 format:
-	ruff format --exclude src/raspberrypi_code
-	ruff check --fix --exclude src/raspberrypi_code
-	poetry run mypy src/ tests/ --ignore-missing-imports  --exclude src/raspberrypi_code
+	ruff format
+	ruff check --fix
+	poetry run mypy src/ tests/ --ignore-missing-imports
 
 clean:
 	rm -rf .venv
