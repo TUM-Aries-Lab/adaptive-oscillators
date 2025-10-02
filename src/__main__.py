@@ -2,7 +2,7 @@
 
 import argparse
 
-from iit_rehab.controller import AOController
+from adaptive_oscillator.controller import AOController
 
 
 def parse_args() -> argparse.Namespace:
