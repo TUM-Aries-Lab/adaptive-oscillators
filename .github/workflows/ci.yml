@@ -46,7 +46,7 @@ jobs:
 
       - name: Mypy (static type check)
         run: |
-          mypy src || mypy adaptive_oscillator
+          mypy src/ tests/
 
       - name: Pytest (with coverage)
         run: |
