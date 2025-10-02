@@ -86,7 +86,7 @@ class IMUParser:
 
     def plot(self):  # pragma: no cover
         """Plot the x, y, z data."""
-        fig, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
+        _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
 
         for ii, (name, segment) in enumerate(
             zip(
@@ -161,7 +161,7 @@ class QuaternionParser:
 
     def plot(self):  # pragma: no cover
         """Plot the Quaternion data."""
-        fig, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
+        _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
 
         for ii, (name, segment) in enumerate(
             zip(
