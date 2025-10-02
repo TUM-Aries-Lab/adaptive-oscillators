@@ -29,3 +29,7 @@ clean:
 update:
 	poetry cache clear pypi --all
 	poetry update
+
+docker:
+	docker build --no-cache -f Dockerfile -t adaptive_oscillator-smoke .
+	docker run --rm adaptive_oscillator-smoke
