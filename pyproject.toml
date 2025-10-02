@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "iit-rehab"
-version = "0.0.2"
-description = "Collaboration between IIT and Aries Lab"
+name = "adaptive-oscillator"
+version = "0.0.1a"
+description = "Adaptive oscillator for gait phase identification."
 authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
 readme = "README.md"
 package-mode = true
@@ -75,7 +75,7 @@ fix = true
 
 # Sort imports automatically
 [tool.lint.isort]
-known-first-party = ["iit-rehab"]  # Replace it with your project name
+known-first-party = ["adaptive-oscillator"]  # Replace it with your project name
 combine-as-imports = true
 
 # Enforce docstring styles
@@ -89,4 +89,4 @@ indent-style = "space"  # Use spaces instead of tabs
 line-ending = "lf"      # Use LF for line endings (Unix standard)
 
 [tool.poetry.urls]
-homepage = "https://github.com/TUM-Aries-Lab/iit_collab"
+homepage = "https://github.com/TUM-Aries-Lab/adaptive_oscillators"
