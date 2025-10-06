@@ -20,10 +20,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - python-version: "3.11"
+            experimental: false
           - python-version: "3.12"
             experimental: false
           - python-version: "3.13"
-            experimental: true   # flip to false when deps fully support 3.13
+            experimental: false
     continue-on-error: ${{ matrix.experimental }}
 
     steps:
