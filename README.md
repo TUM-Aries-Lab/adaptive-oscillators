@@ -39,4 +39,4 @@ if __name__ == "__main__":
 
 ## Results
 The plot below shows the results being plotted in real time.
-<img width="1491" height="1521" alt="Screenshot 2025-09-25 at 4 21 48 PM" src="https://github.com/user-attachments/assets/bd593195-ae56-4f48-97dd-728f58ae1dae" />
+<img width="2209" height="1016" alt="Screenshot 2025-10-06 at 2 58 21 PM" src="https://github.com/user-attachments/assets/ac6ff396-0496-4187-81ad-bfc824a72299" />
