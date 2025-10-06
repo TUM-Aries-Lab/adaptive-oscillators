@@ -6,6 +6,9 @@ authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
 readme = "README.md"
 package-mode = true
 
+[tool.poetry.urls]
+homepage = "https://github.com/TUM-Aries-Lab/adaptive_oscillators"
+
 [tool.poetry.dependencies]
 python = ">3.12, <4.0"
 numpy = "^2.2.3"
@@ -95,6 +98,3 @@ convention = "google"  # Options: "google", "numpy", "pep257"
 quote-style = "double"  # Ensure consistent use of double quotes
 indent-style = "space"  # Use spaces instead of tabs
 line-ending = "lf"      # Use LF for line endings (Unix standard)
-
-[tool.poetry.urls]
-homepage = "https://github.com/TUM-Aries-Lab/adaptive_oscillators"
