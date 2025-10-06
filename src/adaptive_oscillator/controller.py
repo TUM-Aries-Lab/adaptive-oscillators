@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from loguru import logger
 
+from adaptive_oscillator.definitions import DEFAULT_DELTA_TIME
 from adaptive_oscillator.oscillator import (
     AOParameters,
     GaitPhaseEstimator,
@@ -28,6 +29,7 @@ class AOController:
         self.estimator = GaitPhaseEstimator(self.params)
         self.controller = LowLevelController()
         self.theta_m = 0.0
+        self.last_time: float | None = None
 
         self.ang_idx = 0
 
@@ -54,34 +56,21 @@ class AOController:
         time_vec = log_data.data.left.hip.time
         angle_vec = log_data.data.left.hip.angles
         for i in range(len(angle_vec) - 1):
-            t = time_vec[i] - time_vec[0]
-            dt = time_vec[i + 1] - time_vec[i]
+            th = np.deg2rad(angle_vec[i][self.ang_idx])
+            dth = np.deg2rad(
+                angle_vec[i][self.ang_idx]
+            )  # TODO: replace with actual derivative if available
 
-            th_deg = angle_vec[i][self.ang_idx]
-            dth_deg = angle_vec[i][
-                self.ang_idx
-            ]  # TODO: replace with actual derivative if available
-            th = np.deg2rad(th_deg)
-            dth = np.deg2rad(dth_deg)
+            self.step(t=time_vec[i] - time_vec[0], th=th, dth=dth)
 
-            self.step(t=t, dt=dt, th=th, dth=dth)
-
-    def run(self) -> None:
-        """Run the AO simulation loop."""
-        # TODO: implement the controller that doesn't replay data
-        try:
-            while True:
-                t, th, dth = 0.0, 0.0, 0.0
-                dt = 0.01
-
-                self.step(t=t, dt=dt, th=th, dth=dth)
-
-        except KeyboardInterrupt:
-            logger.info("Stopping AO simulation.")
-            return
-
-    def step(self, t: float, dt: float, th: float, dth: float) -> None:
+    def step(self, t: float, th: float, dth: float) -> None:
         """Step the AO ahead with one frame of data from the IMU."""
+        if self.last_time is None:
+            dt = DEFAULT_DELTA_TIME
+        else:
+            dt = t - self.last_time
+        self.last_time = t
+
         phi = self.estimator.update(t=t, theta_il=th, theta_il_dot=dth)
         omega_cmd = self.controller.compute(phi=phi, theta_m=self.theta_m, dt=dt)
         self.theta_m += omega_cmd * dt
@@ -95,10 +84,10 @@ class AOController:
         # Update live plot if enabled
         if self.plotter is not None:  # pragma: no cover
             self.plotter.update_data(
-                t,
-                th,
-                self.estimator.ao.theta_hat,
-                self.estimator.ao.omega,
-                self.estimator.phi_gp,
+                t=t,
+                theta_il=th,
+                theta_hat=self.estimator.ao.theta_hat,
+                omega=self.estimator.ao.omega,
+                phi_gp=self.estimator.phi_gp,
             )
             time.sleep(dt)
