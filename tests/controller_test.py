@@ -9,5 +9,5 @@ def test_ao_controller():
     log_dir = "data/walk_5"
 
     # Act
-    controller = AOController(real_time=False, plot=False)
+    controller = AOController(show_plots=False)
     controller.replay(log_dir=log_dir)

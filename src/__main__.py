@@ -14,10 +14,7 @@ def parse_args() -> argparse.Namespace:
         "-l", "--log-dir", required=True, help="Path to the log directory."
     )
     parser.add_argument(
-        "-p", "--plot", action="store_true", help="Plot raw IMU data before simulation."
-    )
-    parser.add_argument(
-        "-r", "--real-time", action="store_true", help="Enable real-time Dash plotting."
+        "-p", "--plot-results", action="store_true", help="Plot simulation results."
     )
     return parser.parse_args()
 
@@ -25,7 +22,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     """Run the AO controller with optional plotting."""
     args = parse_args()
-    controller = AOController(real_time=args.real_time)
+    controller = AOController(show_plots=args.show_plots)
     controller.replay(log_dir=args.log_dir)
 
 

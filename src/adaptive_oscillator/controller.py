@@ -2,6 +2,7 @@
 
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import numpy as np
 from loguru import logger
 
@@ -11,24 +12,17 @@ from adaptive_oscillator.oscillator import (
     LowLevelController,
 )
 from adaptive_oscillator.utils.parser_utils import LogFiles, LogParser
-from adaptive_oscillator.utils.plot_utils import (
-    RealtimeAOPlotter,
-    plot_log_data,
-)
+from adaptive_oscillator.utils.plot_utils import RealtimeAOPlotter
 
 
 class AOController:
     """Encapsulate the AO control loop and optional real-time plotting."""
 
-    def __init__(self, real_time: bool = False, plot: bool = False):
+    def __init__(self, show_plots: bool = False):
         """Initialize controller.
 
-        :param real_time: Enable real-time plotting with Dash.
         :param plot: Plot IMU logs before running the control loop.
         """
-        self.plot_logs = plot
-        self.plot_results = real_time
-
         self.params = AOParameters()
         self.estimator = GaitPhaseEstimator(self.params)
         self.controller = LowLevelController()
@@ -42,7 +36,7 @@ class AOController:
         self.omegas: list[float] = []
 
         self.plotter: RealtimeAOPlotter | None = None
-        if self.plot_results:
+        if show_plots:  # pragma: no cover
             self.plotter = RealtimeAOPlotter()
             self.plotter.run()
 
@@ -52,8 +46,9 @@ class AOController:
         log_files = LogFiles(log_dir)
         log_data = LogParser(log_files)
 
-        if self.plot_logs:
-            plot_log_data(log_files)
+        if self.plotter is not None:  # pragma: no cover
+            log_files.plot()
+            plt.show()
 
         time_vec = log_data.data.left.hip.time
         angle_vec = log_data.data.left.hip.angles

@@ -4,13 +4,10 @@ import threading
 from collections import deque
 from dataclasses import dataclass
 
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 from loguru import logger
-
-from adaptive_oscillator.utils.parser_utils import IMUParser, QuaternionParser
 
 
 @dataclass
@@ -24,7 +21,7 @@ class PlotMetrics:
     phi_gp = "phi_gp"
 
 
-class RealtimeAOPlotter:
+class RealtimeAOPlotter:  # pragma: no cover
     """Dash app for visualizing Adaptive Oscillator outputs in real time."""
 
     def __init__(self, window_sec: float = 5.0, frequency_hz: int = 100) -> None:
@@ -202,33 +199,3 @@ class RealtimeAOPlotter:
         else:
             self.app.run(debug=False, use_reloader=False)
         logger.info("Dash app started. Open http://127.0.0.1:8050 in a browser.")
-
-
-def plot_log_data(log_files) -> None:  # pragma: no cover
-    """Plot log files."""
-    logger.info("Plotting data.")
-    accel_data = IMUParser(log_files.accel.right)
-    accel_data.parse()
-    accel_data.plot()
-
-    gyro_data = IMUParser(log_files.gyro.right)
-    gyro_data.parse()
-    gyro_data.plot()
-
-    quat_data = QuaternionParser(log_files.quat.right)
-    quat_data.parse()
-    quat_data.plot()
-
-    accel_data = IMUParser(log_files.accel.left)
-    accel_data.parse()
-    accel_data.plot()
-
-    gyro_data = IMUParser(log_files.gyro.left)
-    gyro_data.parse()
-    gyro_data.plot()
-
-    quat_data = QuaternionParser(log_files.quat.left)
-    quat_data.parse()
-    quat_data.plot()
-
-    plt.show()

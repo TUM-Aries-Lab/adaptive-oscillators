@@ -57,6 +57,33 @@ class LogFiles:
             f"\n\t{self.quat.right})"
         )
 
+    def plot(self):
+        """Plot log files."""
+        logger.info("Plotting data.")
+        accel_data = IMUParser(self.accel.right)
+        accel_data.parse()
+        accel_data.plot()
+
+        gyro_data = IMUParser(self.gyro.right)
+        gyro_data.parse()
+        gyro_data.plot()
+
+        quat_data = QuaternionParser(self.quat.right)
+        quat_data.parse()
+        quat_data.plot()
+
+        accel_data = IMUParser(self.accel.left)
+        accel_data.parse()
+        accel_data.plot()
+
+        gyro_data = IMUParser(self.gyro.left)
+        gyro_data.parse()
+        gyro_data.plot()
+
+        quat_data = QuaternionParser(self.quat.left)
+        quat_data.parse()
+        quat_data.plot()
+
 
 class IMUParser:
     """Parser for log files with limb information."""
