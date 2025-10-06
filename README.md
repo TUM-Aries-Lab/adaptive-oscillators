@@ -20,18 +20,13 @@ To install the library run: `pip install adaptive-oscillator`
 def main() -> None:
     """Run a simple demonstration."""
     # Initialize system
-    estimator = GaitPhaseEstimator(AOParameters())
-    controller = LowLevelController()
-    plotter = RealtimeAOPlotter() if args.real_time else None
+    controller = AOController(show_plots=True)
 
-    if plotter:
-        logger.info("Starting Dash app for real-time plotting.")
-        plotter.run()
-
-    logger.info("Replaying log file with controller.")
-    time_data, theta_il, theta_hat, phi_gp, omegas = run_controller_loop(
-        log_data, estimator, controller, plotter=plotter
-    )
+    while True:
+        try:
+            self.step(t=t, th=angle, dth=angle_derivative)
+        except KeyboardInterrupt as KI:
+            print("Exiting...")
 
 if __name__ == "__main__":
     main()
