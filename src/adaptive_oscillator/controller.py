@@ -1,5 +1,6 @@
 """Controller module for the Adaptive Oscillator."""
 
+import time
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -100,3 +101,4 @@ class AOController:
                 self.estimator.ao.omega,
                 self.estimator.phi_gp,
             )
+            time.sleep(dt)
