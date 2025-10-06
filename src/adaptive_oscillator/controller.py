@@ -55,13 +55,19 @@ class AOController:
 
         time_vec = log_data.data.left.hip.time
         angle_vec = log_data.data.left.hip.angles
-        for i in range(len(angle_vec) - 1):
-            th = np.deg2rad(angle_vec[i][self.ang_idx])
-            dth = np.deg2rad(
-                angle_vec[i][self.ang_idx]
-            )  # TODO: replace with actual derivative if available
 
-            self.step(t=time_vec[i] - time_vec[0], th=th, dth=dth)
+        try:
+            for i in range(len(angle_vec) - 1):
+                th = np.deg2rad(angle_vec[i][self.ang_idx])
+                dth = np.deg2rad(
+                    angle_vec[i][self.ang_idx]
+                )  # TODO: replace with actual derivative if available
+
+                self.step(t=time_vec[i] - time_vec[0], th=th, dth=dth)
+        except KeyboardInterrupt:  # pragma: no cover
+            logger.warning("Controller interrupted.")
+
+        logger.success(f"Finished controller with log data from {log_dir}")
 
     def step(self, t: float, th: float, dth: float) -> None:
         """Step the AO ahead with one frame of data from the IMU."""
