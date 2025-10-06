@@ -23,7 +23,7 @@ class AOController:
     def __init__(self, show_plots: bool = False):
         """Initialize controller.
 
-        :param plot: Plot IMU logs before running the control loop.
+        :param show_plots: Plot IMU logs before running the control loop.
         """
         self.params = AOParameters()
         self.estimator = GaitPhaseEstimator(self.params)
