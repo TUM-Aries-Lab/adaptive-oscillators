@@ -1,5 +1,6 @@
-"""Real-time Plotly Dash interface for Adaptive Oscillator simulation."""
+"""Plot utilities module."""
 
+import logging
 import threading
 from collections import deque
 from dataclasses import dataclass
@@ -7,12 +8,14 @@ from dataclasses import dataclass
 import plotly.graph_objects as go
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
-from loguru import logger
+
+log = logging.getLogger("werkzeug")
+log.setLevel(logging.ERROR)
 
 
 @dataclass
 class PlotMetrics:
-    """Dictionary keys for the dash app."""
+    """AO plot metrics."""
 
     time_data = "time_data"
     theta_hat = "theta_hat"
@@ -22,14 +25,11 @@ class PlotMetrics:
 
 
 class RealtimeAOPlotter:  # pragma: no cover
-    """Dash app for visualizing Adaptive Oscillator outputs in real time."""
+    """Real-time Data plotter for the Adaptive Oscillator."""
 
-    def __init__(self, window_sec: float = 5.0, frequency_hz: int = 100) -> None:
-        """Initialize the real-time plotter.
-
-        :param window_sec: Duration of the window to show in seconds.
-        :param frequency_hz: Assumed data frequency in Hz.
-        """
+    def __init__(
+        self, ssh: bool = False, window_sec: float = 5.0, frequency_hz: int = 100
+    ) -> None:
         self.window_sec = window_sec
         self.data_points = int(window_sec * frequency_hz)
 
@@ -37,7 +37,8 @@ class RealtimeAOPlotter:  # pragma: no cover
         self._setup_layout()
         self._register_callbacks()
 
-        # Data buffers
+        # Thread-safe buffers
+        self._lock = threading.Lock()
         self.data: dict = {
             PlotMetrics.time_data: deque(maxlen=self.data_points),
             PlotMetrics.theta_il: deque(maxlen=self.data_points),
@@ -46,8 +47,10 @@ class RealtimeAOPlotter:  # pragma: no cover
             PlotMetrics.phi_gp: deque(maxlen=self.data_points),
         }
 
+        self.host = "0.0.0.0" if ssh else "127.0.0.1"  # ruff: ignore B104,S104
+        self.port = 8050
+
     def _setup_layout(self) -> None:
-        """Set up the layout for the Dash app with minimal spacing between plots."""
         self.app.layout = html.Div(
             [
                 html.H1(
@@ -63,14 +66,14 @@ class RealtimeAOPlotter:  # pragma: no cover
                 dcc.Graph(
                     id="gait-phase-graph", style={"height": "29vh", "margin": "0"}
                 ),
-                dcc.Interval(id="interval-component", interval=100, n_intervals=0),
+                dcc.Interval(
+                    id="interval-component", interval=200, n_intervals=0
+                ),  # 5 Hz is plenty over SSH
             ],
             style={"padding": "10px", "gap": "0px"},
         )
 
     def _register_callbacks(self) -> None:
-        """Register Dash callbacks for updating plots."""
-
         @self.app.callback(
             [
                 Output("hip-angle-graph", "figure"),
@@ -82,35 +85,38 @@ class RealtimeAOPlotter:  # pragma: no cover
         def update_graphs(_):
             return self._generate_figures()
 
+    def _snapshot(
+        self,
+    ) -> tuple[list[float], list[float], list[float], list[float], list[float]]:
+        """Copy current data under a lock to avoid torn reads."""
+        with self._lock:
+            time_data = list(self.data[PlotMetrics.time_data])
+            theta_il = list(self.data[PlotMetrics.theta_il])
+            theta_hat = list(self.data[PlotMetrics.theta_hat])
+            omega = list(self.data[PlotMetrics.omega])
+            phi_gp = list(self.data[PlotMetrics.phi_gp])
+        return time_data, theta_il, theta_hat, omega, phi_gp
+
     def _generate_figures(self) -> tuple[go.Figure, go.Figure, go.Figure]:
-        """Generate figures from current buffer contents."""
-        time_data = list(self.data[PlotMetrics.time_data])
-        theta_il = list(self.data[PlotMetrics.theta_il])
-        theta_hat = list(self.data[PlotMetrics.theta_hat])
-        omega = list(self.data[PlotMetrics.omega])
-        phi_gp = list(self.data[PlotMetrics.phi_gp])
-
+        time_data, theta_il, theta_hat, omega, phi_gp = self._snapshot()
         if not time_data:
-            empty_fig = go.Figure()
-            return empty_fig, empty_fig, empty_fig
+            empty = go.Figure()
+            return empty, empty, empty
 
-        # Crop data to latest 5 seconds
-        if len(time_data) > 1:
-            latest_time = time_data[-1]
-            window_start = latest_time - self.window_sec
-            start_idx = next(
-                (i for i, t in enumerate(time_data) if t >= window_start), 0
-            )
-
-            time_data = time_data[start_idx:]
-            theta_il = theta_il[start_idx:]
-            theta_hat = theta_hat[start_idx:]
-            omega = omega[start_idx:]
-            phi_gp = phi_gp[start_idx:]
+        # Keep last window
+        latest = time_data[-1]
+        window_start = latest - self.window_sec
+        start_idx = next((i for i, t in enumerate(time_data) if t >= window_start), 0)
+        time_data, theta_il, theta_hat, omega, phi_gp = (
+            time_data[start_idx:],
+            theta_il[start_idx:],
+            theta_hat[start_idx:],
+            omega[start_idx:],
+            phi_gp[start_idx:],
+        )
 
         margin = dict(l=30, r=10, t=30, b=30)
 
-        # Hip angle plot
         hip_fig = go.Figure()
         hip_fig.add_trace(
             go.Scatter(x=time_data, y=theta_il, mode="lines", name="θ_IL (input)")
@@ -128,7 +134,6 @@ class RealtimeAOPlotter:  # pragma: no cover
             ),
         )
 
-        # Omega plot
         omega_fig = go.Figure()
         omega_fig.add_trace(
             go.Scatter(
@@ -145,7 +150,6 @@ class RealtimeAOPlotter:  # pragma: no cover
             ),
         )
 
-        # Gait phase plot
         phase_fig = go.Figure()
         phase_fig.add_trace(
             go.Scatter(
@@ -171,31 +175,29 @@ class RealtimeAOPlotter:  # pragma: no cover
     def update_data(
         self, t: float, theta_il: float, theta_hat: float, omega: float, phi_gp: float
     ) -> None:
-        """Append a new data point to the buffers.
-
-        :param t: Timestamp in seconds.
-        :param theta_il: Input joint angle.
-        :param theta_hat: Estimated joint angle.
-        :param omega: Estimated angular velocity.
-        :param phi_gp: Gait phase estimate.
-        """
-        self.data[PlotMetrics.time_data].append(t)
-        self.data[PlotMetrics.theta_il].append(theta_il)
-        self.data[PlotMetrics.theta_hat].append(theta_hat)
-        self.data[PlotMetrics.omega].append(omega)
-        self.data[PlotMetrics.phi_gp].append(phi_gp)
+        """Update the data and plot it."""
+        with self._lock:
+            self.data[PlotMetrics.time_data].append(t)
+            self.data[PlotMetrics.theta_il].append(theta_il)
+            self.data[PlotMetrics.theta_hat].append(theta_hat)
+            self.data[PlotMetrics.omega].append(omega)
+            self.data[PlotMetrics.phi_gp].append(phi_gp)
 
     def run(self, threaded: bool = True) -> None:
-        """Run the Dash server.
-
-        :param threaded: If True, run in a background thread.
-        """
+        """Run the AO control loop."""
         if threaded:
-            threading.Thread(
+            th = threading.Thread(
                 target=self.app.run,
-                kwargs={"debug": False, "use_reloader": False},
-                daemon=True,
-            ).start()
+                kwargs={
+                    "debug": False,
+                    "use_reloader": False,
+                    "host": self.host,
+                    "port": self.port,
+                },
+                daemon=False,  # keep process alive
+            )
+            th.start()
         else:
-            self.app.run(debug=False, use_reloader=False)
-        logger.info("Dash app started. Open http://127.0.0.1:8050 in a browser.")
+            self.app.run_server(
+                debug=False, use_reloader=False, host=self.host, port=self.port
+            )

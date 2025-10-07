@@ -20,7 +20,7 @@ from adaptive_oscillator.utils.plot_utils import RealtimeAOPlotter
 class AOController:
     """Encapsulate the AO control loop and optional real-time plotting."""
 
-    def __init__(self, show_plots: bool = False):
+    def __init__(self, show_plots: bool, ssh: bool = False):
         """Initialize controller.
 
         :param show_plots: Plot IMU logs before running the control loop.
@@ -40,7 +40,7 @@ class AOController:
 
         self.plotter: RealtimeAOPlotter | None = None
         if show_plots:  # pragma: no cover
-            self.plotter = RealtimeAOPlotter()
+            self.plotter = RealtimeAOPlotter(ssh=ssh)
             self.plotter.run()
 
     def replay(self, log_dir: str | Path):
@@ -48,10 +48,6 @@ class AOController:
         logger.info(f"Running controller with log data from {log_dir}")
         log_files = LogFiles(log_dir)
         log_data = LogParser(log_files)
-
-        if self.plotter is not None:  # pragma: no cover
-            log_files.plot()
-            plt.show()
 
         time_vec = log_data.data.left.hip.time
         angle_vec = log_data.data.left.hip.angles
@@ -62,10 +58,16 @@ class AOController:
                 dth = np.deg2rad(
                     angle_vec[i][self.ang_idx]
                 )  # TODO: replace with actual derivative if available
+                t = time_vec[i] - time_vec[0]
+                self.step(t=t, th=th, dth=dth)
 
-                self.step(t=time_vec[i] - time_vec[0], th=th, dth=dth)
+                logger.info(f"t={t:.2f}, th={th:.2f}, dth={dth:.2f}")
         except KeyboardInterrupt:  # pragma: no cover
             logger.warning("Controller interrupted.")
+
+        if self.plotter is not None:  # pragma: no cover
+            log_files.plot()
+            plt.show()
 
         logger.success(f"Finished controller with log data from {log_dir}")
 

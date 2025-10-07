@@ -44,7 +44,7 @@ class LogFiles:
     def __repr__(self) -> str:  # pragma: no cover
         """Return a string representation of the LogFiles object."""
         return (
-            f"Log files  for dir: '{self._path}'"
+            f"Log files for dir: '{self._path}'"
             f"\n\t{self.accel.left}"
             f"\n\t{self.accel.right}"
             f"\n\t{self.angle.left}"
@@ -99,8 +99,8 @@ class IMUParser:
     def parse(self):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
-        logger.info(f"Parsing {self.filepath}")
-        logger.info(f"Columns: {raw_data.shape}")
+        logger.debug(f"Parsing {self.filepath}")
+        logger.debug(f"Columns: {raw_data.shape}")
 
         time_str = raw_data[AnglesHeader.TIME]
         self.time = np.array([time_str_to_seconds(t) for t in time_str])
@@ -146,8 +146,8 @@ class AngleParser:
     def parse(self):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
-        logger.info(f"Parsing {self.filepath}")
-        logger.info(f"Columns: {raw_data.shape}")
+        logger.debug(f"Parsing {self.filepath}")
+        logger.debug(f"Columns: {raw_data.shape}")
 
         time_str = raw_data[AnglesHeader.TIME]
         self.time = np.array([time_str_to_seconds(t) for t in time_str])
@@ -173,8 +173,8 @@ class QuaternionParser:
     def parse(self):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t")
-        logger.info(f"Parsing {self.filepath}")
-        logger.info(f"Columns: {raw_data.shape}")
+        logger.debug(f"Parsing {self.filepath}")
+        logger.debug(f"Columns: {raw_data.shape}")
 
         time_str = raw_data[QuaternionHeader.TIME]
         self.time = np.array([time_str_to_seconds(t) for t in time_str])
@@ -212,6 +212,7 @@ class LogParser:
     """Parser for log files with limb information."""
 
     def __init__(self, log_files: LogFiles):
+        logger.info(f"Parsing {log_files}")
         accel_data_right = IMUParser(log_files.accel.right)
         accel_data_right.parse()
         accel_data_left = IMUParser(log_files.accel.left)

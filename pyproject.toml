@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "adaptive-oscillator"
-version = "0.1.0a"
+version = "0.1.3a"
 description = "Adaptive oscillator for gait phase identification."
 authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
 readme = "README.md"
@@ -79,6 +79,7 @@ lint.ignore = [
     "S607",  # Starting a process with a partial executable path
     "S605",  # Starting a process with a shell
     "S603",  # `subprocess` call: check for execution of untrusted input
+    "S104",  # Possible binding to all interfaces
 ]
 
 # Automatically fix issues where possible

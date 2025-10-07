@@ -5,8 +5,8 @@ import argparse
 from adaptive_oscillator.controller import AOController
 
 
-def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments."""
+def main() -> None:
+    """Run the AO controller with optional plotting."""
     parser = argparse.ArgumentParser(
         description="Run AO controller with optional plotting."
     )
@@ -16,13 +16,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "-p", "--plot-results", action="store_true", help="Plot simulation results."
     )
-    return parser.parse_args()
-
-
-def main() -> None:
-    """Run the AO controller with optional plotting."""
-    args = parse_args()
-    controller = AOController(show_plots=args.plot_results)
+    parser.add_argument(
+        "-s", "--ssh", action="store_true", help="Connect to an SSH server."
+    )
+    args = parser.parse_args()
+    controller = AOController(show_plots=args.plot_results, ssh=args.ssh)
     controller.replay(log_dir=args.log_dir)
 
 
