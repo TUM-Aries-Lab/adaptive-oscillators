@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "adaptive-oscillator"
-version = "0.1.3a"
+version = "0.1.0"
 description = "Adaptive oscillator for gait phase identification."
 authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
 readme = "README.md"

@@ -61,7 +61,6 @@ class AOController:
                 t = time_vec[i] - time_vec[0]
                 self.step(t=t, th=th, dth=dth)
 
-                logger.info(f"t={t:.2f}, th={th:.2f}, dth={dth:.2f}")
         except KeyboardInterrupt:  # pragma: no cover
             logger.warning("Controller interrupted.")
 
@@ -88,6 +87,13 @@ class AOController:
         self.theta_hat_output.append(self.estimator.ao.theta_hat)
         self.phi_gp_output.append(self.estimator.phi_gp)
         self.omegas.append(self.estimator.ao.omega)
+
+        theta_hat = self.estimator.ao.theta_hat
+        omega = self.estimator.ao.omega
+        phi_gp = self.estimator.phi_gp
+        logger.info(
+            f"theta_hat: {theta_hat:.2f}, omega: {omega:.2f}, phi_gp: {phi_gp:.2f}"
+        )
 
         # Update live plot if enabled
         if self.plotter is not None:  # pragma: no cover

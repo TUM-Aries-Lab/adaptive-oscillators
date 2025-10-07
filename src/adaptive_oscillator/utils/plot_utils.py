@@ -54,7 +54,7 @@ class RealtimeAOPlotter:  # pragma: no cover
         self.app.layout = html.Div(
             [
                 html.H1(
-                    "Real-time Adaptive Oscillator Control Simulation",
+                    "Adaptive Oscillator Logfile Replay",
                     style={"margin-bottom": "10px"},
                 ),
                 dcc.Graph(
