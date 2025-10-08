@@ -20,18 +20,13 @@ To install the library run: `pip install adaptive-oscillator`
 def main() -> None:
     """Run a simple demonstration."""
     # Initialize system
-    estimator = GaitPhaseEstimator(AOParameters())
-    controller = LowLevelController()
-    plotter = RealtimeAOPlotter() if args.real_time else None
+    controller = AOController(show_plots=True)
 
-    if plotter:
-        logger.info("Starting Dash app for real-time plotting.")
-        plotter.run()
-
-    logger.info("Replaying log file with controller.")
-    time_data, theta_il, theta_hat, phi_gp, omegas = run_controller_loop(
-        log_data, estimator, controller, plotter=plotter
-    )
+    while True:
+        try:
+            self.step(t=t, th=angle, dth=angle_derivative)
+        except KeyboardInterrupt as KI:
+            print("Exiting...")
 
 if __name__ == "__main__":
     main()
@@ -39,7 +34,4 @@ if __name__ == "__main__":
 
 ## Results
 The plot below shows the results being plotted in real time.
-<img width="1491" height="1521" alt="Screenshot 2025-09-25 at 4 21 48 PM" src="https://github.com/user-attachments/assets/bd593195-ae56-4f48-97dd-728f58ae1dae" />
-
-The plot below shows the results of plotting an entire saved dataset.
-<img width="1500" height="800" alt="iit_plot" src="https://github.com/user-attachments/assets/25463eb0-8bcd-4935-8d53-d33c4e290a91" />
+<img width="2209" height="1016" alt="Screenshot 2025-10-06 at 2 58 21 PM" src="https://github.com/user-attachments/assets/ac6ff396-0496-4187-81ad-bfc824a72299" />

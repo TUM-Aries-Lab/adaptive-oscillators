@@ -1,10 +1,13 @@
 [tool.poetry]
 name = "adaptive-oscillator"
-version = "0.0.1"
+version = "0.1.0"
 description = "Adaptive oscillator for gait phase identification."
 authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
 readme = "README.md"
 package-mode = true
+
+[tool.poetry.urls]
+homepage = "https://github.com/TUM-Aries-Lab/adaptive_oscillators"
 
 [tool.poetry.dependencies]
 python = ">3.12, <4.0"
@@ -76,6 +79,7 @@ lint.ignore = [
     "S607",  # Starting a process with a partial executable path
     "S605",  # Starting a process with a shell
     "S603",  # `subprocess` call: check for execution of untrusted input
+    "S104",  # Possible binding to all interfaces
 ]
 
 # Automatically fix issues where possible
@@ -95,6 +99,3 @@ convention = "google"  # Options: "google", "numpy", "pep257"
 quote-style = "double"  # Ensure consistent use of double quotes
 indent-style = "space"  # Use spaces instead of tabs
 line-ending = "lf"      # Use LF for line endings (Unix standard)
-
-[tool.poetry.urls]
-homepage = "https://github.com/TUM-Aries-Lab/adaptive_oscillators"

@@ -23,6 +23,8 @@ N_HARMONICS = 3
 NU_PHI = 0.5
 NU_OMEGA = 0.5
 
+DEFAULT_DELTA_TIME = 0.01
+
 
 class LogFileKeys:
     """Enum for the log file categories."""
