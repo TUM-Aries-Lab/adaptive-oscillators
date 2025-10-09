@@ -20,12 +20,17 @@ from adaptive_oscillator.utils.plot_utils import RealtimeAOPlotter
 class AOController:
     """Encapsulate the AO control loop and optional real-time plotting."""
 
-    def __init__(self, show_plots: bool, ssh: bool = False):
+    def __init__(
+        self,
+        config: AOParameters | None = None,
+        show_plots: bool = False,
+        ssh: bool = False,
+    ):
         """Initialize controller.
 
         :param show_plots: Plot IMU logs before running the control loop.
         """
-        self.params = AOParameters()
+        self.params = AOParameters() if config is None else config
         self.estimator = GaitPhaseEstimator(self.params)
         self.controller = LowLevelController()
         self.theta_m = 0.0
