@@ -31,18 +31,10 @@ def test_adaptive_oscillator(gait_freq: float) -> None:
     t_vals, theta_il, theta_il_dot = sample_walking_data(period=gait_freq)
 
     theta_m = 0.0
-    motor_output = []
-    theta_hat_output = []
-    phi_gp_output = []
-
     for t, th, dth in zip(t_vals, theta_il, theta_il_dot):
         phi = estimator.update(t, th, dth)
         omega_cmd = controller.compute(phi, theta_m, dt)
         theta_m += omega_cmd * dt
-
-        motor_output.append(theta_m)
-        theta_hat_output.append(estimator.ao.theta_hat)
-        phi_gp_output.append(estimator.phi_gp)
 
     # Assert
     np.testing.assert_almost_equal(estimator.ao.omega, gait_freq * 2 * np.pi, decimal=1)
