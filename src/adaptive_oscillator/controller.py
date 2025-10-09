@@ -1,10 +1,7 @@
 """Controller module for the Adaptive Oscillator."""
 
 import time
-from pathlib import Path
 
-import matplotlib.pyplot as plt
-import numpy as np
 from loguru import logger
 
 from adaptive_oscillator.definitions import DEFAULT_DELTA_TIME
@@ -13,7 +10,6 @@ from adaptive_oscillator.oscillator import (
     GaitPhaseEstimator,
     LowLevelController,
 )
-from adaptive_oscillator.utils.parser_utils import LogFiles, LogParser
 from adaptive_oscillator.utils.plot_utils import RealtimeAOPlotter
 
 
@@ -47,33 +43,6 @@ class AOController:
         if show_plots:  # pragma: no cover
             self.plotter = RealtimeAOPlotter(ssh=ssh)
             self.plotter.run()
-
-    def replay(self, log_dir: str | Path):
-        """Run the AO simulation loop."""
-        logger.info(f"Running controller with log data from {log_dir}")
-        log_files = LogFiles(log_dir)
-        log_data = LogParser(log_files)
-
-        time_vec = log_data.data.left.hip.time
-        angle_vec = log_data.data.left.hip.angles
-
-        try:
-            for i in range(len(angle_vec) - 1):
-                th = np.deg2rad(angle_vec[i][self.ang_idx])
-                dth = np.deg2rad(
-                    angle_vec[i][self.ang_idx]
-                )  # TODO: replace with actual derivative if available
-                t = time_vec[i] - time_vec[0]
-                self.step(t=t, th=th, dth=dth)
-
-        except KeyboardInterrupt:  # pragma: no cover
-            logger.warning("Controller interrupted.")
-
-        if self.plotter is not None:  # pragma: no cover
-            log_files.plot()
-            plt.show()
-
-        logger.success(f"Finished controller with log data from {log_dir}")
 
     def step(self, t: float, th: float, dth: float) -> tuple[float, float, float]:
         """Step the AO ahead with one frame of data from the IMU."""
