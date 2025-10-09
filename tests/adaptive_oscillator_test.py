@@ -7,8 +7,8 @@ from adaptive_oscillator.oscillator import (
     AOParameters,
     GaitPhaseEstimator,
     LowLevelController,
-    sample_walking_data,
 )
+from tests.utils_for_test import sample_walking_data
 
 
 @pytest.mark.parametrize(
@@ -28,9 +28,7 @@ def test_adaptive_oscillator(gait_freq: float) -> None:
 
     # Act
     dt = 0.01
-    t_vals, theta_il, theta_il_dot = sample_walking_data(
-        period=gait_freq, t_end=100.0, dt=dt
-    )
+    t_vals, theta_il, theta_il_dot = sample_walking_data(period=gait_freq)
 
     theta_m = 0.0
     motor_output = []

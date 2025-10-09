@@ -75,7 +75,7 @@ class AOController:
 
         logger.success(f"Finished controller with log data from {log_dir}")
 
-    def step(self, t: float, th: float, dth: float) -> None:
+    def step(self, t: float, th: float, dth: float) -> tuple[float, float, float]:
         """Step the AO ahead with one frame of data from the IMU."""
         if self.last_time is None:
             dt = DEFAULT_DELTA_TIME
@@ -110,3 +110,5 @@ class AOController:
                 phi_gp=self.estimator.phi_gp,
             )
             time.sleep(dt)
+
+        return theta_hat, omega, phi_gp
