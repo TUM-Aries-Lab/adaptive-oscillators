@@ -21,4 +21,4 @@ def test_ao_controller():
         th = np.deg2rad(ang_deg)
         dth = np.deg2rad(ang_deg)
         t = log_data.data.left.hip.time[_ii] - log_data.data.left.hip.time[0]
-        controller.step(t=t, th=th, dth=dth)
+        controller.step(t=t, x=th, x_dot=dth)

@@ -31,17 +31,12 @@ class AOController:
         self.theta_m = 0.0
         self.last_time: float | None = None
 
-        self.motor_output: list[float] = []
-        self.theta_hat_output: list[float] = []
-        self.phi_gp_output: list[float] = []
-        self.omegas: list[float] = []
-
         self.plotter: RealtimeAOPlotter | None = None
         if show_plots:  # pragma: no cover
             self.plotter = RealtimeAOPlotter(ssh=ssh)
             self.plotter.run()
 
-    def step(self, t: float, th: float, dth: float) -> tuple[float, float, float]:
+    def step(self, t: float, x: float, x_dot: float) -> tuple[float, float, float]:
         """Step the AO ahead with one frame of data from the IMU."""
         if self.last_time is None:
             dt = DEFAULT_DELTA_TIME
@@ -49,16 +44,11 @@ class AOController:
             dt = t - self.last_time
         self.last_time = t
 
-        phi = self.estimator.update(t=t, theta_il=th, theta_il_dot=dth)
+        phi = self.estimator.update(t=t, theta_il=x, theta_il_dot=x_dot)
         omega_cmd = self.controller.compute(phi=phi, theta_m=self.theta_m, dt=dt)
         self.theta_m += omega_cmd * dt
 
         # Store outputs
-        self.motor_output.append(self.theta_m)
-        self.theta_hat_output.append(self.estimator.ao.theta_hat)
-        self.phi_gp_output.append(self.estimator.phi_gp)
-        self.omegas.append(self.estimator.ao.omega)
-
         theta_hat = self.estimator.ao.theta_hat
         omega = self.estimator.ao.omega
         phi_gp = self.estimator.phi_gp
@@ -70,7 +60,7 @@ class AOController:
         if self.plotter is not None:  # pragma: no cover
             self.plotter.update_data(
                 t=t,
-                theta_il=th,
+                theta_il=x,
                 theta_hat=self.estimator.ao.theta_hat,
                 omega=self.estimator.ao.omega,
                 phi_gp=self.estimator.phi_gp,

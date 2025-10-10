@@ -19,7 +19,7 @@ def main() -> None:
         "-l", "--log-dir", required=True, help="Path to the log directory."
     )
     parser.add_argument(
-        "-p", "--plot-results", action="store_true", help="Plot simulation results."
+        "-p", "--plot", action="store_true", help="Plot simulation results."
     )
     parser.add_argument(
         "-s", "--ssh", action="store_true", help="Connect to an SSH server."
@@ -30,12 +30,14 @@ def main() -> None:
     log_files = LogFiles(log_dir)
     log_data = LogParser(log_files)
 
-    controller = AOController(show_plots=args.plot_results, ssh=args.ssh)
-    for _ii, ang_deg in enumerate(log_data.data.left.hip.angles.x_deg):
+    signal = log_data.data.left.hip.angles.x_deg
+
+    controller = AOController(show_plots=args.plot, ssh=args.ssh)
+    for _ii, ang_deg in enumerate(signal):
         th = np.deg2rad(ang_deg)
         dth = np.deg2rad(ang_deg)  # TODO: replace with actual derivative if available
         t = log_data.data.left.hip.time[_ii] - log_data.data.left.hip.time[0]
-        controller.step(t=t, th=th, dth=dth)
+        controller.step(t=t, x=th, x_dot=dth)
 
     if controller.plotter is not None:  # pragma: no cover
         log_files.plot()
