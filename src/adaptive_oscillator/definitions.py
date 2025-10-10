@@ -1,6 +1,7 @@
 """Common definitions for my module."""
 
 import sys
+from dataclasses import dataclass
 
 import numpy as np
 from loguru import logger
@@ -22,6 +23,26 @@ ETA = 0.05
 N_HARMONICS = 3
 NU_PHI = 0.5
 NU_OMEGA = 0.5
+
+
+@dataclass
+class AOParameters:
+    """Adaptive Oscillator parameters."""
+
+    eta: float = 0.05
+    nu_phi: float = 0.5
+    nu_omega: float = 0.5
+    n_harmonics: int = 3
+
+
+@dataclass
+class PIDGains:
+    """PID gains."""
+
+    kp: float = 5.0
+    ki: float = 0.0
+    kd: float = 0.1
+
 
 DEFAULT_DELTA_TIME = 0.01
 

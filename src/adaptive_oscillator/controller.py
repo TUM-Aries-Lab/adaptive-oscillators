@@ -4,9 +4,8 @@ import time
 
 from loguru import logger
 
-from adaptive_oscillator.definitions import DEFAULT_DELTA_TIME
+from adaptive_oscillator.definitions import DEFAULT_DELTA_TIME, AOParameters, PIDGains
 from adaptive_oscillator.oscillator import (
-    AOParameters,
     GaitPhaseEstimator,
     LowLevelController,
 )
@@ -19,6 +18,7 @@ class AOController:
     def __init__(
         self,
         config: AOParameters | None = None,
+        pid_gains: PIDGains | None = None,
         show_plots: bool = False,
         ssh: bool = False,
     ):
@@ -26,13 +26,10 @@ class AOController:
 
         :param show_plots: Plot IMU logs before running the control loop.
         """
-        self.params = AOParameters() if config is None else config
-        self.estimator = GaitPhaseEstimator(self.params)
-        self.controller = LowLevelController()
+        self.estimator = GaitPhaseEstimator(config)
+        self.controller = LowLevelController(pid_gains)
         self.theta_m = 0.0
         self.last_time: float | None = None
-
-        self.ang_idx = 0
 
         self.motor_output: list[float] = []
         self.theta_hat_output: list[float] = []

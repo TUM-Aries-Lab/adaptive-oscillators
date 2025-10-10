@@ -3,11 +3,7 @@
 import numpy as np
 import pytest
 
-from adaptive_oscillator.oscillator import (
-    AOParameters,
-    GaitPhaseEstimator,
-    LowLevelController,
-)
+from adaptive_oscillator.oscillator import GaitPhaseEstimator, LowLevelController
 from tests.utils_for_test import sample_walking_data
 
 
@@ -22,8 +18,7 @@ from tests.utils_for_test import sample_walking_data
 def test_adaptive_oscillator(gait_freq: float) -> None:
     """Test the controller."""
     # Arrange
-    params = AOParameters()
-    estimator = GaitPhaseEstimator(params)
+    estimator = GaitPhaseEstimator()
     controller = LowLevelController()
 
     # Act
