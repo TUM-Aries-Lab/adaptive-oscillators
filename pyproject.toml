@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "adaptive-oscillator"
-version = "0.1.0"
+version = "0.1.1"
 description = "Adaptive oscillator for gait phase identification."
 authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
 readme = "README.md"
 package-mode = true
 
 [tool.poetry.urls]
-homepage = "https://github.com/TUM-Aries-Lab/adaptive_oscillators"
+homepage = "https://github.com/TUM-Aries-Lab/adaptive-oscillators"
 
 [tool.poetry.dependencies]
 python = ">3.12, <4.0"

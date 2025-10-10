@@ -26,6 +26,7 @@ from adaptive_oscillator.definitions import (
     AnglesHeader,
     LogFileKeys,
     QuaternionHeader,
+    Segments,
 )
 from adaptive_oscillator.utils.time_utils import time_str_to_seconds
 
@@ -117,7 +118,12 @@ class IMUParser:
 
         for ii, (name, segment) in enumerate(
             zip(
-                ["Pelvis", "Upper Leg", "Lower Leg", "Foot"],
+                [
+                    Segments.PELVIS,
+                    Segments.UPPER_LEG,
+                    Segments.LOWER_LEG,
+                    Segments.FOOT,
+                ],
                 [self.pelvis, self.upper_leg, self.lower_leg, self.foot],
             )
         ):
@@ -192,7 +198,12 @@ class QuaternionParser:
 
         for ii, (name, segment) in enumerate(
             zip(
-                ["Pelvis", "Upper Leg", "Lower Leg", "Foot"],
+                [
+                    Segments.PELVIS,
+                    Segments.UPPER_LEG,
+                    Segments.LOWER_LEG,
+                    Segments.FOOT,
+                ],
                 [self.pelvis, self.upper_leg, self.lower_leg, self.foot],
             )
         ):
