@@ -29,6 +29,7 @@ class AOController:
         self.estimator = GaitPhaseEstimator(config)
         self.controller = LowLevelController(pid_gains)
         self.theta_m = 0.0
+        self.last_x: float | None = None
         self.last_time: float | None = None
 
         self.plotter: RealtimeAOPlotter | None = None
@@ -36,13 +37,23 @@ class AOController:
             self.plotter = RealtimeAOPlotter(ssh=ssh)
             self.plotter.run()
 
-    def step(self, t: float, x: float, x_dot: float) -> tuple[float, float, float]:
+    def step(
+        self, t: float, x: float, x_dot: float | None = None
+    ) -> tuple[float, float, float]:
         """Step the AO ahead with one frame of data from the IMU."""
         if self.last_time is None:
             dt = DEFAULT_DELTA_TIME
         else:
             dt = t - self.last_time
+
+        if x_dot is None:
+            if self.last_x is None:
+                x_dot = 0.0
+            else:
+                x_dot = (x - self.last_x) / dt
+
         self.last_time = t
+        self.last_x = x
 
         phi = self.estimator.update(t=t, theta_il=x, theta_il_dot=x_dot)
         omega_cmd = self.controller.compute(phi=phi, theta_m=self.theta_m, dt=dt)

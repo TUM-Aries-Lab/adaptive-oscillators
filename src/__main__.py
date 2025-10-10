@@ -34,10 +34,8 @@ def main() -> None:
 
     controller = AOController(show_plots=args.plot, ssh=args.ssh)
     for _ii, ang_deg in enumerate(signal):
-        th = np.deg2rad(ang_deg)
-        dth = np.deg2rad(ang_deg)  # TODO: replace with actual derivative if available
         t = log_data.data.left.hip.time[_ii] - log_data.data.left.hip.time[0]
-        controller.step(t=t, x=th, x_dot=dth)
+        controller.step(t=t, x=np.deg2rad(ang_deg))
 
     if controller.plotter is not None:  # pragma: no cover
         log_files.plot()
