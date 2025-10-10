@@ -36,6 +36,15 @@ class LogFileKeys:
     QUAT = "Quaternions"
 
 
+class Segments:
+    """Body segments where each IMU is attached."""
+
+    PELVIS = "Pelvis"
+    UPPER_LEG = "Upper Leg"
+    LOWER_LEG = "Lower Leg"
+    FOOT = "Foot"
+
+
 class IMUHeader:
     """Headers for the IMU sensor data."""
 
