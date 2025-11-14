@@ -9,7 +9,7 @@ from adaptive_oscillator.oscillator import (
     GaitPhaseEstimator,
     LowLevelController,
 )
-from adaptive_oscillator.utils.plot_utils import RealtimeAOPlotter
+from adaptive_oscillator.utils.plot_utils import PlotData, RealtimeAOPlotter
 
 
 class AOController:
@@ -58,13 +58,16 @@ class AOController:
 
         # Update live plot if enabled
         if self.plotter is not None:  # pragma: no cover
-            self.plotter.update_data(
+            data = PlotData(
                 t=t,
                 theta_il=x,
                 theta_hat=self.estimator.ao.theta_hat,
                 omega=self.estimator.ao.omega,
                 phi_gp=self.estimator.phi_gp,
+                aux_1=0.0,
+                aux_2=0.0,
             )
+            self.plotter.update_data(data=data)
             time.sleep(dt)
 
         return theta_hat, omega, phi_gp
