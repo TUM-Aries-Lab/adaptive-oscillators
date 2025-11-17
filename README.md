@@ -1,4 +1,7 @@
 # Adaptive Oscillator
+[![Coverage Status](https://coveralls.io/repos/github/TUM-Aries-Lab/adaptive-oscillators/badge.svg?branch=main)](https://coveralls.io/github/TUM-Aries-Lab/template-python?branch=main)
+![Docker Image CI](https://github.com/TUM-Aries-Lab/adaptive-oscillators/actions/workflows/ci.yml/badge.svg)
+
 AOs can be described as a mathematical tool able to synchronize with a rhythmic and periodic signal by continuously estimating its fundamental features (i.e. frequency, amplitude, phase, and offset). For their properties, AOs found applications in gait pattern estimation strategies, where they are used to mimic the dynamics of the neuromechanical oscillators in charge of the rhythmical human locomotion. In addition, as gait periodicity can be captured by sensors recording joint kinematics, their application does not require a complex sensory network.
 
 ## Install
