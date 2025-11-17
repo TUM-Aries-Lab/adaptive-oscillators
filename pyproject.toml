@@ -10,7 +10,7 @@ package-mode = true
 homepage = "https://github.com/TUM-Aries-Lab/adaptive-oscillators"
 
 [tool.poetry.dependencies]
-python = ">3.12, <4.0"
+python = ">3.11, <4.0"
 numpy = "^2.2.3"
 pytest = "^8.3.5"
 pytest-cov = "^6.0.0"
