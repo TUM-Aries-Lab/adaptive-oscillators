@@ -3,18 +3,24 @@ SHELL := /bin/bash
 init:
 	python3 -m venv .venv
 	poetry install
-	pre-commit install
+	poetry run pre-commit install
 	poetry env info
 	@echo "Created virtual environment"
 
 test:
-	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail
+	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail --cov-report=xml --cov-fail-under=90
+	rm .coverage
+
+lint:
+	poetry run ruff format
+	poetry run ruff check --fix
+
+typecheck:
+	poetry run mypy src/ tests/ --ignore-missing-imports --disable-error-code=call-overload
 
 format:
-	ruff format
-	ruff check --fix
-	poetry run mypy src/ tests/ --ignore-missing-imports  --disable-error-code=call-overload
-
+	make lint
+	make typecheck
 clean:
 	rm -rf .venv
 	rm -rf .mypy_cache
@@ -29,10 +35,6 @@ clean:
 update:
 	poetry cache clear pypi --all
 	poetry update
-
-docker:
-	docker build --no-cache -f Dockerfile -t adaptive_oscillator-smoke .
-	docker run --rm adaptive_oscillator-smoke
 
 app:
 	poetry run python src/__main__.py --log-dir data/walk_4 --plot

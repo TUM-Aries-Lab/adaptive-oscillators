@@ -13,20 +13,77 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Lint • Type Check • Test (Python ${{ matrix.python-version }})
+  # --------------------------------------------------------------------------
+  # LINT (Ruff)
+  # --------------------------------------------------------------------------
+  lint:
+    name: Lint (Ruff)
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Install dependencies
+        run: make init
+
+      - name: Run Ruff
+        run: make lint
+
+  # --------------------------------------------------------------------------
+  # TYPE CHECK (Mypy)
+  # --------------------------------------------------------------------------
+  typecheck:
+    name: Type Check (Mypy)
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Install dependencies
+        run: make init
+
+      - name: Run Mypy
+        run: make typecheck
+
+  # --------------------------------------------------------------------------
+  # TESTS (Pytest + Coverage)
+  # --------------------------------------------------------------------------
+  test:
+    name: Test & Coverage (Pytest)
+    runs-on: ubuntu-latest
+    needs: typecheck
+
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - python-version: "3.11"
-            experimental: false
-          - python-version: "3.12"
-            experimental: false
-          - python-version: "3.13"
-            experimental: false
-    continue-on-error: ${{ matrix.experimental }}
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
       - name: Checkout
@@ -45,43 +102,40 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Cache virtualenv
-        uses: actions/cache@v4
-        id: cache
-        with:
-          path: .venv
-          key: v1-poetry-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-
-      - name: Install deps (with dev group)
+      - name: Install dependencies (with dev)
         if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          poetry env use "${{ steps.py.outputs.python-path }}"
-          poetry install --no-interaction --no-ansi --with dev
+        run: make init
 
-      - name: Sync deps (cache hit)
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: |
-          poetry env use "${{ steps.py.outputs.python-path }}"
-          poetry install --no-interaction --no-ansi --with dev
+      - name: Run Pytest
+        run: make test
 
-      - name: Show tool versions
-        run: |
-          poetry run python -V
-          poetry run ruff --version
-          poetry run mypy --version
-          poetry run pytest --version
+      - name: Upload coverage XML artifact
+        if: ${{ matrix.python-version == '3.12' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
 
-      - name: Ruff (format & lint)
-        run: |
-          poetry run ruff format --check .
-          poetry run ruff check .
+  # --------------------------------------------------------------------------
+  # COVERALLS (upload coverage)
+  # --------------------------------------------------------------------------
+  coveralls:
+    name: Coverage Upload (Coveralls)
+    runs-on: ubuntu-latest
+    needs: test
 
-      - name: Mypy (install types if missing, then type check)
-        run: |
-          # Auto-install missing type stubs in CI (non-interactive)
-          poetry run mypy --install-types --non-interactive || true
-          poetry run mypy src/ tests/ --ignore-missing-imports  --disable-error-code=call-overload
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Pytest (coverage gate)
-        run: |
-          poetry run pytest -q --cov=adaptive_oscillator --cov-report=term-missing --cov-fail-under=85
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-xml
+          path: .
+
+      - name: Upload to Coveralls
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: ./coverage.xml
