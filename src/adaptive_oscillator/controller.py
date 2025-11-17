@@ -52,7 +52,7 @@ class AOController:
         theta_hat = self.estimator.ao.theta_hat
         omega = self.estimator.ao.omega
         phi_gp = self.estimator.phi_gp
-        logger.info(
+        logger.debug(
             f"theta_hat: {theta_hat:.2f}, omega: {omega:.2f}, phi_gp: {phi_gp:.2f}"
         )
 
@@ -64,10 +64,10 @@ class AOController:
                 theta_hat=self.estimator.ao.theta_hat,
                 omega=self.estimator.ao.omega,
                 phi_gp=self.estimator.phi_gp,
-                aux_1=0.0,
+                aux_1=self.estimator.ao.alpha_0,
                 aux_2=0.0,
             )
             self.plotter.update_data(data=data)
-            time.sleep(dt)
+            time.sleep(0.001)
 
         return theta_hat, omega, phi_gp

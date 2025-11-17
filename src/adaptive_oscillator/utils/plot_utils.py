@@ -209,6 +209,15 @@ class RealtimeAOPlotter:  # pragma: no cover
         )
 
         aux_fig1 = go.Figure()
+        aux_fig1.add_trace(
+            go.Scatter(
+                x=time_data,
+                y=aux_1,
+                mode="lines",
+                name="aux_1",
+                line=dict(color="purple"),
+            )
+        )
         aux_fig1.update_layout(
             title="Aux Plot 1",
             xaxis_title="Time (s)",
@@ -217,6 +226,15 @@ class RealtimeAOPlotter:  # pragma: no cover
         )
 
         aux_fig2 = go.Figure()
+        aux_fig2.add_trace(
+            go.Scatter(
+                x=time_data,
+                y=aux_2,
+                mode="lines",
+                name="aux_2",
+                line=dict(color="purple"),
+            )
+        )
         aux_fig2.update_layout(
             title="Aux Plot 2",
             xaxis_title="Time (s)",

@@ -29,9 +29,9 @@ NU_OMEGA = 0.5
 class AOParameters:
     """Adaptive Oscillator parameters."""
 
-    eta: float = 0.05
-    nu_phi: float = 0.5
-    nu_omega: float = 0.5
+    eta: float = 1
+    nu_phi: float = 10
+    nu_omega: float = 10
     n_harmonics: int = 3
 
 
