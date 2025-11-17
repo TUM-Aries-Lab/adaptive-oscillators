@@ -33,3 +33,6 @@ update:
 docker:
 	docker build --no-cache -f Dockerfile -t adaptive_oscillator-smoke .
 	docker run --rm adaptive_oscillator-smoke
+
+app:
+	poetry run python src/__main__.py --log-dir data/walk_4 --plot

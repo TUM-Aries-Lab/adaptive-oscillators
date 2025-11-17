@@ -1,27 +1,12 @@
 """Adaptive Oscillator gait tracking."""
 
-from dataclasses import dataclass
-
 import numpy as np
 from loguru import logger
 from numpy.typing import NDArray
 from scipy.integrate import solve_ivp
 from scipy.interpolate import CubicSpline
 
-from adaptive_oscillator.definitions import ETA, N_HARMONICS, NU_OMEGA, NU_PHI
-
-
-# -----------------------------------------------------------------------------
-# Parameters
-# -----------------------------------------------------------------------------
-@dataclass
-class AOParameters:
-    """Adaptive Oscillator parameters."""
-
-    eta: float = ETA
-    nu_phi: float = NU_PHI
-    nu_omega: float = NU_OMEGA
-    n_harmonics: int = N_HARMONICS
+from adaptive_oscillator.definitions import AOParameters, PIDGains
 
 
 # -----------------------------------------------------------------------------
@@ -30,9 +15,13 @@ class AOParameters:
 class AdaptiveOscillator:
     """Adaptive Oscillator tracking rhythmic signals like inter-limb hip angle."""
 
-    def __init__(self, params: AOParameters, omega_init: float = 1.0):
-        self.params = params
-        self.n = params.n_harmonics
+    def __init__(self, config: AOParameters | None = None, omega_init: float = 1.0):
+        if config is None:
+            self.config = AOParameters()
+        else:
+            self.config = config
+
+        self.n = self.config.n_harmonics
         self.omega = omega_init
         self.alpha_0 = 0.0
         self.alpha = np.zeros(self.n)
@@ -52,11 +41,11 @@ class AdaptiveOscillator:
 
         phi_dot = (
             omega * np.arange(1, self.n + 1)
-            + self.params.nu_phi * F * np.cos(phi) / alpha_sum
+            + self.config.nu_phi * F * np.cos(phi) / alpha_sum
         )
-        omega_dot = self.params.nu_omega * F * np.cos(phi[0]) / alpha_sum
-        dalpha = self.params.eta * F * np.sin(phi)
-        dalpha_0 = self.params.eta * F
+        omega_dot = self.config.nu_omega * F * np.cos(phi[0]) / alpha_sum
+        dalpha = self.config.eta * F * np.sin(phi)
+        dalpha_0 = self.config.eta * F
 
         return np.concatenate([[omega_dot, dalpha_0], dalpha, phi_dot])
 
@@ -88,8 +77,8 @@ class AdaptiveOscillator:
 class GaitPhaseEstimator:
     """Estimates corrected gait phase using AOs, event detection, and correction."""
 
-    def __init__(self, params: AOParameters):
-        self.ao = AdaptiveOscillator(params)
+    def __init__(self, config: AOParameters | None = None):
+        self.ao = AdaptiveOscillator(config)
         self.last_t_start = -np.inf
         self.phi_error = 0.0
         self.ke = 1.0
@@ -134,10 +123,12 @@ class GaitPhaseEstimator:
 class PIDController:
     """PID controller."""
 
-    def __init__(self, kp: float, ki: float, kd: float):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
+    def __init__(self, gains: PIDGains | None = None):
+        if gains is None:
+            gains = PIDGains()
+        self.kp = gains.kp
+        self.ki = gains.ki
+        self.kd = gains.kd
         self.integral = 0.0
         self.last_error = 0.0
 
@@ -157,12 +148,10 @@ class LowLevelController:
 
     def __init__(
         self,
-        kp: float = 5.0,
-        ki: float = 0.0,
-        kd: float = 0.1,
+        gains: PIDGains | None = None,
         gait_shape: NDArray | None = None,
     ):
-        self.pid = PIDController(kp, ki, kd)
+        self.pid = PIDController(gains)
         x = np.linspace(0, 2 * np.pi, 100)
         y = gait_shape if gait_shape is not None else np.sin(x)
         self.spline = CubicSpline(x, y)
@@ -172,14 +161,3 @@ class LowLevelController:
         theta_r = self.spline(phi - np.pi)
         error = theta_r - theta_m
         return self.pid.compute(error, dt)  # type: ignore[arg-type]
-
-
-def sample_walking_data(
-    period: float, t_start: float = 0.0, t_end: float = 100.0, dt: float = 0.01
-) -> tuple[NDArray, NDArray, NDArray]:
-    """Sample walking trajectory."""
-    two_rad = 2 * np.pi
-    t_vals = np.arange(t_start, t_end, dt)
-    theta_il = np.sin(period * two_rad * t_vals)
-    theta_il_dot = period * two_rad * np.cos(period * two_rad * t_vals)
-    return t_vals, theta_il, theta_il_dot
