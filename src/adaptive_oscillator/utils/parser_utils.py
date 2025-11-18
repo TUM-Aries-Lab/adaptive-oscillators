@@ -24,6 +24,7 @@ from adaptive_oscillator.definitions import (
     IMU_SEGMENT_FIELDS,
     QUATERNION_SEGMENT_FIELDS,
     AnglesHeader,
+    Joints,
     LogFileKeys,
     QuaternionHeader,
     Segments,
@@ -73,6 +74,10 @@ class LogFiles:
         quat_data.parse()
         quat_data.plot()
 
+        angle_data = AngleParser(self.angle.right)
+        angle_data.parse()
+        angle_data.plot(y_label="Euler Angle (deg)")
+
         accel_data = IMUParser(self.accel.left)
         accel_data.parse()
         accel_data.plot(y_label="Acceleration (m/s2)")
@@ -84,6 +89,10 @@ class LogFiles:
         quat_data = QuaternionParser(self.quat.left)
         quat_data.parse()
         quat_data.plot()
+
+        angle_data = AngleParser(self.angle.left)
+        angle_data.parse()
+        angle_data.plot(y_label="Euler Angle (deg)")
 
 
 class IMUParser:
@@ -163,6 +172,35 @@ class AngleParser:
             y_deg = raw_data[fields[1]].to_numpy()
             z_deg = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
+
+    def plot(self, y_label: str) -> None:
+        """Plot the x, y, z data.
+
+        :param y_label: label for the y-axis
+        :return: None
+        """
+        _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=3, ncols=1)
+
+        for ii, (name, segment) in enumerate(
+            zip(
+                [
+                    Joints.HIP,
+                    Joints.KNEE,
+                    Joints.ANKLE,
+                ],
+                [self.hip, self.knee, self.ankle],
+            )
+        ):
+            time = self.time - self.time[0]
+            for axis in ["x", "y", "z"]:
+                angle = getattr(segment, axis)
+                ax[ii].plot(time, angle, label=f"{name}-{axis}", alpha=ALPHA)
+            ax[ii].set_title(f"{name} - {self.filepath.stem}")
+            ax[ii].set_xlabel("Time (s)")
+            ax[ii].set_ylabel(y_label)
+            ax[ii].legend(loc="upper right")
+            ax[ii].grid(True)
+            plt.tight_layout()
 
 
 class QuaternionParser:

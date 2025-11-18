@@ -17,7 +17,7 @@ def test_ao_controller():
 
     # Act
     controller = AOController(show_plots=False)
-    for _ii, ang_deg in enumerate(log_data.data.left.hip.angles.x_deg):
+    for _ii, ang_deg in enumerate(log_data.data.left.hip.angles.x):
         th = np.deg2rad(ang_deg)
         dth = np.deg2rad(ang_deg)
         t = log_data.data.left.hip.time[_ii] - log_data.data.left.hip.time[0]
