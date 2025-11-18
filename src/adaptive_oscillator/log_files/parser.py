@@ -2,6 +2,7 @@
 
 import argparse
 from pathlib import Path
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -31,6 +32,8 @@ from adaptive_oscillator.definitions import (
     Segments,
 )
 from adaptive_oscillator.utils import time_str_to_seconds
+
+AxisXYZ = Literal["x", "y", "z"]
 
 
 class LogFiles:
@@ -62,7 +65,7 @@ class LogFiles:
 
     def plot(self):
         """Plot log files."""
-        logger.info("Plotting data.")
+        logger.info("Plotting log file data.")
         accel_data = IMUParser(self.accel.right)
         accel_data.parse()
         accel_data.plot(y_label="Acceleration (m/s2)")
@@ -174,6 +177,8 @@ class AngleParser:
             z_deg = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
 
+        self.add_offset(offset=0)
+
     def plot(self, y_label: str) -> None:
         """Plot the x, y, z data.
 
@@ -202,6 +207,20 @@ class AngleParser:
             ax[ii].legend(loc="upper right")
             ax[ii].grid(True)
             plt.tight_layout()
+
+    def add_offset(self, offset: float) -> None:
+        """Add offset to all segments.
+
+        :param offset: float
+        :return: None
+        """
+        self.hip.x += offset
+        mask = self.hip.x > 180
+        self.hip.x[mask] -= 360
+
+        self.hip.z += -offset
+        mask = self.hip.z < -180
+        self.hip.z[mask] += 360
 
 
 class QuaternionParser:
