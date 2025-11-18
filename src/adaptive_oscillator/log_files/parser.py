@@ -1,5 +1,6 @@
 """Parser utils for log file data."""
 
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -362,3 +363,23 @@ class LogParser:
                 ankle=ankle_right,
             ),
         )
+
+
+def main() -> None:
+    """Run the AO controller with optional plotting."""
+    parser = argparse.ArgumentParser(
+        description="Run AO controller with optional plotting."
+    )
+    parser.add_argument(
+        "-l", "--log-dir", required=True, help="Path to the log directory."
+    )
+    args = parser.parse_args()
+
+    log_dir = args.log_dir
+    log_files = LogFiles(log_dir)
+    log_files.plot()
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()

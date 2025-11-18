@@ -5,10 +5,7 @@ import time
 from loguru import logger
 
 from adaptive_oscillator.definitions import DEFAULT_DELTA_TIME, AOParameters, PIDGains
-from adaptive_oscillator.oscillator import (
-    GaitPhaseEstimator,
-    LowLevelController,
-)
+from adaptive_oscillator.oscillator import GaitPhaseEstimator, LowLevelController
 from adaptive_oscillator.utils.plot_utils import PlotData, RealtimeAOPlotter
 
 

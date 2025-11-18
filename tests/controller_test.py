@@ -5,7 +5,7 @@ import os
 import numpy as np
 
 from adaptive_oscillator.controller import AOController
-from adaptive_oscillator.utils.parser_utils import LogFiles, LogParser
+from adaptive_oscillator.log_files import LogFiles, LogParser
 
 
 def test_ao_controller():

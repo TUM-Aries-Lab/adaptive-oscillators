@@ -1,6 +1,6 @@
 """Integration test for the plot_utils.py module."""
 
-from adaptive_oscillator.utils.parser_utils import LogFiles
+from adaptive_oscillator.log_files import LogFiles
 
 
 def test_plot_log_data():
