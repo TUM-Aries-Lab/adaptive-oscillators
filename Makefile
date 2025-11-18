@@ -8,6 +8,7 @@ init:
 	@echo "Created virtual environment"
 
 test:
+<<<<<<< HEAD
 	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail --cov-report=xml --cov-fail-under=90
 	rm .coverage
 
@@ -17,6 +18,10 @@ lint:
 
 typecheck:
 	poetry run mypy src/ tests/ --ignore-missing-imports --disable-error-code=call-overload
+=======
+	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail --cov-report=xml --cov-fail-under=85
+	rm .coverage
+>>>>>>> 0b3dc24 (update makefile and ci pipeline)
 
 format:
 	make lint
