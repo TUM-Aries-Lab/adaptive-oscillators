@@ -30,7 +30,7 @@ from adaptive_oscillator.definitions import (
     QuaternionHeader,
     Segments,
 )
-from adaptive_oscillator.utils.time_utils import time_str_to_seconds
+from adaptive_oscillator.utils import time_str_to_seconds
 
 
 class LogFiles:
@@ -365,11 +365,9 @@ class LogParser:
         )
 
 
-def main() -> None:
-    """Run the AO controller with optional plotting."""
-    parser = argparse.ArgumentParser(
-        description="Run AO controller with optional plotting."
-    )
+if __name__ == "__main__":  # pragma: no cover
+    """Plot data from log files."""
+    parser = argparse.ArgumentParser(description="Plot the data from a log dir.")
     parser.add_argument(
         "-l", "--log-dir", required=True, help="Path to the log directory."
     )
@@ -379,7 +377,3 @@ def main() -> None:
     log_files = LogFiles(log_dir)
     log_files.plot()
     plt.show()
-
-
-if __name__ == "__main__":
-    main()
