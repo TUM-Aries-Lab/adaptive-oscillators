@@ -37,4 +37,5 @@ if __name__ == "__main__":
 
 ## Results
 The plot below shows the results being plotted in real time.
-<img width="2209" height="1016" alt="Screenshot 2025-10-06 at 2 58 21 PM" src="https://github.com/user-attachments/assets/ac6ff396-0496-4187-81ad-bfc824a72299" />
+
+<img src="docs/plot_screenshot.png" width="1000">
