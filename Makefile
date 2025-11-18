@@ -37,4 +37,4 @@ update:
 	poetry update
 
 app:
-	poetry run python src/__main__.py --log-dir data/walk_4 --plot
+	poetry run python -m adaptive_oscillator --log-dir data/walk_4 --plot

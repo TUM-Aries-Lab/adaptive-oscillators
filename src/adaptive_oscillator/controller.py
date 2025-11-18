@@ -68,6 +68,6 @@ class AOController:
                 aux_2=0.0,
             )
             self.plotter.update_data(data=data)
-            time.sleep(0.001)
+            time.sleep(0.01)
 
         return theta_hat, omega, phi_gp

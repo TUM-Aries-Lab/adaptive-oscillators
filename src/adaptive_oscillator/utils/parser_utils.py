@@ -63,11 +63,11 @@ class LogFiles:
         logger.info("Plotting data.")
         accel_data = IMUParser(self.accel.right)
         accel_data.parse()
-        accel_data.plot()
+        accel_data.plot(y_label="Acceleration (m/s2)")
 
         gyro_data = IMUParser(self.gyro.right)
         gyro_data.parse()
-        gyro_data.plot()
+        gyro_data.plot(y_label="Angular Velocity (deg/s)")
 
         quat_data = QuaternionParser(self.quat.right)
         quat_data.parse()
@@ -75,11 +75,11 @@ class LogFiles:
 
         accel_data = IMUParser(self.accel.left)
         accel_data.parse()
-        accel_data.plot()
+        accel_data.plot(y_label="Acceleration (m/s2)")
 
         gyro_data = IMUParser(self.gyro.left)
         gyro_data.parse()
-        gyro_data.plot()
+        gyro_data.plot(y_label="Angular Velocity (deg/s)")
 
         quat_data = QuaternionParser(self.quat.left)
         quat_data.parse()
@@ -112,7 +112,7 @@ class IMUParser:
             z = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, VectorXYZ(x, y, z))
 
-    def plot(self):  # pragma: no cover
+    def plot(self, y_label: str):  # pragma: no cover
         """Plot the x, y, z data."""
         _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
 
@@ -133,7 +133,7 @@ class IMUParser:
                 ax[ii].plot(time, imu_signal, label=f"{name}-{axis}", alpha=ALPHA)
             ax[ii].set_title(f"{name} - {self.filepath.stem}")
             ax[ii].set_xlabel("Time (s)")
-            ax[ii].set_ylabel("Quaternion")
+            ax[ii].set_ylabel(y_label)
             ax[ii].legend(loc="upper right")
             ax[ii].grid(True)
             plt.tight_layout()
