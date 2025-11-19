@@ -5,11 +5,8 @@ import time
 from loguru import logger
 
 from adaptive_oscillator.definitions import DEFAULT_DELTA_TIME, AOParameters, PIDGains
-from adaptive_oscillator.oscillator import (
-    GaitPhaseEstimator,
-    LowLevelController,
-)
-from adaptive_oscillator.utils.plot_utils import PlotData, RealtimeAOPlotter
+from adaptive_oscillator.oscillator import GaitPhaseEstimator, LowLevelController
+from adaptive_oscillator.utils import PlotData, RealtimeAOPlotter
 
 
 class AOController:
@@ -68,6 +65,6 @@ class AOController:
                 aux_2=0.0,
             )
             self.plotter.update_data(data=data)
-            time.sleep(0.001)
+            time.sleep(0.01)
 
         return theta_hat, omega, phi_gp

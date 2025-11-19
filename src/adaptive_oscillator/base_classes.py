@@ -71,9 +71,9 @@ class Quaternion:
 class AngleXYZ:
     """XYZ Angle Vector."""
 
-    x_deg: NDArray = field(default_factory=lambda: np.array([]))
-    y_deg: NDArray = field(default_factory=lambda: np.array([]))
-    z_deg: NDArray = field(default_factory=lambda: np.array([]))
+    x: NDArray = field(default_factory=lambda: np.array([]))
+    y: NDArray = field(default_factory=lambda: np.array([]))
+    z: NDArray = field(default_factory=lambda: np.array([]))
 
     def __getitem__(self, index: int | slice) -> NDArray:
         """Return stacked XYZ components as a 2D array, or select one component.
@@ -83,12 +83,30 @@ class AngleXYZ:
         :return: Stacked NumPy array of shape (3, N) or (K, N).
         :raises IndexError: If index is out of bounds.
         """
-        stacked = np.stack([self.x_deg, self.y_deg, self.z_deg], axis=1)
+        stacked = np.stack([self.x, self.y, self.z], axis=1)
         return stacked[index].T
 
     def __len__(self) -> int:
         """Return the number of elements in the vector."""
-        return len(self.x_deg)
+        return len(self.x)
+
+    def add_offset(self, offsets: list[float]) -> None:
+        """Add offset to all segments.
+
+        :param offsets: list[float]
+        :return: None
+        """
+        axes = ["x", "y", "z"]
+        assert len(offsets) == len(axes)
+
+        for offset, axis in zip(offsets, axes):
+            values = getattr(self, axis)
+            values += offset
+            mask_upper = values > 180
+            mask_lower = values < -180
+            values[mask_upper] -= 360
+            values[mask_lower] += 360
+            setattr(self, axis, values)
 
 
 class SensorFile:

@@ -1,6 +1,8 @@
 """Parser utils for log file data."""
 
+import argparse
 from pathlib import Path
+from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -24,11 +26,14 @@ from adaptive_oscillator.definitions import (
     IMU_SEGMENT_FIELDS,
     QUATERNION_SEGMENT_FIELDS,
     AnglesHeader,
+    Joints,
     LogFileKeys,
     QuaternionHeader,
     Segments,
 )
-from adaptive_oscillator.utils.time_utils import time_str_to_seconds
+from adaptive_oscillator.utils import time_str_to_seconds
+
+AxisXYZ = Literal["x", "y", "z"]
 
 
 class LogFiles:
@@ -58,32 +63,32 @@ class LogFiles:
             f"\n\t{self.quat.right})"
         )
 
-    def plot(self):
-        """Plot log files."""
-        logger.info("Plotting data.")
-        accel_data = IMUParser(self.accel.right)
-        accel_data.parse()
-        accel_data.plot()
+    def plot(self, euler_only: bool = False) -> None:
+        """Plot log files.
 
-        gyro_data = IMUParser(self.gyro.right)
-        gyro_data.parse()
-        gyro_data.plot()
+        :param euler_only: Plot only euler angles.
+        :return: None
+        """
+        logger.info("Plotting log file data.")
+        euler_offset = [180.0, 0.0, 180.0]
 
-        quat_data = QuaternionParser(self.quat.right)
-        quat_data.parse()
-        quat_data.plot()
+        for side in ["left", "right"]:
+            if not euler_only:
+                accel_data = IMUParser(getattr(self.accel, side))
+                accel_data.parse()
+                accel_data.plot(y_label="Acceleration (m/s2)")
 
-        accel_data = IMUParser(self.accel.left)
-        accel_data.parse()
-        accel_data.plot()
+                gyro_data = IMUParser(getattr(self.gyro, side))
+                gyro_data.parse()
+                gyro_data.plot(y_label="Angular Velocity (deg/s)")
 
-        gyro_data = IMUParser(self.gyro.left)
-        gyro_data.parse()
-        gyro_data.plot()
+                quat_data = QuaternionParser(getattr(self.quat, side))
+                quat_data.parse()
+                quat_data.plot()
 
-        quat_data = QuaternionParser(self.quat.left)
-        quat_data.parse()
-        quat_data.plot()
+            angle_data = AngleParser(getattr(self.angle, side))
+            angle_data.parse(offsets=euler_offset)
+            angle_data.plot(y_label="Euler Angle (deg)")
 
 
 class IMUParser:
@@ -112,7 +117,7 @@ class IMUParser:
             z = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, VectorXYZ(x, y, z))
 
-    def plot(self):  # pragma: no cover
+    def plot(self, y_label: str):  # pragma: no cover
         """Plot the x, y, z data."""
         _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
 
@@ -133,7 +138,7 @@ class IMUParser:
                 ax[ii].plot(time, imu_signal, label=f"{name}-{axis}", alpha=ALPHA)
             ax[ii].set_title(f"{name} - {self.filepath.stem}")
             ax[ii].set_xlabel("Time (s)")
-            ax[ii].set_ylabel("Quaternion")
+            ax[ii].set_ylabel(y_label)
             ax[ii].legend(loc="upper right")
             ax[ii].grid(True)
             plt.tight_layout()
@@ -149,7 +154,7 @@ class AngleParser:
         self.knee = AngleXYZ()
         self.ankle = AngleXYZ()
 
-    def parse(self):
+    def parse(self, offsets: list[float] | None = None):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
         logger.debug(f"Parsing {self.filepath}")
@@ -163,6 +168,38 @@ class AngleParser:
             y_deg = raw_data[fields[1]].to_numpy()
             z_deg = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
+
+        if offsets is not None:
+            self.hip.add_offset(offsets=offsets)
+
+    def plot(self, y_label: str) -> None:
+        """Plot the x, y, z data.
+
+        :param y_label: label for the y-axiså
+        :return: None
+        """
+        _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=3, ncols=1)
+
+        for ii, (name, segment) in enumerate(
+            zip(
+                [
+                    Joints.HIP,
+                    Joints.KNEE,
+                    Joints.ANKLE,
+                ],
+                [self.hip, self.knee, self.ankle],
+            )
+        ):
+            time = self.time - self.time[0]
+            for axis in ["x", "y", "z"]:
+                angle = getattr(segment, axis)
+                ax[ii].plot(time, angle, label=axis, alpha=ALPHA)
+            ax[ii].set_title(f"{name} - {self.filepath.stem}")
+            ax[ii].set_xlabel("Time (s)")
+            ax[ii].set_ylabel(y_label)
+            ax[ii].legend(loc="upper right")
+            ax[ii].grid(True)
+            plt.tight_layout()
 
 
 class QuaternionParser:
@@ -324,3 +361,21 @@ class LogParser:
                 ankle=ankle_right,
             ),
         )
+
+
+if __name__ == "__main__":  # pragma: no cover
+    """Plot data from log files."""
+    parser = argparse.ArgumentParser(description="Plot the data from a log dir.")
+    parser.add_argument(
+        "-l", "--log-dir", required=True, help="Path to the log directory."
+    )
+    parser.add_argument(
+        "-e", "--euler_only", action="store_true", help="Plot only the euler angles."
+    )
+    args = parser.parse_args()
+
+    log_dir = args.log_dir
+    euler_only = args.euler_only
+    log_files = LogFiles(log_dir)
+    log_files.plot(euler_only=euler_only)
+    plt.show()

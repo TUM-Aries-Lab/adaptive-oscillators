@@ -66,6 +66,14 @@ class Segments:
     FOOT = "Foot"
 
 
+class Joints:
+    """Body joints where each IMU is attached."""
+
+    HIP = "Hip"
+    KNEE = "Knee"
+    ANKLE = "Ankle"
+
+
 class IMUHeader:
     """Headers for the IMU sensor data."""
 

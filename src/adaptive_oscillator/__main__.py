@@ -7,7 +7,7 @@ import numpy as np
 from loguru import logger
 
 from adaptive_oscillator.controller import AOController
-from adaptive_oscillator.utils.parser_utils import LogFiles, LogParser
+from adaptive_oscillator.log_files import LogFiles, LogParser
 
 
 def main() -> None:
@@ -30,7 +30,7 @@ def main() -> None:
     log_files = LogFiles(log_dir)
     log_data = LogParser(log_files)
 
-    signal = -log_data.data.left.hip.angles.x_deg
+    signal = -log_data.data.left.hip.angles.x
 
     controller = AOController(show_plots=args.plot, ssh=args.ssh)
     for _ii, ang_deg in enumerate(signal):

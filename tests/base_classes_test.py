@@ -15,9 +15,9 @@ def test_angle_xyz():
     angle_xyz = AngleXYZ(array, array, array)
 
     # Assert
-    assert angle_xyz.x_deg[0] == 1
-    assert angle_xyz.y_deg[1] == 2
-    assert angle_xyz.z_deg[2] == 3
+    assert angle_xyz.x[0] == 1
+    assert angle_xyz.y[1] == 2
+    assert angle_xyz.z[2] == 3
     assert len(angle_xyz) == num_el
     assert np.shape(angle_xyz[:]) == (3, num_el)
 
