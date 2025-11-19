@@ -21,8 +21,12 @@ class AOController:
     ):
         """Initialize controller.
 
+        :param config: AOParameters object or None
+        :param pid_gains: PIDGains object or None
         :param show_plots: Plot IMU logs before running the control loop.
+        :param ssh: Use SSH tunneling.
         """
+        logger.info("Initializing controller.")
         self.estimator = GaitPhaseEstimator(config)
         self.controller = LowLevelController(pid_gains)
         self.theta_m = 0.0
