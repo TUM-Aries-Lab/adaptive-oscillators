@@ -52,7 +52,7 @@ ALPHA = 0.8
 TIME_FORMAT = "%H:%M:%S.%f"
 
 LOG_FILE_EXT = ".txt"
-logger.configure(handlers=[{"sink": sys.stderr, "level": "INFO"}])
+logger.configure(handlers=[{"sink": sys.stderr, "level": LogLevel.info}])
 
 NUMPY_PRINT_PRECISION = 3
 np.set_printoptions(precision=NUMPY_PRINT_PRECISION)

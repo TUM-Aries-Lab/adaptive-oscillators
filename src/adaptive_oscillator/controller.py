@@ -35,7 +35,7 @@ class AOController:
 
     def step(self, t: float, x: float, x_dot: float) -> tuple[float, float, float]:
         """Step the AO ahead with one frame of data from the IMU."""
-        logger.debug(f"Step {t}: x={x}, x_dot={x_dot}")
+        logger.debug(f"Step: t={t:.2f}, x={x:.2f}, x_dot={x_dot:.2f}")
         if self.last_time is None:
             dt = DEFAULT_DELTA_TIME
         else:

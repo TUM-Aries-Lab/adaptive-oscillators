@@ -13,7 +13,12 @@ from adaptive_oscillator.utils import setup_logger
 
 
 def main(log_dir: str, show_plots: bool, ssh: bool) -> None:
-    """Run the AO controller with optional plotting."""
+    """Run the AO controller with optional plotting.
+
+    :param log_dir: Path to the log directory.
+    :param show_plots: Show plots.
+    :param ssh: Use SSH.
+    """
     log_files = LogFiles(log_dir)
     log_data = LogParser(log_files)
 
