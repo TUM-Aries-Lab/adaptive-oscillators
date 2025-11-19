@@ -90,6 +90,24 @@ class AngleXYZ:
         """Return the number of elements in the vector."""
         return len(self.x)
 
+    def add_offset(self, offsets: list[float]) -> None:
+        """Add offset to all segments.
+
+        :param offsets: list[float]
+        :return: None
+        """
+        axes = ["x", "y", "z"]
+        assert len(offsets) == len(axes)
+
+        for offset, axis in zip(offsets, axes):
+            values = getattr(self, axis)
+            values += offset
+            mask_upper = values > 180
+            mask_lower = values < -180
+            values[mask_upper] -= 360
+            values[mask_lower] += 360
+            setattr(self, axis, values)
+
 
 class SensorFile:
     """Represent a sensor category with left and right side access."""

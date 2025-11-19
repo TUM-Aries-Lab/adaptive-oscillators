@@ -63,40 +63,32 @@ class LogFiles:
             f"\n\t{self.quat.right})"
         )
 
-    def plot(self):
-        """Plot log files."""
+    def plot(self, euler_only: bool = False) -> None:
+        """Plot log files.
+
+        :param euler_only: Plot only euler angles.
+        :return: None
+        """
         logger.info("Plotting log file data.")
-        accel_data = IMUParser(self.accel.right)
-        accel_data.parse()
-        accel_data.plot(y_label="Acceleration (m/s2)")
+        euler_offset = [180.0, 0.0, 180.0]
 
-        gyro_data = IMUParser(self.gyro.right)
-        gyro_data.parse()
-        gyro_data.plot(y_label="Angular Velocity (deg/s)")
+        for side in ["left", "right"]:
+            if not euler_only:
+                accel_data = IMUParser(getattr(self.accel, side))
+                accel_data.parse()
+                accel_data.plot(y_label="Acceleration (m/s2)")
 
-        quat_data = QuaternionParser(self.quat.right)
-        quat_data.parse()
-        quat_data.plot()
+                gyro_data = IMUParser(getattr(self.gyro, side))
+                gyro_data.parse()
+                gyro_data.plot(y_label="Angular Velocity (deg/s)")
 
-        angle_data = AngleParser(self.angle.right)
-        angle_data.parse()
-        angle_data.plot(y_label="Euler Angle (deg)")
+                quat_data = QuaternionParser(getattr(self.quat, side))
+                quat_data.parse()
+                quat_data.plot()
 
-        accel_data = IMUParser(self.accel.left)
-        accel_data.parse()
-        accel_data.plot(y_label="Acceleration (m/s2)")
-
-        gyro_data = IMUParser(self.gyro.left)
-        gyro_data.parse()
-        gyro_data.plot(y_label="Angular Velocity (deg/s)")
-
-        quat_data = QuaternionParser(self.quat.left)
-        quat_data.parse()
-        quat_data.plot()
-
-        angle_data = AngleParser(self.angle.left)
-        angle_data.parse()
-        angle_data.plot(y_label="Euler Angle (deg)")
+            angle_data = AngleParser(getattr(self.angle, side))
+            angle_data.parse(offsets=euler_offset)
+            angle_data.plot(y_label="Euler Angle (deg)")
 
 
 class IMUParser:
@@ -162,7 +154,7 @@ class AngleParser:
         self.knee = AngleXYZ()
         self.ankle = AngleXYZ()
 
-    def parse(self):
+    def parse(self, offsets: list[float] | None = None):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
         logger.debug(f"Parsing {self.filepath}")
@@ -177,12 +169,13 @@ class AngleParser:
             z_deg = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
 
-        self.add_offset(offset=0)
+        if offsets is not None:
+            self.hip.add_offset(offsets=offsets)
 
     def plot(self, y_label: str) -> None:
         """Plot the x, y, z data.
 
-        :param y_label: label for the y-axis
+        :param y_label: label for the y-axiså
         :return: None
         """
         _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=3, ncols=1)
@@ -200,27 +193,13 @@ class AngleParser:
             time = self.time - self.time[0]
             for axis in ["x", "y", "z"]:
                 angle = getattr(segment, axis)
-                ax[ii].plot(time, angle, label=f"{name}-{axis}", alpha=ALPHA)
+                ax[ii].plot(time, angle, label=axis, alpha=ALPHA)
             ax[ii].set_title(f"{name} - {self.filepath.stem}")
             ax[ii].set_xlabel("Time (s)")
             ax[ii].set_ylabel(y_label)
             ax[ii].legend(loc="upper right")
             ax[ii].grid(True)
             plt.tight_layout()
-
-    def add_offset(self, offset: float) -> None:
-        """Add offset to all segments.
-
-        :param offset: float
-        :return: None
-        """
-        self.hip.x += offset
-        mask = self.hip.x > 180
-        self.hip.x[mask] -= 360
-
-        self.hip.z += -offset
-        mask = self.hip.z < -180
-        self.hip.z[mask] += 360
 
 
 class QuaternionParser:
@@ -390,9 +369,13 @@ if __name__ == "__main__":  # pragma: no cover
     parser.add_argument(
         "-l", "--log-dir", required=True, help="Path to the log directory."
     )
+    parser.add_argument(
+        "-e", "--euler_only", action="store_true", help="Plot only the euler angles."
+    )
     args = parser.parse_args()
 
     log_dir = args.log_dir
+    euler_only = args.euler_only
     log_files = LogFiles(log_dir)
-    log_files.plot()
+    log_files.plot(euler_only=euler_only)
     plt.show()
