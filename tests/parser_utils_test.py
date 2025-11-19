@@ -14,7 +14,7 @@ from adaptive_oscillator.log_files import (
     QuaternionParser,
 )
 
-TEST_DIR = Path(__file__).parent.parent / "data" / "walk_4"
+TEST_DIR = Path(__file__).parent.parent / "data" / "old_data" / "walk_4"
 DECIMAL_ACCURACY = 2
 
 
@@ -78,24 +78,12 @@ def test_imu_parser(filename: str, expected_data: np.ndarray) -> None:
     data.parse()
 
     # Assert
-    np.testing.assert_almost_equal(
-        data.time[0], expected_data[0], decimal=DECIMAL_ACCURACY
-    )
-    np.testing.assert_almost_equal(
-        data.pelvis[0], expected_data[1:4], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.upper_leg[0], expected_data[4:7], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.lower_leg[0], expected_data[7:10], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.foot[0], expected_data[10:13], decimal=DECIMAL_ACCURACY
-    )
+    acc = DECIMAL_ACCURACY
+    np.testing.assert_almost_equal(data.time[0], expected_data[0], decimal=acc)
+    np.testing.assert_almost_equal(data.pelvis[0], expected_data[1:4], decimal=acc)
+    np.testing.assert_almost_equal(data.upper_leg[0], expected_data[4:7], decimal=acc)
+    np.testing.assert_almost_equal(data.lower_leg[0], expected_data[7:10], decimal=acc)
+    np.testing.assert_almost_equal(data.foot[0], expected_data[10:13], decimal=acc)
 
 
 @pytest.mark.parametrize(
@@ -137,24 +125,12 @@ def test_quaternion_parser(filename: str, expected_data: np.ndarray) -> None:
     data.parse()
 
     # Assert
-    np.testing.assert_almost_equal(
-        data.time[0], expected_data[0], decimal=DECIMAL_ACCURACY
-    )
-    np.testing.assert_almost_equal(
-        data.pelvis[0], expected_data[1:5], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.upper_leg[0], expected_data[5:9], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.lower_leg[0], expected_data[9:13], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.foot[0], expected_data[13:17], decimal=DECIMAL_ACCURACY
-    )
+    acc = DECIMAL_ACCURACY
+    np.testing.assert_almost_equal(data.time[0], expected_data[0], decimal=acc)
+    np.testing.assert_almost_equal(data.pelvis[0], expected_data[1:5], decimal=acc)
+    np.testing.assert_almost_equal(data.upper_leg[0], expected_data[5:9], decimal=acc)
+    np.testing.assert_almost_equal(data.lower_leg[0], expected_data[9:13], decimal=acc)
+    np.testing.assert_almost_equal(data.foot[0], expected_data[13:17], decimal=acc)
 
 
 @pytest.mark.parametrize(
@@ -189,20 +165,11 @@ def test_angle_parser(filename: str, expected_data: np.ndarray) -> None:
     data.parse()
 
     # Assert
-    np.testing.assert_almost_equal(
-        data.time[0], expected_data[0], decimal=DECIMAL_ACCURACY
-    )
-    np.testing.assert_almost_equal(
-        data.hip[0], expected_data[1:4], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.knee[0], expected_data[4:7], decimal=DECIMAL_ACCURACY
-    )
-
-    np.testing.assert_almost_equal(
-        data.ankle[0], expected_data[7:10], decimal=DECIMAL_ACCURACY
-    )
+    acc = DECIMAL_ACCURACY
+    np.testing.assert_almost_equal(data.time[0], expected_data[0], decimal=acc)
+    np.testing.assert_almost_equal(data.hip[0], expected_data[1:4], decimal=acc)
+    np.testing.assert_almost_equal(data.knee[0], expected_data[4:7], decimal=acc)
+    np.testing.assert_almost_equal(data.ankle[0], expected_data[7:10], decimal=acc)
 
 
 def test_log_parser() -> None:

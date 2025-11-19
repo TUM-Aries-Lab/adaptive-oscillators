@@ -154,3 +154,15 @@ class LeftRight:
 
     left: Body
     right: Body
+
+
+@dataclass
+class AdaptiveOscillatorStepResult:
+    """Represent a result of the adaptive oscillator step."""
+
+    timestamp: float
+    theta: float
+    theta_hat: float
+    omega: float
+    phi_gp: float
+    offset: float
