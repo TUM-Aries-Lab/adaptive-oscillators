@@ -26,6 +26,7 @@ from adaptive_oscillator.definitions import (
     IMU_SEGMENT_FIELDS,
     QUATERNION_SEGMENT_FIELDS,
     AnglesHeader,
+    IMUHeader,
     Joints,
     LogFileKeys,
     QuaternionHeader,
@@ -41,6 +42,10 @@ class LogFiles:
 
     def __init__(self, base_path: str | Path) -> None:
         self._path = Path(base_path)
+        if not self._path.is_dir():
+            msg = f"Path '{self._path}' does not exist."
+            logger.error(msg)
+            raise FileNotFoundError(msg)
         self.accel = SensorFile(LogFileKeys.ACCEL, self._path)
         self.angle = SensorFile(LogFileKeys.ANGLE, self._path)
         self.gravity = SensorFile(LogFileKeys.GRAVITY, self._path)
@@ -107,8 +112,7 @@ class IMUParser:
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
         logger.debug(f"Parsing {self.filepath}")
         logger.debug(f"Columns: {raw_data.shape}")
-
-        time_str = raw_data[AnglesHeader.TIME]
+        time_str = raw_data[IMUHeader.TIME]
         self.time = np.array([time_str_to_seconds(t) for t in time_str])
 
         for segment_name, fields in IMU_SEGMENT_FIELDS.items():
