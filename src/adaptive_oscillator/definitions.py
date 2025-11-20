@@ -9,6 +9,10 @@ from loguru import logger
 
 np.set_printoptions(precision=3, floatmode="fixed", suppress=True)
 
+# plot definitions
+FIG_SIZE = (15, 8)  # width, height in inches
+ALPHA = 0.8
+LEGEND_LOC = "upper right"
 
 # --- Directories ---
 ROOT_DIR: Path = Path("src").parent
@@ -20,8 +24,7 @@ LOG_DIR: Path = DATA_DIR / "logs"
 ENCODING: str = "utf-8"
 
 DATE_FORMAT = "%Y-%m-%d_%H-%M-%S"
-
-DUMMY_VARIABLE = "dummy_variable"
+TIME_FORMAT = "%H:%M:%S.%f"
 
 
 @dataclass
@@ -43,13 +46,6 @@ class LogLevel:
 
 DEFAULT_LOG_LEVEL = LogLevel.info
 DEFAULT_LOG_FILENAME = "log_file"
-
-
-# plot definitions
-FIG_SIZE = (15, 8)  # width, height in inches
-ALPHA = 0.8
-
-TIME_FORMAT = "%H:%M:%S.%f"
 
 LOG_FILE_EXT = ".txt"
 logger.configure(handlers=[{"sink": sys.stderr, "level": LogLevel.info}])

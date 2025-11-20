@@ -9,34 +9,25 @@ import plotly.graph_objects as go
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 
+from adaptive_oscillator.base_classes import AdaptiveOscillatorStepResult
+
+# suppress unnecessary terminal statements from plot updates
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
+
+HEIGHT = "24vh"
 
 
 @dataclass
 class PlotMetrics:
     """AO plot metrics."""
 
-    time_data = "time_data"
+    timestamp = "timestamp"
     theta_hat = "theta_hat"
-    theta_il = "theta_il"
+    theta = "theta"
     omega = "omega"
     phi_gp = "phi_gp"
-    aux_1 = "aux_1"
-    aux_2 = "aux_2"
-
-
-@dataclass
-class PlotData:
-    """AO plot metrics."""
-
-    t: float
-    theta_il: float
-    theta_hat: float
-    omega: float
-    phi_gp: float
-    aux_1: float
-    aux_2: float
+    offset = "offset"
 
 
 class RealtimeAOPlotter:  # pragma: no cover
@@ -55,13 +46,12 @@ class RealtimeAOPlotter:  # pragma: no cover
         # Thread-safe buffers
         self._lock = threading.Lock()
         self.data: dict = {
-            PlotMetrics.time_data: deque(maxlen=self.data_points),
-            PlotMetrics.theta_il: deque(maxlen=self.data_points),
+            PlotMetrics.timestamp: deque(maxlen=self.data_points),
+            PlotMetrics.theta: deque(maxlen=self.data_points),
             PlotMetrics.theta_hat: deque(maxlen=self.data_points),
             PlotMetrics.omega: deque(maxlen=self.data_points),
             PlotMetrics.phi_gp: deque(maxlen=self.data_points),
-            PlotMetrics.aux_1: deque(maxlen=self.data_points),
-            PlotMetrics.aux_2: deque(maxlen=self.data_points),
+            PlotMetrics.offset: deque(maxlen=self.data_points),
         }
 
         self.host = "0.0.0.0" if ssh else "127.0.0.1"  # ruff: ignore B104,S104
@@ -76,20 +66,18 @@ class RealtimeAOPlotter:  # pragma: no cover
                 ),
                 # 1
                 dcc.Graph(
-                    id="hip-angle-graph", style={"height": "19vh", "margin": "0"}
+                    id="hip-angle-graph", style={"height": HEIGHT, "margin": "0"}
                 ),
                 # 2
                 dcc.Graph(
-                    id="omega-estimate-graph", style={"height": "19vh", "margin": "0"}
+                    id="omega-estimate-graph", style={"height": HEIGHT, "margin": "0"}
                 ),
                 # 3
                 dcc.Graph(
-                    id="gait-phase-graph", style={"height": "19vh", "margin": "0"}
+                    id="gait-phase-graph", style={"height": HEIGHT, "margin": "0"}
                 ),
-                # 4  <-- NEW
-                dcc.Graph(id="aux-graph-1", style={"height": "19vh", "margin": "0"}),
-                # 5  <-- NEW
-                dcc.Graph(id="aux-graph-2", style={"height": "19vh", "margin": "0"}),
+                # 4
+                dcc.Graph(id="offset-graph", style={"height": HEIGHT, "margin": "0"}),
                 dcc.Interval(id="interval-component", interval=200, n_intervals=0),
             ],
             style={"padding": "10px", "gap": "0px"},
@@ -101,8 +89,7 @@ class RealtimeAOPlotter:  # pragma: no cover
                 Output("hip-angle-graph", "figure"),
                 Output("omega-estimate-graph", "figure"),
                 Output("gait-phase-graph", "figure"),
-                Output("aux-graph-1", "figure"),
-                Output("aux-graph-2", "figure"),
+                Output("offset-graph", "figure"),
             ],
             Input("interval-component", "n_intervals"),
         )
@@ -118,46 +105,43 @@ class RealtimeAOPlotter:  # pragma: no cover
         list[float],
         list[float],
         list[float],
-        list[float],
     ]:
         """Copy current data under a lock to avoid torn reads."""
         with self._lock:
-            time_data = list(self.data[PlotMetrics.time_data])
-            theta_il = list(self.data[PlotMetrics.theta_il])
+            time_data = list(self.data[PlotMetrics.timestamp])
+            theta_il = list(self.data[PlotMetrics.theta])
             theta_hat = list(self.data[PlotMetrics.theta_hat])
             omega = list(self.data[PlotMetrics.omega])
             phi_gp = list(self.data[PlotMetrics.phi_gp])
-            aux_1 = list(self.data[PlotMetrics.aux_1])
-            aux_2 = list(self.data[PlotMetrics.aux_2])
-        return time_data, theta_il, theta_hat, omega, phi_gp, aux_1, aux_2
+            offset = list(self.data[PlotMetrics.offset])
+        return time_data, theta_il, theta_hat, omega, phi_gp, offset
 
     def _generate_figures(
         self,
-    ) -> tuple[go.Figure, go.Figure, go.Figure, go.Figure, go.Figure]:
-        time_data, theta_il, theta_hat, omega, phi_gp, aux_1, aux_2 = self._snapshot()
+    ) -> tuple[go.Figure, go.Figure, go.Figure, go.Figure]:
+        time_data, theta, theta_hat, omega, phi_gp, offset = self._snapshot()
         if not time_data:
             empty = go.Figure()
-            return empty, empty, empty, empty, empty
+            return empty, empty, empty, empty
 
         # Keep last window
         latest = time_data[-1]
         window_start = latest - self.window_sec
         start_idx = next((i for i, t in enumerate(time_data) if t >= window_start), 0)
-        time_data, theta_il, theta_hat, omega, phi_gp, aux_1, aux_2 = (
+        time_data, theta, theta_hat, omega, phi_gp, offset = (
             time_data[start_idx:],
-            theta_il[start_idx:],
+            theta[start_idx:],
             theta_hat[start_idx:],
             omega[start_idx:],
             phi_gp[start_idx:],
-            aux_1[start_idx:],
-            aux_2[start_idx:],
+            offset[start_idx:],
         )
 
         margin = dict(l=30, r=10, t=30, b=30)
 
         hip_fig = go.Figure()
         hip_fig.add_trace(
-            go.Scatter(x=time_data, y=theta_il, mode="lines", name="θ_IL (input)")
+            go.Scatter(x=time_data, y=theta, mode="lines", name="θ_IL (input)")
         )
         hip_fig.add_trace(
             go.Scatter(x=time_data, y=theta_hat, mode="lines", name="θ̂ (estimated)")
@@ -208,52 +192,34 @@ class RealtimeAOPlotter:  # pragma: no cover
             ),
         )
 
-        aux_fig1 = go.Figure()
-        aux_fig1.add_trace(
+        offset_fig = go.Figure()
+        offset_fig.add_trace(
             go.Scatter(
                 x=time_data,
-                y=aux_1,
+                y=offset,
                 mode="lines",
-                name="aux_1",
+                name="Offset",
                 line=dict(color="purple"),
             )
         )
-        aux_fig1.update_layout(
-            title="Aux Plot 1",
+        offset_fig.update_layout(
+            title="Offset",
             xaxis_title="Time (s)",
-            yaxis_title="Value",
+            yaxis_title="Offset (alpha zero)",
             margin=margin,
         )
 
-        aux_fig2 = go.Figure()
-        aux_fig2.add_trace(
-            go.Scatter(
-                x=time_data,
-                y=aux_2,
-                mode="lines",
-                name="aux_2",
-                line=dict(color="purple"),
-            )
-        )
-        aux_fig2.update_layout(
-            title="Aux Plot 2",
-            xaxis_title="Time (s)",
-            yaxis_title="Value",
-            margin=margin,
-        )
+        return hip_fig, omega_fig, phase_fig, offset_fig
 
-        return hip_fig, omega_fig, phase_fig, aux_fig1, aux_fig2
-
-    def update_data(self, data: PlotData) -> None:
+    def update_data(self, data: AdaptiveOscillatorStepResult) -> None:
         """Update the data."""
         with self._lock:
-            self.data[PlotMetrics.time_data].append(data.t)
-            self.data[PlotMetrics.theta_il].append(data.theta_il)
+            self.data[PlotMetrics.timestamp].append(data.timestamp)
+            self.data[PlotMetrics.theta].append(data.theta)
             self.data[PlotMetrics.theta_hat].append(data.theta_hat)
             self.data[PlotMetrics.omega].append(data.omega)
             self.data[PlotMetrics.phi_gp].append(data.phi_gp)
-            self.data[PlotMetrics.aux_1].append(data.aux_1)
-            self.data[PlotMetrics.aux_2].append(data.aux_2)
+            self.data[PlotMetrics.offset].append(data.offset)
 
     def run(self, threaded: bool = True) -> None:
         """Run the AO control loop."""
