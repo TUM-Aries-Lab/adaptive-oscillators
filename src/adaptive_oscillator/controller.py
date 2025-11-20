@@ -111,7 +111,6 @@ class AOController:
         axs[0].set_ylabel("Hip Angle (rad)")
         axs[0].set_title("Input vs Estimated Hip Angle")
         axs[0].legend(loc=LEGEND_LOC)
-        axs[0].grid(True)
 
         axs[1].plot(t, omegas, color="green")
         axs[1].set_ylabel("Frequency (rad/s)")
@@ -129,8 +128,8 @@ class AOController:
 
         for i in range(4):
             axs[i].grid(True)
-
         plt.tight_layout()
+
         try:
             plt.show()
         except KeyboardInterrupt:
