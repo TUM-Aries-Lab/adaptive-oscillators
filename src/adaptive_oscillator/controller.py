@@ -49,12 +49,7 @@ class AOController:
     def step(self, t: float, x: float, x_dot: float) -> AdaptiveOscillatorStepResult:
         """Step the AO ahead with one frame of data from the IMU."""
         logger.trace(f"Step: t={t:.2f}, x={x:.2f}, x_dot={x_dot:.2f}")
-        if self.last_time is None:
-            dt = DEFAULT_DELTA_TIME
-        else:
-            dt = t - self.last_time
-        self.last_time = t
-
+        dt = self._calculate_dt(t=t)
         phi = self.estimator.update(t=t, theta_il=x, theta_il_dot=x_dot)
         omega_cmd = self.controller.compute(phi=phi, theta_m=self.theta_m, dt=dt)
         self.theta_m += omega_cmd * dt
@@ -77,6 +72,19 @@ class AOController:
             time.sleep(dt)
 
         return step_result
+
+    def _calculate_dt(self, t: float) -> float:
+        """Calculate the change in time since the last step.
+
+        :param t: time in seconds.
+        :return: delta time in seconds.
+        """
+        if self.last_time is None:
+            dt = DEFAULT_DELTA_TIME
+        else:
+            dt = t - self.last_time
+        self.last_time = t
+        return dt
 
     def _unpack_results(self) -> tuple:
         """Unpack results list from the controller."""
