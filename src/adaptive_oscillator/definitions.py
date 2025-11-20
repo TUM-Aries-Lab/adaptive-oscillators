@@ -10,7 +10,7 @@ from loguru import logger
 np.set_printoptions(precision=3, floatmode="fixed", suppress=True)
 
 # plot definitions
-FIG_SIZE = (15, 8)  # width, height in inches
+FIG_SIZE = (16, 8)  # width, height in inches
 ALPHA = 0.8
 LEGEND_LOC = "upper right"
 
@@ -62,7 +62,7 @@ class AOParameters:
     nu_phi: float = 10
     nu_omega: float = 10
     n_harmonics: int = 3
-    omega_init: float = 4
+    omega_init: float = 1e-3
 
 
 @dataclass
