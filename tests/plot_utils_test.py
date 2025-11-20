@@ -4,7 +4,7 @@ import os
 
 from adaptive_oscillator.log_files import LogFiles
 
-TEST_DATA_DIR = os.path.join("data", "old_data", "walk_5")
+TEST_DATA_DIR = os.path.join("data", "2025_10_old_data", "walk_5")
 
 
 def test_plot_log_data():

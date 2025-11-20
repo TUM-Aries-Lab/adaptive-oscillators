@@ -14,7 +14,7 @@ from adaptive_oscillator.log_files import (
     QuaternionParser,
 )
 
-TEST_DIR = Path(__file__).parent.parent / "data" / "old_data" / "walk_4"
+TEST_DIR = Path(__file__).parent.parent / "data" / "2025_10_old_data" / "walk_4"
 DECIMAL_ACCURACY = 2
 
 

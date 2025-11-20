@@ -7,7 +7,7 @@ import numpy as np
 from adaptive_oscillator.controller import AOController
 from adaptive_oscillator.log_files import LogFiles, LogParser
 
-TEST_DATA_DIR = os.path.join("data", "old_data", "walk_5")
+TEST_DATA_DIR = os.path.join("data", "2025_10_old_data", "walk_5")
 
 
 def test_ao_controller():
