@@ -72,6 +72,7 @@ class AOParameters:
     nu_phi: float = 10
     nu_omega: float = 10
     n_harmonics: int = 3
+    omega_init: float = 4
 
 
 @dataclass

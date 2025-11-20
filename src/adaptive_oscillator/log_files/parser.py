@@ -176,7 +176,7 @@ class AngleParser:
     def plot(self, y_label: str) -> None:
         """Plot the x, y, z data.
 
-        :param y_label: label for the y-axiså
+        :param y_label: label for the y-axis
         :return: None
         """
         _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=3, ncols=1)

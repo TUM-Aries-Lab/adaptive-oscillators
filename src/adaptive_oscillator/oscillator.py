@@ -15,14 +15,10 @@ from adaptive_oscillator.definitions import AOParameters, PIDGains
 class AdaptiveOscillator:
     """Adaptive Oscillator tracking rhythmic signals like inter-limb hip angle."""
 
-    def __init__(self, config: AOParameters | None = None, omega_init: float = 1.0):
-        if config is None:
-            self.config = AOParameters()
-        else:
-            self.config = config
-
+    def __init__(self, config: AOParameters | None = None):
+        self.config = config if config else AOParameters()
         self.n = self.config.n_harmonics
-        self.omega = omega_init
+        self.omega = self.config.omega_init
         self.alpha_0 = 0.0
         self.alpha = np.zeros(self.n)
         self.phi = np.zeros(self.n)
