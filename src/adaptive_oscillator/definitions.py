@@ -46,7 +46,7 @@ DEFAULT_LOG_FILENAME = "log_file"
 
 
 # plot definitions
-FIG_SIZE = (14, 10)  # width=8 inches, height=6 inches
+FIG_SIZE = (15, 8)  # width, height in inches
 ALPHA = 0.8
 
 TIME_FORMAT = "%H:%M:%S.%f"

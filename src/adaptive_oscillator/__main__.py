@@ -7,7 +7,7 @@ import numpy as np
 from loguru import logger
 
 from adaptive_oscillator.controller import AOController
-from adaptive_oscillator.definitions import DEFAULT_LOG_LEVEL, LogLevel
+from adaptive_oscillator.definitions import LogLevel
 from adaptive_oscillator.log_files import LogFiles, LogParser
 from adaptive_oscillator.utils import setup_logger
 
@@ -36,6 +36,8 @@ def main(log_dir: str, show_plots: bool, ssh: bool) -> None:
         log_files.plot(euler_only=True)
         plt.show()
 
+    controller.plot_results()
+
     logger.success(f"Finished controller with log data from {log_dir}")
 
 
@@ -44,33 +46,20 @@ if __name__ == "__main__":
         description="Run AO controller with optional plotting."
     )
     parser.add_argument(
-        "--log-level",
-        default=DEFAULT_LOG_LEVEL,
-        choices=list(LogLevel()),
-        help="Set the log level.",
-        required=False,
-        type=str,
-    )
-    parser.add_argument(
-        "--stderr-level",
-        default=DEFAULT_LOG_LEVEL,
-        choices=list(LogLevel()),
-        help="Set the std err level.",
-        required=False,
-        type=str,
+        "--debug",
+        default=False,
+        action="store_true",
+        help="Output debug statements.",
     )
 
-    parser.add_argument(
-        "-l", "--log-dir", required=True, help="Path to the log directory."
-    )
-    parser.add_argument(
-        "-p", "--plot", action="store_true", help="Plot simulation results."
-    )
-    parser.add_argument(
-        "-s", "--ssh", action="store_true", help="Connect to an SSH server."
-    )
+    parser.add_argument("--log-dir", required=True, help="Path to the log directory.")
+    parser.add_argument("--plot", action="store_true", help="Plot simulation results.")
+    parser.add_argument("--ssh", action="store_true", help="Connect to an SSH server.")
     args = parser.parse_args()
 
-    setup_logger(log_level=args.log_level, stderr_level=args.stderr_level)
+    if args.debug:
+        setup_logger(log_level=LogLevel.debug, stderr_level=LogLevel.debug)
+    else:
+        setup_logger()
 
     main(log_dir=args.log_dir, show_plots=args.plot, ssh=args.ssh)

@@ -99,7 +99,7 @@ class AOController:
         logger.info("Plotting results")
         (timestamps, thetas, theta_hats, omegas, phi_gps, offsets) = zip(
             *[
-                (r.timestamp, r.theta, r.theta_hat, r.omega, r.offset)
+                (r.timestamp, r.theta, r.theta_hat, r.omega, r.phi_gp, r.offset)
                 for r in self.results
             ]
         )
