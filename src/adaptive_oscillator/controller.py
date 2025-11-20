@@ -48,7 +48,7 @@ class AOController:
 
     def step(self, t: float, x: float, x_dot: float) -> AdaptiveOscillatorStepResult:
         """Step the AO ahead with one frame of data from the IMU."""
-        logger.debug(f"Step: t={t:.2f}, x={x:.2f}, x_dot={x_dot:.2f}")
+        logger.trace(f"Step: t={t:.2f}, x={x:.2f}, x_dot={x_dot:.2f}")
         if self.last_time is None:
             dt = DEFAULT_DELTA_TIME
         else:
@@ -65,16 +65,11 @@ class AOController:
             theta=x,
             theta_hat=self.estimator.ao.theta_hat,
             omega=self.estimator.ao.omega,
-            phi_gp=self.estimator.phi_gp,
+            gait_phase=self.estimator.phi_gp,
             offset=self.estimator.ao.alpha_0,
         )
         self.results.append(step_result)
-        logger.debug(
-            f"time: {step_result.timestamp:.3f}, "
-            f"theta_hat: {step_result.theta_hat:.3f}, "
-            f"omega: {step_result.omega:.3f}, "
-            f"phi_gp: {step_result.phi_gp:.3f}"
-        )
+        logger.info(f"Step result: {step_result}")
 
         # Update live plot if enabled
         if self.plotter is not None:  # pragma: no cover
@@ -87,7 +82,7 @@ class AOController:
         """Unpack results list from the controller."""
         (timestamps, thetas, theta_hats, omegas, phi_gps, offsets) = zip(
             *[
-                (r.timestamp, r.theta, r.theta_hat, r.omega, r.phi_gp, r.offset)
+                (r.timestamp, r.theta, r.theta_hat, r.omega, r.gait_phase, r.offset)
                 for r in self.results
             ]
         )

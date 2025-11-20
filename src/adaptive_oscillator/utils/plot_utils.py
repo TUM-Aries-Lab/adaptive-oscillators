@@ -218,7 +218,7 @@ class RealtimeAOPlotter:  # pragma: no cover
             self.data[PlotMetrics.theta].append(data.theta)
             self.data[PlotMetrics.theta_hat].append(data.theta_hat)
             self.data[PlotMetrics.omega].append(data.omega)
-            self.data[PlotMetrics.phi_gp].append(data.phi_gp)
+            self.data[PlotMetrics.phi_gp].append(data.gait_phase)
             self.data[PlotMetrics.offset].append(data.offset)
 
     def run(self, threaded: bool = True) -> None:

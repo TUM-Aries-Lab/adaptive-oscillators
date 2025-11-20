@@ -110,9 +110,12 @@ class GaitPhaseEstimator:
 
         phi = self.correct_phase(self.phi_gp, t, self.last_t_start, omega)
 
-        logger.debug(
-            f"t={t:.2f}, φ_GP={self.phi_gp:.2f}, "
-            f"φ={phi:.2f}, ω={omega:.2f}, θ_hat={self.ao.theta_hat:.2f}"
+        logger.trace(
+            f"t={t:.2f}, "
+            f"φ_GP={self.phi_gp:.2f}, "
+            f"φ={phi:.2f}, "
+            f"ω={omega:.2f}, "
+            f"θ_hat={self.ao.theta_hat:.2f}"
         )
         return phi
 

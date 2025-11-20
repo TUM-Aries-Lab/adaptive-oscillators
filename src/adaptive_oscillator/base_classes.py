@@ -164,5 +164,17 @@ class AdaptiveOscillatorStepResult:
     theta: float
     theta_hat: float
     omega: float
-    phi_gp: float
+    gait_phase: float
     offset: float
+
+    def __repr__(self):
+        """Represent the result as a string."""
+        msg = (
+            f"time: {self.timestamp:.3f}, "
+            f"theta: {self.theta:.3f}, "
+            f"theta_hat: {self.theta_hat:.3f}, "
+            f"omega: {self.omega:.3f}, "
+            f"gait phase: {self.gait_phase:.3f}"
+            f"offset: {self.offset:.3f}"
+        )
+        return msg
