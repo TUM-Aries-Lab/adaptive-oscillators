@@ -53,12 +53,6 @@ logger.configure(handlers=[{"sink": sys.stderr, "level": LogLevel.info}])
 NUMPY_PRINT_PRECISION = 3
 np.set_printoptions(precision=NUMPY_PRINT_PRECISION)
 
-# AOParameters
-ETA = 0.05
-N_HARMONICS = 3
-NU_PHI = 0.5
-NU_OMEGA = 0.5
-
 
 @dataclass
 class AOParameters:

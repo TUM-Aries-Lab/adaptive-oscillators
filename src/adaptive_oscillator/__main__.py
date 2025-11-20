@@ -25,7 +25,7 @@ def main(log_dir: str, show_plots: bool, ssh: bool) -> None:
     log_data.data.right.hip.angles.add_offset(offsets=[180, 0, 180])
     log_data.data.left.hip.angles.add_offset(offsets=[180, 0, 180])
 
-    signal = -log_data.data.left.hip.angles.x
+    signal = -log_data.data.right.hip.angles.x
 
     controller = AOController(show_plots=show_plots, ssh=ssh)
     for _ii, ang_deg in enumerate(signal):
