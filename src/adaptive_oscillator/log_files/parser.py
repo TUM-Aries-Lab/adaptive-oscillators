@@ -2,7 +2,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -33,8 +32,6 @@ from adaptive_oscillator.definitions import (
     Segments,
 )
 from adaptive_oscillator.utils import time_str_to_seconds
-
-AxisXYZ = Literal["x", "y", "z"]
 
 
 class LogFiles:
