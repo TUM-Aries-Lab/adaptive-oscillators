@@ -69,7 +69,7 @@ class AOController:
             offset=self.estimator.ao.alpha_0,
         )
         self.results.append(step_result)
-        logger.info(f"Step result: {step_result}")
+        logger.debug(f"Step result: {step_result}")
 
         # Update live plot if enabled
         if self.plotter is not None:  # pragma: no cover
@@ -98,9 +98,9 @@ class AOController:
 
         _, axs = plt.subplots(4, 1, figsize=FIG_SIZE, sharex=True)
 
-        axs[0].plot(t, thetas, label="θ_IL (input)")
-        axs[0].plot(t, theta_hats, label="θ̂_IL (estimated)")
-        axs[0].set_ylabel("Angle (rad)")
+        axs[0].plot(t, thetas, label="input")
+        axs[0].plot(t, theta_hats, label="estimated")
+        axs[0].set_ylabel("Hip Angle (rad)")
         axs[0].set_title("Input vs Estimated Hip Angle")
         axs[0].legend(loc=LEGEND_LOC)
         axs[0].grid(True)
@@ -115,12 +115,16 @@ class AOController:
         axs[2].set_title("Estimated Gait Phase")
 
         axs[3].plot(t, offsets, color="red")
-        axs[3].set_ylabel("Oscillator Offset")
+        axs[3].set_ylabel("Offset (rad)")
         axs[3].set_xlabel("Time (s)")
-        axs[3].set_title("Offset")
+        axs[3].set_title("Adaptive Oscillator Offset")
 
         for i in range(4):
             axs[i].grid(True)
 
         plt.tight_layout()
-        plt.show()
+        try:
+            plt.show()
+        except KeyboardInterrupt:
+            logger.debug("Closing the controller results plot.")
+            plt.close()

@@ -61,7 +61,7 @@ class AdaptiveOscillator:
         )
 
         y = sol.y[:, -1]
-        self.omega = np.clip(y[0], 0, np.inf)
+        self.omega = np.clip(y[0], 1e-3, np.inf)
         self.alpha_0 = y[1]
         self.alpha = y[2 : 2 + self.n]
         self.phi = y[2 + self.n :]
