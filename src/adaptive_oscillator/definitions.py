@@ -17,6 +17,7 @@ LEGEND_LOC = "upper right"
 # --- Directories ---
 ROOT_DIR: Path = Path("src").parent
 DATA_DIR: Path = ROOT_DIR / "data"
+RESULTS_DIR: Path = DATA_DIR / "results"
 RECORDINGS_DIR: Path = DATA_DIR / "recordings"
 LOG_DIR: Path = DATA_DIR / "logs"
 

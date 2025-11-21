@@ -155,6 +155,11 @@ class LeftRight:
     left: Body
     right: Body
 
+    def __iter__(self):
+        """Iterate over the left and right sides."""
+        yield self.left
+        yield self.right
+
 
 @dataclass
 class AdaptiveOscillatorStepResult:

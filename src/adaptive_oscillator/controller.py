@@ -10,6 +10,7 @@ from adaptive_oscillator.definitions import (
     DEFAULT_DELTA_TIME,
     FIG_SIZE,
     LEGEND_LOC,
+    RESULTS_DIR,
     AOParameters,
     PIDGains,
 )
@@ -42,7 +43,7 @@ class AOController:
         self.last_time: float | None = None
 
         self.plotter: RealtimeAOPlotter | None = None
-        if show_plots:  # pragma: no cover
+        if show_plots:
             self.plotter = RealtimeAOPlotter(ssh=ssh)
             self.plotter.run()
 
@@ -67,7 +68,7 @@ class AOController:
         logger.debug(f"Step result: {step_result}")
 
         # Update live plot if enabled
-        if self.plotter is not None:  # pragma: no cover
+        if self.plotter is not None:
             self.plotter.update_data(data=step_result)
             time.sleep(dt)
 
@@ -96,9 +97,10 @@ class AOController:
         )
         return timestamps, thetas, theta_hats, omegas, phi_gps, offsets
 
-    def plot_results(self) -> None:
+    def plot_results(self, save_plot: bool = False) -> None:
         """Plot controller results.
 
+        :param save_plot: If True, save the plot.
         :return: None
         """
         logger.info("Plotting results...")
@@ -130,8 +132,11 @@ class AOController:
             axs[i].grid(True)
         plt.tight_layout()
 
-        try:
-            plt.show()
-        except KeyboardInterrupt:
-            logger.debug("Closing the controller results plot.")
-            plt.close()
+        if save_plot:
+            plt.savefig(RESULTS_DIR / "controller_results.png")
+        else:
+            try:
+                plt.show()
+            except KeyboardInterrupt:
+                logger.debug("Closing the controller results plot.")
+                plt.close()
