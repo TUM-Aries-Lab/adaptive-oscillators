@@ -38,4 +38,4 @@ if __name__ == "__main__":
 ## Results
 The plot below shows the results being plotted in real time.
 
-<img src="docs/plot_screenshot.png" width="800">
+<img src="docs/results.png" width="1000">
