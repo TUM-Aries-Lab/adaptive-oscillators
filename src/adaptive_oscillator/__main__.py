@@ -22,7 +22,8 @@ def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
     :return: None
     """
     logger.info(f"Running controller with '{side}' '{joint}' joint data.")
-    joint_data.angles.add_offset(offsets=[180, 0, 180])
+    if joint == "hip":
+        joint_data.angles.add_offset(offsets=[180, 0, 180])
     signal = -joint_data.angles.x
     time_stamps = joint_data.time - joint_data.time[0]
 

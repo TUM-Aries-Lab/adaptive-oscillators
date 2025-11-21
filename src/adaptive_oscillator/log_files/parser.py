@@ -72,7 +72,7 @@ class LogFiles:
         :return: None
         """
         logger.info("Plotting log file data.")
-        euler_offset = [180.0, 0.0, 180.0]
+        euler_offset = [0.0, 0.0, 0.0]
 
         for side in ["left", "right"]:
             if not euler_only:
@@ -371,7 +371,7 @@ if __name__ == "__main__":  # pragma: no cover
         "-l", "--log-dir", required=True, help="Path to the log directory."
     )
     parser.add_argument(
-        "-e", "--euler_only", action="store_true", help="Plot only the euler angles."
+        "-e", "--euler-only", action="store_true", help="Plot only the euler angles."
     )
     args = parser.parse_args()
 
