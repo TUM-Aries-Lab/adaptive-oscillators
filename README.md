@@ -18,7 +18,7 @@ To install the library run: `pip install adaptive-oscillator`
 
 ## Usage
 ```
-"""Basic usage for our module."""
+"""Basic usage for the adaptive oscillator."""
 
 def main() -> None:
     """Run a simple demonstration."""
@@ -26,10 +26,12 @@ def main() -> None:
     controller = AOController(show_plots=True)
 
     while True:
-        try:
-            self.step(t=t, th=angle, dth=angle_derivative)
-        except KeyboardInterrupt as KI:
-            print("Exiting...")
+        t, x_axis_angle, x_axis_vel = read_from_sensor()
+        th = np.deg2rad(x_axis_angle)
+        dth = np.deg2rad(x_axis_vel)
+        controller.step(t=t, x=th, x_dot=dth)
+
+    controller.plot_results()
 
 if __name__ == "__main__":
     main()
