@@ -2,6 +2,7 @@
 
 import time
 from datetime import datetime
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 from loguru import logger
@@ -99,12 +100,19 @@ class AOController:
         )
         return timestamps, thetas, theta_hats, omegas, phi_gps, offsets
 
-    def plot_results(self, joint: str, side: str, save_plot: bool = False) -> None:
+    def plot_results(
+        self,
+        joint: str,
+        side: str,
+        save_plot: bool = False,
+        add_timestamp: bool = False,
+    ) -> None:
         """Plot controller results.
 
         :param joint: joint string
         :param side: side string
         :param save_plot: If True, save the plot.
+        :param add_timestamp: If True, add timestamp to plot.
         :return: None
         """
         logger.info("Plotting results...")
@@ -137,8 +145,11 @@ class AOController:
         plt.tight_layout()
 
         if save_plot:
-            timestamp = datetime.now().strftime(DATE_FORMAT)
-            filename = f"results_{side}_{joint}_{timestamp}.png"
+            if add_timestamp:
+                timestamp = datetime.now().strftime(DATE_FORMAT)
+                filename = f"results_{side}_{joint}_{timestamp}.png"
+            else:
+                filename = f"results_{side}_{joint}.png"
             plt.savefig(RESULTS_DIR / filename)
         else:
             try:
@@ -146,3 +157,20 @@ class AOController:
             except KeyboardInterrupt:
                 logger.debug("Closing the controller results plot.")
                 plt.close()
+
+    def write_results(self, filepath: Path) -> None:
+        """Write results to file.
+
+        :param filepath: Path to the file to write.
+        :return: None
+        """
+        logger.info(f"Writing results to {filepath}...")
+        headers = ["t", "thetas", "theta_hats", "omegas", "gait_phase", "offsets"]
+
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        with filepath.open("w") as f:
+            f.write(", ".join(headers) + "\n")
+            for row in self.results:
+                f.write(", ".join([f"{i:.3f}" for i in row]) + "\n")
+
+        logger.success(f"Results written to '{filepath}'.")

@@ -24,4 +24,4 @@ def test_ao_controller():
         dth = np.deg2rad(ang_deg)
         t = log_data.data.left.hip.time[_ii] - log_data.data.left.hip.time[0]
         controller.step(t=t, x=th, x_dot=dth)
-    controller.plot_results(save_plot=True)
+    controller.plot_results(save_plot=True, side="left")

@@ -183,3 +183,12 @@ class AdaptiveOscillatorStepResult:
             f"offset: {self.offset:.3f}"
         )
         return msg
+
+    def __iter__(self):
+        """Iterate over the results."""
+        yield self.timestamp
+        yield self.theta
+        yield self.theta_hat
+        yield self.omega
+        yield self.gait_phase
+        yield self.offset

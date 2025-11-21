@@ -8,7 +8,7 @@ from loguru import logger
 
 from adaptive_oscillator.base_classes import Joint
 from adaptive_oscillator.controller import AOController
-from adaptive_oscillator.definitions import ANGLES_SEGMENT_FIELDS, LogLevel
+from adaptive_oscillator.definitions import ANGLES_SEGMENT_FIELDS, RESULTS_DIR, LogLevel
 from adaptive_oscillator.log_files import LogFiles, LogParser
 from adaptive_oscillator.utils import setup_logger
 
@@ -33,6 +33,7 @@ def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
         controller.step(t=t, x=th, x_dot=dth)
 
     controller.plot_results(joint=joint, side=side, save_plot=True)
+    controller.write_results(filepath=RESULTS_DIR / f"results_{side}_{joint}.txt")
 
 
 def main(log_dir: str, show_plots: bool) -> None:
