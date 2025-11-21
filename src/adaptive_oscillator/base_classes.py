@@ -157,8 +157,8 @@ class LeftRight:
 
     def __iter__(self):
         """Iterate over the left and right sides."""
-        yield self.left
-        yield self.right
+        yield "left", self.left
+        yield "right", self.right
 
 
 @dataclass

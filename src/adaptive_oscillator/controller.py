@@ -1,12 +1,14 @@
 """Controller module for the Adaptive Oscillator."""
 
 import time
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 from loguru import logger
 
 from adaptive_oscillator.base_classes import AdaptiveOscillatorStepResult
 from adaptive_oscillator.definitions import (
+    DATE_FORMAT,
     DEFAULT_DELTA_TIME,
     FIG_SIZE,
     LEGEND_LOC,
@@ -97,9 +99,11 @@ class AOController:
         )
         return timestamps, thetas, theta_hats, omegas, phi_gps, offsets
 
-    def plot_results(self, save_plot: bool = False) -> None:
+    def plot_results(self, joint: str, side: str, save_plot: bool = False) -> None:
         """Plot controller results.
 
+        :param joint: joint string
+        :param side: side string
         :param save_plot: If True, save the plot.
         :return: None
         """
@@ -110,8 +114,8 @@ class AOController:
 
         axs[0].plot(t, thetas, label="input")
         axs[0].plot(t, theta_hats, label="estimated")
-        axs[0].set_ylabel("Hip Angle (rad)")
-        axs[0].set_title("Input vs Estimated Hip Angle")
+        axs[0].set_ylabel(f"{joint.capitalize()} Angle (rad)")
+        axs[0].set_title(f"Input vs Estimated {joint.capitalize()} Angle")
         axs[0].legend(loc=LEGEND_LOC)
 
         axs[1].plot(t, omegas, color="green")
@@ -133,7 +137,9 @@ class AOController:
         plt.tight_layout()
 
         if save_plot:
-            plt.savefig(RESULTS_DIR / "controller_results.png")
+            timestamp = datetime.now().strftime(DATE_FORMAT)
+            filename = f"results_{side}_{joint}_{timestamp}.png"
+            plt.savefig(RESULTS_DIR / filename)
         else:
             try:
                 plt.show()

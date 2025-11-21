@@ -55,5 +55,5 @@ def setup_logger(
     )
     logger.add(sys.stderr, level=stderr_level)
     logger.add(filepath_with_time, level=log_level, encoding=ENCODING, enqueue=True)
-    logger.info(f"Logging to '{filepath_with_time}'.")
+    logger.debug(f"Logging to '{filepath_with_time}'.")
     return filepath_with_time

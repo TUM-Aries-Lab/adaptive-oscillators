@@ -4,6 +4,7 @@ import argparse
 
 import matplotlib.pyplot as plt
 import numpy as np
+from loguru import logger
 
 from adaptive_oscillator.base_classes import Joint
 from adaptive_oscillator.controller import AOController
@@ -12,12 +13,15 @@ from adaptive_oscillator.log_files import LogFiles, LogParser
 from adaptive_oscillator.utils import setup_logger
 
 
-def process_joint_data(joint_data: Joint) -> None:
+def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
     """Run the adaptive oscillator on a joint.
 
     :param joint_data: recorded joint data.
+    :param joint: name of the join.
+    :param side: name of the side.
     :return: None
     """
+    logger.info(f"Running controller with '{side}' '{joint}' joint data.")
     joint_data.angles.add_offset(offsets=[180, 0, 180])
     signal = -joint_data.angles.x
     time_stamps = joint_data.time - joint_data.time[0]
@@ -28,7 +32,7 @@ def process_joint_data(joint_data: Joint) -> None:
         dth = np.deg2rad(ang_deg)  # TODO: replace with actual derivative if available
         controller.step(t=t, x=th, x_dot=dth)
 
-    controller.plot_results()
+    controller.plot_results(joint=joint, side=side, save_plot=True)
 
 
 def main(log_dir: str, show_plots: bool) -> None:
@@ -40,9 +44,10 @@ def main(log_dir: str, show_plots: bool) -> None:
     log_files = LogFiles(log_dir)
     log_data = LogParser(log_files)
 
-    for side in log_data.data:
-        for key in ANGLES_SEGMENT_FIELDS:
-            process_joint_data(joint_data=getattr(side, key))
+    for side_key, side_data in log_data.data:
+        for joint_key in ANGLES_SEGMENT_FIELDS:
+            joint_data = getattr(side_data, joint_key)
+            process_joint_data(joint_data=joint_data, joint=joint_key, side=side_key)
 
     if show_plots:
         log_files.plot(euler_only=True)
