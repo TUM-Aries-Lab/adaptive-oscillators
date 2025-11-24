@@ -65,14 +65,14 @@ class LogFiles:
             f"\n\t{self.quat.right})"
         )
 
-    def plot(self, euler_only: bool = False) -> None:
+    def plot(self, euler_only: bool = False, add_offset: bool = False) -> None:
         """Plot log files.
 
         :param euler_only: Plot only euler angles.
+        :param add_offset: Add offset to angles.
         :return: None
         """
         logger.info("Plotting log file data.")
-        euler_offset = [0.0, 0.0, 0.0]
 
         for side in ["left", "right"]:
             if not euler_only:
@@ -89,7 +89,7 @@ class LogFiles:
                 quat_data.plot()
 
             angle_data = AngleParser(getattr(self.angle, side))
-            angle_data.parse(offsets=euler_offset)
+            angle_data.parse(add_offset=add_offset)
             angle_data.plot(y_label="Euler Angle (deg)")
 
 
@@ -154,8 +154,16 @@ class AngleParser:
         self.hip = AngleXYZ()
         self.knee = AngleXYZ()
         self.ankle = AngleXYZ()
+        self.side: str = ""
 
-    def parse(self, offsets: list[float] | None = None):
+        if "left" in self.filepath.stem:
+            self.side = "left"
+        elif "right" in self.filepath.stem:
+            self.side = "right"
+        else:
+            logger.warning(f"Words 'left' or 'right' not found in {self.filepath}")
+
+    def parse(self, add_offset: bool = False):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
         logger.debug(f"Parsing {self.filepath}")
@@ -170,8 +178,15 @@ class AngleParser:
             z_deg = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
 
-        if offsets is not None:
+        if add_offset:
+            offsets = [180.0, 0.0, 180.0]
             self.hip.add_offset(offsets=offsets)
+
+            offsets = [180.0, 0.0, 180.0]
+            self.knee.add_offset(offsets=offsets)
+
+            offsets = [180.0, 0.0, 180.0]
+            self.ankle.add_offset(offsets=offsets)
 
     def plot(self, y_label: str) -> None:
         """Plot the x, y, z data.

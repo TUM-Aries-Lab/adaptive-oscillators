@@ -22,8 +22,6 @@ def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
     :return: None
     """
     logger.info(f"Running controller with '{side}' '{joint}' joint data.")
-    if joint == "hip":
-        joint_data.angles.add_offset(offsets=[180, 0, 180])
     signal = -joint_data.angles.x
     time_stamps = joint_data.time - joint_data.time[0]
 
@@ -56,7 +54,7 @@ def main(log_dir: str, show_plots: bool) -> None:
         plt.show()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     parser = argparse.ArgumentParser(description="Run adaptive oscillator controller.")
     parser.add_argument("--debug", action="store_true", help="Output debug statements.")
     parser.add_argument("--log-dir", required=True, help="Path to the log directory.")

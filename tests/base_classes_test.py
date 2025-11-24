@@ -22,6 +22,22 @@ def test_angle_xyz():
     assert np.shape(angle_xyz[:]) == (3, num_el)
 
 
+def test_angle_add_offsets() -> None:
+    """Test the AngleAddOffsets class."""
+    # Arrange
+    offsets = [0.0, 0.0, 0.0]
+    array = np.array([0.0, 0.0, 0.0])
+    angles = AngleXYZ(array, array, array)
+
+    # Act
+    angles.add_offset(offsets=offsets)
+
+    # Assert
+    assert angles.x[0] == offsets[0]
+    assert angles.y[0] == offsets[1]
+    assert angles.z[0] == offsets[2]
+
+
 def test_vector_xyz():
     """Test the VectorXYZ class."""
     # Arrange

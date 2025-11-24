@@ -10,7 +10,7 @@ from loguru import logger
 np.set_printoptions(precision=3, floatmode="fixed", suppress=True)
 
 # plot definitions
-FIG_SIZE = (16, 8)  # width, height in inches
+FIG_SIZE = (12, 6)  # width, height in inches
 ALPHA = 0.8
 LEGEND_LOC = "upper right"
 
