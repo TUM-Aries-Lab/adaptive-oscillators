@@ -1,28 +1,58 @@
 """Common definitions for my module."""
 
 import sys
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from pathlib import Path
 
 import numpy as np
 from loguru import logger
 
-# plot definitions
-FIG_SIZE = (14, 10)  # width=8 inches, height=6 inches
-ALPHA = 0.8
+np.set_printoptions(precision=3, floatmode="fixed", suppress=True)
 
+# plot definitions
+FIG_SIZE = (12, 6)  # width, height in inches
+ALPHA = 0.8
+LEGEND_LOC = "upper right"
+
+# --- Directories ---
+ROOT_DIR: Path = Path("src").parent
+DATA_DIR: Path = ROOT_DIR / "data"
+RESULTS_DIR: Path = DATA_DIR / "results"
+RECORDINGS_DIR: Path = DATA_DIR / "recordings"
+LOG_DIR: Path = DATA_DIR / "logs"
+
+# Default encoding
+ENCODING: str = "utf-8"
+
+DATE_FORMAT = "%Y-%m-%d_%H-%M-%S"
 TIME_FORMAT = "%H:%M:%S.%f"
 
+
+@dataclass
+class LogLevel:
+    """Log level."""
+
+    trace: str = "TRACE"
+    debug: str = "DEBUG"
+    info: str = "INFO"
+    success: str = "SUCCESS"
+    warning: str = "WARNING"
+    error: str = "ERROR"
+    critical: str = "CRITICAL"
+
+    def __iter__(self):
+        """Iterate over log levels."""
+        return iter(asdict(self).values())
+
+
+DEFAULT_LOG_LEVEL = LogLevel.info
+DEFAULT_LOG_FILENAME = "log_file"
+
 LOG_FILE_EXT = ".txt"
-logger.configure(handlers=[{"sink": sys.stderr, "level": "INFO"}])
+logger.configure(handlers=[{"sink": sys.stderr, "level": LogLevel.info}])
 
 NUMPY_PRINT_PRECISION = 3
 np.set_printoptions(precision=NUMPY_PRINT_PRECISION)
-
-# AOParameters
-ETA = 0.05
-N_HARMONICS = 3
-NU_PHI = 0.5
-NU_OMEGA = 0.5
 
 
 @dataclass
@@ -33,6 +63,7 @@ class AOParameters:
     nu_phi: float = 10
     nu_omega: float = 10
     n_harmonics: int = 3
+    omega_init: float = 1e-3
 
 
 @dataclass

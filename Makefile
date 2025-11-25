@@ -16,10 +16,12 @@ typecheck:
 
 test:
 	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail --cov-report=xml --cov-fail-under=85
+	rm .coverage
 
 format:
 	make lint
 	make typecheck
+
 clean:
 	rm -rf .venv
 	rm -rf .mypy_cache
@@ -35,5 +37,5 @@ update:
 	poetry cache clear pypi --all
 	poetry update
 
-app:
-	poetry run python -m adaptive_oscillator --log-dir data/walk_4 --plot
+help:
+	poetry run python -m src.adaptive_oscillator --help

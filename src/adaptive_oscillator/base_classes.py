@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
+from loguru import logger
 from numpy.typing import NDArray
 
 from adaptive_oscillator.definitions import LOG_FILE_EXT
@@ -90,17 +91,22 @@ class AngleXYZ:
         """Return the number of elements in the vector."""
         return len(self.x)
 
-    def add_offset(self, offsets: list[float]) -> None:
+    def add_offset(self) -> None:
         """Add offset to all segments.
 
-        :param offsets: list[float]
         :return: None
         """
         axes = ["x", "y", "z"]
-        assert len(offsets) == len(axes)
 
-        for offset, axis in zip(offsets, axes):
+        for axis in axes:
             values = getattr(self, axis)
+            diff = max(values) - min(values)
+            if diff > 355:
+                offset = 180
+            else:
+                offset = 0
+            logger.info(f"Adding {offset:.2f} deg offset for {axis} axis.")
+
             values += offset
             mask_upper = values > 180
             mask_lower = values < -180
@@ -154,3 +160,41 @@ class LeftRight:
 
     left: Body
     right: Body
+
+    def __iter__(self):
+        """Iterate over the left and right sides."""
+        yield "left", self.left
+        yield "right", self.right
+
+
+@dataclass
+class AdaptiveOscillatorStepResult:
+    """Represent a result of the adaptive oscillator step."""
+
+    timestamp: float
+    theta: float
+    theta_hat: float
+    omega: float
+    gait_phase: float
+    offset: float
+
+    def __repr__(self):
+        """Represent the result as a string."""
+        msg = (
+            f"time: {self.timestamp:.3f}, "
+            f"theta: {self.theta:.3f}, "
+            f"theta_hat: {self.theta_hat:.3f}, "
+            f"omega: {self.omega:.3f}, "
+            f"gait phase: {self.gait_phase:.3f}"
+            f"offset: {self.offset:.3f}"
+        )
+        return msg
+
+    def __iter__(self):
+        """Iterate over the results."""
+        yield self.timestamp
+        yield self.theta
+        yield self.theta_hat
+        yield self.omega
+        yield self.gait_phase
+        yield self.offset

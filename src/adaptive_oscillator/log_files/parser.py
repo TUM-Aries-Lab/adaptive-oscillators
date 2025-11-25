@@ -2,7 +2,6 @@
 
 import argparse
 from pathlib import Path
-from typing import Literal
 
 import numpy as np
 import pandas as pd
@@ -26,6 +25,7 @@ from adaptive_oscillator.definitions import (
     IMU_SEGMENT_FIELDS,
     QUATERNION_SEGMENT_FIELDS,
     AnglesHeader,
+    IMUHeader,
     Joints,
     LogFileKeys,
     QuaternionHeader,
@@ -33,14 +33,16 @@ from adaptive_oscillator.definitions import (
 )
 from adaptive_oscillator.utils import time_str_to_seconds
 
-AxisXYZ = Literal["x", "y", "z"]
-
 
 class LogFiles:
     """Main entry point for accessing all sensor log files."""
 
     def __init__(self, base_path: str | Path) -> None:
         self._path = Path(base_path)
+        if not self._path.is_dir():
+            msg = f"Path '{self._path}' does not exist."
+            logger.error(msg)
+            raise FileNotFoundError(msg)
         self.accel = SensorFile(LogFileKeys.ACCEL, self._path)
         self.angle = SensorFile(LogFileKeys.ANGLE, self._path)
         self.gravity = SensorFile(LogFileKeys.GRAVITY, self._path)
@@ -63,14 +65,14 @@ class LogFiles:
             f"\n\t{self.quat.right})"
         )
 
-    def plot(self, euler_only: bool = False) -> None:
+    def plot(self, euler_only: bool = False, add_offset: bool = False) -> None:
         """Plot log files.
 
         :param euler_only: Plot only euler angles.
+        :param add_offset: Add offset to angles.
         :return: None
         """
         logger.info("Plotting log file data.")
-        euler_offset = [180.0, 0.0, 180.0]
 
         for side in ["left", "right"]:
             if not euler_only:
@@ -87,7 +89,7 @@ class LogFiles:
                 quat_data.plot()
 
             angle_data = AngleParser(getattr(self.angle, side))
-            angle_data.parse(offsets=euler_offset)
+            angle_data.parse(add_offset=add_offset)
             angle_data.plot(y_label="Euler Angle (deg)")
 
 
@@ -107,8 +109,7 @@ class IMUParser:
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
         logger.debug(f"Parsing {self.filepath}")
         logger.debug(f"Columns: {raw_data.shape}")
-
-        time_str = raw_data[AnglesHeader.TIME]
+        time_str = raw_data[IMUHeader.TIME]
         self.time = np.array([time_str_to_seconds(t) for t in time_str])
 
         for segment_name, fields in IMU_SEGMENT_FIELDS.items():
@@ -153,8 +154,16 @@ class AngleParser:
         self.hip = AngleXYZ()
         self.knee = AngleXYZ()
         self.ankle = AngleXYZ()
+        self.side: str = ""
 
-    def parse(self, offsets: list[float] | None = None):
+        if "left" in self.filepath.stem:
+            self.side = "left"
+        elif "right" in self.filepath.stem:
+            self.side = "right"
+        else:
+            logger.warning(f"Words 'left' or 'right' not found in {self.filepath}")
+
+    def parse(self, add_offset: bool = False):
         """Parse the log file and return a DataFrame."""
         raw_data = pd.read_csv(self.filepath, sep="\t+", engine="python")
         logger.debug(f"Parsing {self.filepath}")
@@ -169,13 +178,16 @@ class AngleParser:
             z_deg = raw_data[fields[2]].to_numpy()
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
 
-        if offsets is not None:
-            self.hip.add_offset(offsets=offsets)
+        if add_offset:
+            logger.info(f"Adding offset to {self.filepath}")
+            self.hip.add_offset()
+            self.knee.add_offset()
+            self.ankle.add_offset()
 
     def plot(self, y_label: str) -> None:
         """Plot the x, y, z data.
 
-        :param y_label: label for the y-axiså
+        :param y_label: label for the y-axis
         :return: None
         """
         _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=3, ncols=1)
@@ -259,7 +271,13 @@ class QuaternionParser:
 class LogParser:
     """Parser for log files with limb information."""
 
-    def __init__(self, log_files: LogFiles):
+    def __init__(self, log_files: LogFiles, add_offset: bool = False):
+        """Parse the log files.
+
+        :param log_files: LogFiles
+        :param add_offset: bool
+        :return: None
+        """
         logger.info(f"Parsing {log_files}")
         accel_data_right = IMUParser(log_files.accel.right)
         accel_data_right.parse()
@@ -277,9 +295,9 @@ class LogParser:
         quat_data_left.parse()
 
         angles_right = AngleParser(log_files.angle.right)
-        angles_right.parse()
+        angles_right.parse(add_offset=add_offset)
         angles_left = AngleParser(log_files.angle.left)
-        angles_left.parse()
+        angles_left.parse(add_offset=add_offset)
 
         time = accel_data_right.time
 
@@ -370,12 +388,12 @@ if __name__ == "__main__":  # pragma: no cover
         "-l", "--log-dir", required=True, help="Path to the log directory."
     )
     parser.add_argument(
-        "-e", "--euler_only", action="store_true", help="Plot only the euler angles."
+        "-e", "--euler-only", action="store_true", help="Plot only the euler angles."
     )
     args = parser.parse_args()
 
     log_dir = args.log_dir
     euler_only = args.euler_only
     log_files = LogFiles(log_dir)
-    log_files.plot(euler_only=euler_only)
+    log_files.plot(euler_only=euler_only, add_offset=True)
     plt.show()

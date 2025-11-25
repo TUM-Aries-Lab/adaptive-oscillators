@@ -15,14 +15,10 @@ from adaptive_oscillator.definitions import AOParameters, PIDGains
 class AdaptiveOscillator:
     """Adaptive Oscillator tracking rhythmic signals like inter-limb hip angle."""
 
-    def __init__(self, config: AOParameters | None = None, omega_init: float = 1.0):
-        if config is None:
-            self.config = AOParameters()
-        else:
-            self.config = config
-
+    def __init__(self, config: AOParameters | None = None):
+        self.config = config if config else AOParameters()
         self.n = self.config.n_harmonics
-        self.omega = omega_init
+        self.omega = self.config.omega_init
         self.alpha_0 = 0.0
         self.alpha = np.zeros(self.n)
         self.phi = np.zeros(self.n)
@@ -49,6 +45,10 @@ class AdaptiveOscillator:
 
         return np.concatenate([[omega_dot, dalpha_0], dalpha, phi_dot])
 
+    def _clip_to_range(self) -> float:
+        """Clip range from -pi to pi."""
+        return float(np.mod(self.phi[0], 2 * np.pi) - np.pi)
+
     def update(self, t: float, theta_il: float, solver: str = "RK45") -> float:
         """Integrate the oscillator from self.last_t to t, return gait phase φ_GP(t)."""
         y0 = np.concatenate([[self.omega, self.alpha_0], self.alpha, self.phi])
@@ -61,14 +61,14 @@ class AdaptiveOscillator:
         )
 
         y = sol.y[:, -1]
-        self.omega = y[0]
+        self.omega = np.clip(y[0], 1e-3, np.inf)
         self.alpha_0 = y[1]
         self.alpha = y[2 : 2 + self.n]
         self.phi = y[2 + self.n :]
         self.last_t = t
 
         self.theta_hat = self.alpha_0 + np.sum(self.alpha * np.sin(self.phi))
-        return np.mod(self.phi[0], 2 * np.pi)
+        return self._clip_to_range()
 
 
 # -----------------------------------------------------------------------------
@@ -110,9 +110,12 @@ class GaitPhaseEstimator:
 
         phi = self.correct_phase(self.phi_gp, t, self.last_t_start, omega)
 
-        logger.debug(
-            f"t={t:.2f}, φ_GP={self.phi_gp:.2f}, "
-            f"φ={phi:.2f}, ω={omega:.2f}, θ_hat={self.ao.theta_hat:.2f}"
+        logger.trace(
+            f"t={t:.2f}, "
+            f"φ_GP={self.phi_gp:.2f}, "
+            f"φ={phi:.2f}, "
+            f"ω={omega:.2f}, "
+            f"θ_hat={self.ao.theta_hat:.2f}"
         )
         return phi
 
