@@ -1,4 +1,4 @@
-"""Sample doc string."""
+"""Import custom classes for parsing log files."""
 
 from .parser import (
     AngleParser,
