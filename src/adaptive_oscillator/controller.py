@@ -164,7 +164,7 @@ class AOController:
         :param filepath: Path to the file to write.
         :return: None
         """
-        logger.info(f"Writing results to {filepath}...")
+        logger.info(f"Writing results to '{filepath}'.")
         headers = ["t", "thetas", "theta_hats", "omegas", "gait_phase", "offsets"]
 
         filepath.parent.mkdir(parents=True, exist_ok=True)

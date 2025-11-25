@@ -179,14 +179,10 @@ class AngleParser:
             setattr(self, segment_name, AngleXYZ(x_deg, y_deg, z_deg))
 
         if add_offset:
-            offsets = [180.0, 0.0, 180.0]
-            self.hip.add_offset(offsets=offsets)
-
-            offsets = [180.0, 0.0, 180.0]
-            self.knee.add_offset(offsets=offsets)
-
-            offsets = [180.0, 0.0, 180.0]
-            self.ankle.add_offset(offsets=offsets)
+            logger.info(f"Adding offset to {self.filepath}")
+            self.hip.add_offset()
+            self.knee.add_offset()
+            self.ankle.add_offset()
 
     def plot(self, y_label: str) -> None:
         """Plot the x, y, z data.
@@ -393,5 +389,5 @@ if __name__ == "__main__":  # pragma: no cover
     log_dir = args.log_dir
     euler_only = args.euler_only
     log_files = LogFiles(log_dir)
-    log_files.plot(euler_only=euler_only)
+    log_files.plot(euler_only=euler_only, add_offset=True)
     plt.show()

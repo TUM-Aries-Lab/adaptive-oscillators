@@ -25,17 +25,16 @@ def test_angle_xyz():
 def test_angle_add_offsets() -> None:
     """Test the AngleAddOffsets class."""
     # Arrange
-    offsets = [0.0, 0.0, 0.0]
-    array = np.array([0.0, 0.0, 0.0])
+    array = np.array([180.0, -180])
     angles = AngleXYZ(array, array, array)
 
     # Act
-    angles.add_offset(offsets=offsets)
+    angles.add_offset()
 
     # Assert
-    assert angles.x[0] == offsets[0]
-    assert angles.y[0] == offsets[1]
-    assert angles.z[0] == offsets[2]
+    assert angles.x[0] == 0
+    assert angles.y[0] == 0
+    assert angles.z[0] == 0
 
 
 def test_vector_xyz():

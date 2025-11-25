@@ -26,6 +26,7 @@ def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
     time_stamps = joint_data.time - joint_data.time[0]
 
     controller = AOController()
+    logger.info("Processing data.")
     for _ii, (t, ang_deg) in enumerate(zip(time_stamps, signal)):
         th = np.deg2rad(ang_deg)
         dth = np.deg2rad(ang_deg)  # TODO: replace with actual derivative if available
