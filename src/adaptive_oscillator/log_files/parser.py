@@ -271,7 +271,13 @@ class QuaternionParser:
 class LogParser:
     """Parser for log files with limb information."""
 
-    def __init__(self, log_files: LogFiles):
+    def __init__(self, log_files: LogFiles, add_offset: bool = False):
+        """Parse the log files.
+
+        :param log_files: LogFiles
+        :param add_offset: bool
+        :return: None
+        """
         logger.info(f"Parsing {log_files}")
         accel_data_right = IMUParser(log_files.accel.right)
         accel_data_right.parse()
@@ -289,9 +295,9 @@ class LogParser:
         quat_data_left.parse()
 
         angles_right = AngleParser(log_files.angle.right)
-        angles_right.parse()
+        angles_right.parse(add_offset=add_offset)
         angles_left = AngleParser(log_files.angle.left)
-        angles_left.parse()
+        angles_left.parse(add_offset=add_offset)
 
         time = accel_data_right.time
 

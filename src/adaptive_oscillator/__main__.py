@@ -32,7 +32,7 @@ def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
         dth = np.deg2rad(ang_deg)  # TODO: replace with actual derivative if available
         controller.step(t=t, x=th, x_dot=dth)
 
-    controller.plot_results(joint=joint, side=side, save_plot=True)
+    controller.plot_results(joint=joint, side=side, save_plot=False)
     controller.write_results(filepath=RESULTS_DIR / f"results_{side}_{joint}.txt")
 
 
@@ -43,7 +43,7 @@ def main(log_dir: str, show_plots: bool) -> None:
     :param show_plots: Show plots.
     """
     log_files = LogFiles(log_dir)
-    log_data = LogParser(log_files)
+    log_data = LogParser(log_files, add_offset=True)
 
     for side_key, side_data in log_data.data:
         for joint_key in ANGLES_SEGMENT_FIELDS:

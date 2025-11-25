@@ -37,5 +37,5 @@ update:
 	poetry cache clear pypi --all
 	poetry update
 
-app:
-	poetry run python -m src.adaptive_oscillator --log-dir data/2025_11_18/walk_345
+help:
+	poetry run python -m src.adaptive_oscillator --help
