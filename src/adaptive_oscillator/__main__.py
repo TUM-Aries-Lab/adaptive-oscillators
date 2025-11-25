@@ -1,4 +1,4 @@
-"""Run the AO controller with optional plotting."""
+"""Run the Adaptive Oscillator controller."""
 
 import argparse
 
@@ -13,16 +13,17 @@ from adaptive_oscillator.log_files import LogFiles, LogParser
 from adaptive_oscillator.utils import setup_logger
 
 
-def process_joint_data(joint_data: Joint, joint: str, side: str) -> None:
+def process_joint_data(joint_data: Joint, joint: str, side: str, axis: str) -> None:
     """Run the adaptive oscillator on a joint.
 
     :param joint_data: recorded joint data.
     :param joint: name of the join.
     :param side: name of the side.
+    :param axis: name of the axis.
     :return: None
     """
     logger.info(f"Running controller with '{side}' '{joint}' joint data.")
-    signal = -joint_data.angles.x
+    signal = -getattr(joint_data.angles, axis)
     time_stamps = joint_data.time - joint_data.time[0]
 
     controller = AOController()
@@ -48,7 +49,9 @@ def main(log_dir: str, show_plots: bool) -> None:
     for side_key, side_data in log_data.data:
         for joint_key in ANGLES_SEGMENT_FIELDS:
             joint_data = getattr(side_data, joint_key)
-            process_joint_data(joint_data=joint_data, joint=joint_key, side=side_key)
+            process_joint_data(
+                joint_data=joint_data, joint=joint_key, side=side_key, axis="x"
+            )
 
     if show_plots:
         log_files.plot(euler_only=True)
