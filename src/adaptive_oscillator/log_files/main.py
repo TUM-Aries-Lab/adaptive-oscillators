@@ -4,7 +4,7 @@ import argparse
 
 import matplotlib.pyplot as plt
 
-from adaptive_oscillator.log_files.log_files import LogFiles
+from adaptive_oscillator.log_files import LogFiles
 
 if __name__ == "__main__":  # pragma: no cover
     """Plot data from log files."""

@@ -42,6 +42,8 @@ The plot below shows the results being plotted in real time.
 
 <img src="docs/results.png" width="1000">
 
+## Repo Structure
+The files and folders below are used for development purposes. This repo tree can be updated with `make tree`.
 <!-- TREE-START -->
 ```
 ├── docs
