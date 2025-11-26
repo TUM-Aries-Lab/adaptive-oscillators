@@ -79,7 +79,6 @@ The files and folders below are used for development purposes. This repo tree ca
 ├── .gitignore
 ├── .pre-commit-config.yaml
 ├── CONTRIBUTING.md
-├── Dockerfile
 ├── LICENSE
 ├── Makefile
 ├── README.md
