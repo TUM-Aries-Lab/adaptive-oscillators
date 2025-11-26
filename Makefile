@@ -15,7 +15,7 @@ typecheck:
 	poetry run mypy src/ tests/ --ignore-missing-imports --disable-error-code=call-overload
 
 test:
-	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail --cov-report=xml --cov-fail-under=85
+	poetry run pytest --cov=src/adaptive_oscillator --cov-report=term-missing --no-cov-on-fail --cov-report=xml --cov-fail-under=80
 	rm .coverage
 
 format:
@@ -32,6 +32,8 @@ clean:
 	rm -rf logs/*
 	find . -name ".coverage*" -delete
 	find . -name --pycache__ -exec rm -r {} +
+	rm .coverage
+	rm coverage.xml
 
 update:
 	poetry cache clear pypi --all

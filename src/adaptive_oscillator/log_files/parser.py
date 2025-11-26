@@ -1,6 +1,5 @@
 """Parser utils for log file data."""
 
-import argparse
 from pathlib import Path
 
 import numpy as np
@@ -379,35 +378,3 @@ class LogParser:
                 ankle=ankle_right,
             ),
         )
-
-
-if __name__ == "__main__":  # pragma: no cover
-    """Plot data from log files."""
-    parser = argparse.ArgumentParser(description="Plot the data from a log dir.")
-    parser.add_argument(
-        "-l",
-        "--log-dir",
-        required=True,
-        help="Path to the log directory.",
-    )
-    parser.add_argument(
-        "-e",
-        "--euler-only",
-        action="store_true",
-        help="Plot only the euler angles.",
-    )
-    parser.add_argument(
-        "--remap",
-        required=False,
-        default=False,
-        action="store_true",
-        help="Remap the Euler angles.",
-    )
-    args = parser.parse_args()
-    log_dir = args.log_dir
-    euler_only = args.euler_only
-    remap = args.remap
-
-    log_files = LogFiles(log_dir)
-    log_files.plot(euler_only=euler_only, add_offset=remap)
-    plt.show()
