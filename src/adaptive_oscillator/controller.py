@@ -55,7 +55,7 @@ class AOController:
         logger.trace(f"Step: t={t:.2f}, x={x:.2f}, x_dot={x_dot:.2f}")
         dt = self._calculate_dt(t=t)
         phi = self.estimator.update(t=t, theta_il=x, theta_il_dot=x_dot)
-        omega_cmd = self.controller.compute(phi=phi, theta_m=self.theta_m, dt=dt)
+        omega_cmd = self.controller.get_command(phi=phi, theta_m=self.theta_m, dt=dt)
         self.theta_m += omega_cmd * dt
 
         # Store outputs

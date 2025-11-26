@@ -78,6 +78,11 @@ class GaitPhaseEstimator:
     """Estimates corrected gait phase using AOs, event detection, and correction."""
 
     def __init__(self, config: AOParameters | None = None):
+        """Initialize the Gait Phase Estimator.
+
+        :param config: AOParameters object.
+        :return: None
+        """
         self.ao = AdaptiveOscillator(config)
         self.last_t_start = -np.inf
         self.phi_error = 0.0
@@ -87,20 +92,42 @@ class GaitPhaseEstimator:
     def detect_gait_event(
         self, t: float, theta_il: float, theta_il_dot: float, period: float
     ) -> bool:
-        """Detect gait event based on theta_il and theta_il_dot."""
+        """Detect gait event based on theta_il and theta_il_dot.
+
+        :param t: current time
+        :param theta_il: current gait phase
+        :param theta_il_dot: current gait phase dot
+        :param period: current period
+        :return: True if event detected, False otherwise
+        """
         return theta_il_dot < 0.01 and t - self.last_t_start > 0.7 * period
 
     def correct_phase(
         self, phi_gp: float, t: float, t_start: float, omega: float
     ) -> float:
-        """Correct gait phase φ(t) using error correction."""
+        """Correct gait phase φ(t) using error correction.
+
+        :param phi_gp: gait phase
+        :param t: current time
+        :param t_start: current time
+        :param omega: current gait phase
+        :return: corrected gait phase
+        """
+        delta_t = t - t_start
         Pe = -phi_gp if 0 <= phi_gp < np.pi else 2 * np.pi - phi_gp
         Ce = self.ke * (Pe - self.phi_error)
-        self.phi_error += Ce * np.exp(-omega * (t - t_start))
+        self.phi_error += Ce * np.exp(-omega * delta_t)
         return np.mod(phi_gp + self.phi_error, 2 * np.pi)
 
     def update(self, t: float, theta_il: float, theta_il_dot: float) -> float:
-        """Update gait phase and return corrected gait phase φ(t)."""
+        """Update gait phase and return corrected gait phase φ(t).
+
+        :param t: current time
+        :param theta_il: current gait phase
+        :param theta_il_dot: current gait phase dot
+        :return: corrected gait phase
+        """
+        logger.debug("Update phi.")
         self.phi_gp = self.ao.update(t, theta_il)
         omega = self.ao.omega
         period = 2 * np.pi / omega
@@ -135,8 +162,13 @@ class PIDController:
         self.integral = 0.0
         self.last_error = 0.0
 
-    def compute(self, error: float, dt: float) -> float:
-        """Compute PID output."""
+    def get_command(self, error: float, dt: float) -> float:
+        """Compute PID output.
+
+        :param error: error
+        :param dt: current time
+        :return: PID output
+        """
         self.integral += error * dt
         derivative = (error - self.last_error) / dt
         self.last_error = error
@@ -154,13 +186,25 @@ class LowLevelController:
         gains: PIDGains | None = None,
         gait_shape: NDArray | None = None,
     ):
+        """Initialize the controller.
+
+        :param gains: PIDGains object.
+        :param gait_shape: NDArray object.
+        :return: None
+        """
         self.pid = PIDController(gains)
-        x = np.linspace(0, 2 * np.pi, 100)
+        x = np.linspace(start=0, stop=2 * np.pi, num=100)
         y = gait_shape if gait_shape is not None else np.sin(x)
         self.spline = CubicSpline(x, y)
 
-    def compute(self, phi: float, theta_m: float, dt: float) -> float:
-        """Compute motor output."""
+    def get_command(self, phi: float, theta_m: float, dt: float) -> float:
+        """Compute motor output.
+
+        :param phi: current phase
+        :param theta_m: current motor phase
+        :param dt: current delta time
+        :return: PID output
+        """
         theta_r = self.spline(phi - np.pi)
         error = theta_r - theta_m
-        return self.pid.compute(error, dt)  # type: ignore[arg-type]
+        return self.pid.get_command(error, dt)  # type: ignore[arg-type]

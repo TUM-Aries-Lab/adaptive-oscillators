@@ -86,7 +86,7 @@ class AngleXYZ:
         return len(self.x)
 
     def add_offset(self) -> None:
-        """Add offset to all segments.
+        """Offset angles so the signals don't wrap from max to min.
 
         :return: None
         """
@@ -113,6 +113,12 @@ class SensorFile:
     """Represent a sensor category with left and right side access."""
 
     def __init__(self, category: str, base_path: Path) -> None:
+        """Initialize a sensor category with left and right side access.
+
+        :param category: Sensor category name.
+        :param base_path: Path to the sensor directory.
+        :return: None
+        """
         self.left = base_path / f"{category}_left{LOG_FILE_EXT}"
         self.right = base_path / f"{category}_right{LOG_FILE_EXT}"
 
