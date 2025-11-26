@@ -28,7 +28,7 @@ def test_adaptive_oscillator(gait_freq: float) -> None:
     theta_m = 0.0
     for t, th, dth in zip(t_vals, theta_il, theta_il_dot):
         phi = estimator.update(t, th, dth)
-        omega_cmd = controller.compute(phi, theta_m, dt)
+        omega_cmd = controller.get_command(phi, theta_m, dt)
         theta_m += omega_cmd * dt
 
     # Assert

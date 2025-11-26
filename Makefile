@@ -32,6 +32,8 @@ clean:
 	rm -rf logs/*
 	find . -name ".coverage*" -delete
 	find . -name --pycache__ -exec rm -r {} +
+	rm .coverage
+	rm coverage.xml
 
 update:
 	poetry cache clear pypi --all
@@ -39,3 +41,6 @@ update:
 
 help:
 	poetry run python -m src.adaptive_oscillator --help
+
+tree:
+	poetry run python repo_tree.py --update-readme

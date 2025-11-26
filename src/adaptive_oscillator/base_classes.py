@@ -12,7 +12,7 @@ from adaptive_oscillator.definitions import LOG_FILE_EXT
 
 @dataclass
 class VectorXYZ:
-    """XYZ Vector."""
+    """XYZ axes vectors."""
 
     x: NDArray = field(default_factory=lambda: np.array([]))
     y: NDArray = field(default_factory=lambda: np.array([]))
@@ -22,9 +22,7 @@ class VectorXYZ:
         """Return stacked XYZ components as a 2D array, or select one component.
 
         :param index: Index or slice for accessing stacked vector components.
-                      0 = x, 1 = y, 2 = z; or a slice like 0:2
         :return: Stacked NumPy array of shape (3, N) or (K, N).
-        :raises IndexError: If index is out of bounds.
         """
         stacked = np.stack(arrays=[self.x, self.y, self.z], axis=1)
         return stacked[index].T
@@ -36,7 +34,7 @@ class VectorXYZ:
 
 @dataclass
 class Quaternion:
-    """Quaternion."""
+    """Quaternion vectors."""
 
     w: NDArray = field(default_factory=lambda: np.array([]))
     x: NDArray = field(default_factory=lambda: np.array([]))
@@ -47,9 +45,7 @@ class Quaternion:
         """Return stacked XYZ components as a 2D array, or select one component.
 
         :param index: Index or slice for accessing stacked vector components.
-                      0 = x, 1 = y, 2 = z; or a slice like 0:2
         :return: Stacked NumPy array of shape (3, N) or (K, N).
-        :raises IndexError: If index is out of bounds.
         """
         stacked = np.stack([self.w, self.x, self.y, self.z], axis=1)
         return stacked[index].T
@@ -80,9 +76,7 @@ class AngleXYZ:
         """Return stacked XYZ components as a 2D array, or select one component.
 
         :param index: Index or slice for accessing stacked vector components.
-                      0 = x, 1 = y, 2 = z; or a slice like 0:2
         :return: Stacked NumPy array of shape (3, N) or (K, N).
-        :raises IndexError: If index is out of bounds.
         """
         stacked = np.stack([self.x, self.y, self.z], axis=1)
         return stacked[index].T
@@ -92,7 +86,7 @@ class AngleXYZ:
         return len(self.x)
 
     def add_offset(self) -> None:
-        """Add offset to all segments.
+        """Offset angles so the signals don't wrap from max to min.
 
         :return: None
         """
@@ -119,6 +113,12 @@ class SensorFile:
     """Represent a sensor category with left and right side access."""
 
     def __init__(self, category: str, base_path: Path) -> None:
+        """Initialize a sensor category with left and right side access.
+
+        :param category: Sensor category name.
+        :param base_path: Path to the sensor directory.
+        :return: None
+        """
         self.left = base_path / f"{category}_left{LOG_FILE_EXT}"
         self.right = base_path / f"{category}_right{LOG_FILE_EXT}"
 

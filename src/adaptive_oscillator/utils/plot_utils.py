@@ -212,7 +212,11 @@ class RealtimeAOPlotter:  # pragma: no cover
         return hip_fig, omega_fig, phase_fig, offset_fig
 
     def update_data(self, data: AdaptiveOscillatorStepResult) -> None:
-        """Update the data."""
+        """Update the plot data.
+
+        :param data: AdaptiveOscillatorStepResult
+        :return: None
+        """
         with self._lock:
             self.data[PlotMetrics.timestamp].append(data.timestamp)
             self.data[PlotMetrics.theta].append(data.theta)
@@ -222,7 +226,11 @@ class RealtimeAOPlotter:  # pragma: no cover
             self.data[PlotMetrics.offset].append(data.offset)
 
     def run(self, threaded: bool = True) -> None:
-        """Run the AO control loop."""
+        """Run the AO control plot loop.
+
+        :param threaded: bool
+        :return: None
+        """
         if threaded:
             th = threading.Thread(
                 target=self.app.run,
