@@ -41,3 +41,6 @@ update:
 
 help:
 	poetry run python -m src.adaptive_oscillator --help
+
+tree:
+	poetry run python repo_tree.py --update-readme

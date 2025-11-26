@@ -41,3 +41,47 @@ if __name__ == "__main__":
 The plot below shows the results being plotted in real time.
 
 <img src="docs/results.png" width="1000">
+
+<!-- TREE-START -->
+```
+├── docs
+│   ├── adaptive oscillators.pdf
+│   └── results.png
+├── src
+│   └── adaptive_oscillator
+│       ├── log_files
+│       │   ├── __init__.py
+│       │   ├── main.py
+│       │   └── parser.py
+│       ├── utils
+│       │   ├── __init__.py
+│       │   ├── log_utils.py
+│       │   ├── plot_utils.py
+│       │   └── time_utils.py
+│       ├── __init__.py
+│       ├── __main__.py
+│       ├── base_classes.py
+│       ├── controller.py
+│       ├── definitions.py
+│       └── oscillator.py
+├── tests
+│   ├── __init__.py
+│   ├── adaptive_oscillator_test.py
+│   ├── base_classes_test.py
+│   ├── conftest.py
+│   ├── controller_test.py
+│   ├── parser_utils_test.py
+│   ├── plot_utils_test.py
+│   ├── time_utils_test.py
+│   └── utils_for_test.py
+├── .gitignore
+├── .pre-commit-config.yaml
+├── CONTRIBUTING.md
+├── Dockerfile
+├── LICENSE
+├── Makefile
+├── README.md
+├── poetry.lock
+└── pyproject.toml
+```
+<!-- TREE-END -->
