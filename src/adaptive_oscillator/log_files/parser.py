@@ -226,45 +226,53 @@ class QuaternionParser:
 
     def parse(self):
         """Parse the log file and return a DataFrame."""
-        raw_data = pd.read_csv(self.filepath, sep="\t")
-        logger.debug(f"Parsing {self.filepath}")
-        logger.debug(f"Columns: {raw_data.shape}")
+        try:
+            raw_data = pd.read_csv(self.filepath, sep="\t")
+            logger.debug(f"Parsing {self.filepath}")
+            logger.debug(f"Columns: {raw_data.shape}")
 
-        time_str = raw_data[QuaternionHeader.TIME]
-        self.time = np.array([time_str_to_seconds(t) for t in time_str])
+            time_str = raw_data[QuaternionHeader.TIME]
+            self.time = np.array([time_str_to_seconds(t) for t in time_str])
 
-        for segment_name, fields in QUATERNION_SEGMENT_FIELDS.items():
-            w = raw_data[fields[0]].to_numpy()
-            x = raw_data[fields[1]].to_numpy()
-            y = raw_data[fields[2]].to_numpy()
-            z = raw_data[fields[3]].to_numpy()
-            setattr(self, segment_name, Quaternion(w, x, y, z))
+            for segment_name, fields in QUATERNION_SEGMENT_FIELDS.items():
+                w = raw_data[fields[0]].to_numpy()
+                x = raw_data[fields[1]].to_numpy()
+                y = raw_data[fields[2]].to_numpy()
+                z = raw_data[fields[3]].to_numpy()
+                setattr(self, segment_name, Quaternion(w, x, y, z))
+        except FileNotFoundError:
+            logger.error(f"File not found: {self.filepath}")
 
     def plot(self):  # pragma: no cover
         """Plot the Quaternion data."""
-        _, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
+        fig, ax = plt.subplots(figsize=FIG_SIZE, sharex=True, nrows=4, ncols=1)
 
-        for ii, (name, segment) in enumerate(
-            zip(
-                [
-                    Segments.PELVIS,
-                    Segments.UPPER_LEG,
-                    Segments.LOWER_LEG,
-                    Segments.FOOT,
-                ],
-                [self.pelvis, self.upper_leg, self.lower_leg, self.foot],
-            )
-        ):
-            time = self.time - self.time[0]
-            for axis in ["w", "x", "y", "z"]:
-                quat_component = getattr(segment, axis)
-                ax[ii].plot(time, quat_component, label=f"{name}-{axis}", alpha=ALPHA)
-            ax[ii].set_title(f"{name} Orientation")
-            ax[ii].set_xlabel("Time (s)")
-            ax[ii].set_ylabel("Quaternion")
-            ax[ii].legend(loc="upper right")
-            ax[ii].grid(True)
-            plt.tight_layout()
+        try:
+            for ii, (name, segment) in enumerate(
+                zip(
+                    [
+                        Segments.PELVIS,
+                        Segments.UPPER_LEG,
+                        Segments.LOWER_LEG,
+                        Segments.FOOT,
+                    ],
+                    [self.pelvis, self.upper_leg, self.lower_leg, self.foot],
+                )
+            ):
+                time = self.time - self.time[0]
+                for axis in ["w", "x", "y", "z"]:
+                    quat_component = getattr(segment, axis)
+                    ax[ii].plot(
+                        time, quat_component, label=f"{name}-{axis}", alpha=ALPHA
+                    )
+                ax[ii].set_title(f"{name} Orientation")
+                ax[ii].set_xlabel("Time (s)")
+                ax[ii].set_ylabel("Quaternion")
+                ax[ii].legend(loc="upper right")
+                ax[ii].grid(True)
+                plt.tight_layout()
+        except Exception as err:
+            logger.error(f"Exception: '{err}' for '{self.filepath}'.")
 
 
 class LogParser:
