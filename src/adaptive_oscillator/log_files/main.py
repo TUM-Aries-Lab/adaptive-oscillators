@@ -2,9 +2,12 @@
 
 import argparse
 
-import matplotlib.pyplot as plt
-
 from adaptive_oscillator.log_files import LogFiles
+from adaptive_oscillator.log_files.joint_angles import (
+    calculate_joint_angles,
+    plot_joint_angles,
+)
+from adaptive_oscillator.log_files.parser import QuaternionParser
 
 if __name__ == "__main__":  # pragma: no cover
     """Plot data from log files."""
@@ -31,5 +34,7 @@ if __name__ == "__main__":  # pragma: no cover
     args = parser.parse_args()
 
     log_files = LogFiles(args.log_dir)
-    log_files.plot(euler_only=args.euler_only, add_offset=args.remap)
-    plt.show()
+    quat_parser = QuaternionParser(log_files.quat.right)
+    quat_parser.parse()
+    hip, knee, ankle = calculate_joint_angles(quat_parser)
+    plot_joint_angles(quat_parser.time, hip, knee, ankle)

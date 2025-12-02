@@ -2,39 +2,36 @@
 
 import argparse
 
-import matplotlib.pyplot as plt
 import numpy as np
 from loguru import logger
+from numpy.typing import NDArray
 
-from adaptive_oscillator.base_classes import Joint
 from adaptive_oscillator.controller import AOController
-from adaptive_oscillator.definitions import ANGLES_SEGMENT_FIELDS, RESULTS_DIR, LogLevel
-from adaptive_oscillator.log_files import LogFiles, LogParser
+from adaptive_oscillator.definitions import RESULTS_DIR, LogLevel
+from adaptive_oscillator.log_files import LogFiles, QuaternionParser
+from adaptive_oscillator.log_files.joint_angles import (
+    calculate_joint_angles,
+    plot_joint_angles,
+)
 from adaptive_oscillator.utils import setup_logger
 
 
-def process_joint_data(joint_data: Joint, joint: str, side: str, axis: str) -> None:
+def process_joint_data(joint_data: list | NDArray, time_stamps: list | NDArray) -> None:
     """Run the adaptive oscillator on a joint.
 
     :param joint_data: recorded joint data.
-    :param joint: name of the join.
-    :param side: name of the side.
-    :param axis: name of the axis.
+    :param time_stamps: time stamps.
     :return: None
     """
-    logger.info(f"Running controller with '{side}' '{joint}' joint data.")
-    signal = -getattr(joint_data.angles, axis)
-    time_stamps = joint_data.time - joint_data.time[0]
-
     controller = AOController()
     logger.info("Processing data.")
-    for _ii, (t, ang_deg) in enumerate(zip(time_stamps, signal)):
+    for _ii, (t, ang_deg) in enumerate(zip(time_stamps, joint_data)):
         th = np.deg2rad(ang_deg)
         dth = np.deg2rad(ang_deg)  # TODO: replace with actual derivative if available
         controller.step(t=t, x=th, x_dot=dth)
 
-    controller.plot_results(joint=joint, side=side, save_plot=False)
-    controller.write_results(filepath=RESULTS_DIR / f"results_{side}_{joint}.txt")
+    controller.plot_results(joint="joint", side="side", save_plot=False)
+    controller.write_results(filepath=RESULTS_DIR / f"results_{'joint'}_{'side'}.txt")
 
 
 def main(log_dir: str, show_plots: bool) -> None:
@@ -44,18 +41,14 @@ def main(log_dir: str, show_plots: bool) -> None:
     :param show_plots: Show plots.
     """
     log_files = LogFiles(log_dir)
-    log_data = LogParser(log_files, add_offset=True)
 
-    for side_key, side_data in log_data.data:
-        for joint_key in ANGLES_SEGMENT_FIELDS:
-            joint_data = getattr(side_data, joint_key)
-            process_joint_data(
-                joint_data=joint_data, joint=joint_key, side=side_key, axis="x"
-            )
+    quat_parser = QuaternionParser(log_files.quat.right)
+    quat_parser.parse()
+    hip, knee, ankle = calculate_joint_angles(quat_parser)
+    plot_joint_angles(time=quat_parser.time, hip=hip, knee=knee, ankle=ankle)
 
-    if show_plots:
-        log_files.plot(euler_only=True)
-        plt.show()
+    for joint in [hip, knee, ankle]:
+        process_joint_data(joint_data=joint, time_stamps=quat_parser.time)
 
 
 if __name__ == "__main__":  # pragma: no cover

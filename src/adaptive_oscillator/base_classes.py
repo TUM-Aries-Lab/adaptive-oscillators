@@ -9,6 +9,9 @@ from numpy.typing import NDArray
 
 from adaptive_oscillator.definitions import LOG_FILE_EXT
 
+TWO_PI = 2 * np.pi
+PI = np.pi
+
 
 @dataclass
 class VectorXYZ:
@@ -93,20 +96,40 @@ class AngleXYZ:
         axes = ["x", "y", "z"]
 
         for axis in axes:
-            values = getattr(self, axis)
-            diff = max(values) - min(values)
-            if diff > 355:
-                offset = 180
-            else:
-                offset = 0
-            logger.info(f"Adding {offset:.2f} deg offset for {axis} axis.")
+            old = False
+            angles_deg = getattr(self, axis)
+            angles_rad = np.deg2rad(angles_deg)
+            if old:
+                diff = max(angles_deg) - min(angles_deg)
+                if diff > 355:
+                    offset = 180
+                else:
+                    offset = 0
+                logger.info(f"Adding {offset:.2f} deg offset for {axis} axis.")
 
-            values += offset
-            mask_upper = values > 180
-            mask_lower = values < -180
-            values[mask_upper] -= 360
-            values[mask_lower] += 360
-            setattr(self, axis, values)
+                angles_deg += offset
+                mask_upper = angles_deg > 180
+                mask_lower = angles_deg < -180
+                angles_deg[mask_upper] -= 360
+                angles_deg[mask_lower] += 360
+                setattr(self, axis, angles_deg)
+            else:
+                offset = -angles_rad[0]
+                ang_old = None
+                for ii, ang in enumerate(angles_rad):
+                    if ang_old is not None:
+                        diff = ang - ang_old
+                        if abs(diff) > TWO_PI:
+                            logger.debug(diff)
+                        if diff > PI:
+                            offset -= TWO_PI
+                        if diff < -PI:
+                            offset += TWO_PI
+
+                    angles_rad[ii] += offset
+                    ang_old = ang
+
+                setattr(self, axis, np.rad2deg(angles_rad))
 
 
 class SensorFile:
