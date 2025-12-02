@@ -10,6 +10,7 @@ from numpy.typing import NDArray
 from adaptive_oscillator.definitions import LOG_FILE_EXT
 
 TWO_PI = 2 * np.pi
+PI = np.pi
 
 
 @dataclass
@@ -118,9 +119,11 @@ class AngleXYZ:
                 for ii, ang in enumerate(angles_rad):
                     if ang_old is not None:
                         diff = ang - ang_old
-                        if diff > np.pi:
+                        if abs(diff) > TWO_PI:
+                            logger.debug(diff)
+                        if diff > PI:
                             offset -= TWO_PI
-                        if diff < -np.pi:
+                        if diff < -PI:
                             offset += TWO_PI
 
                     angles_rad[ii] += offset
