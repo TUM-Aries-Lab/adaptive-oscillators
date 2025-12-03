@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 from loguru import logger
 from numpy.typing import NDArray
+from scipy.spatial.transform import Rotation as Rot
 
 from adaptive_oscillator.definitions import LOG_FILE_EXT
 
@@ -39,19 +40,20 @@ class VectorXYZ:
 class Quaternion:
     """Quaternion vectors."""
 
-    w: NDArray = field(default_factory=lambda: np.array([]))
-    x: NDArray = field(default_factory=lambda: np.array([]))
-    y: NDArray = field(default_factory=lambda: np.array([]))
-    z: NDArray = field(default_factory=lambda: np.array([]))
+    w: NDArray | float = field(default_factory=lambda: np.array([]))
+    x: NDArray | float = field(default_factory=lambda: np.array([]))
+    y: NDArray | float = field(default_factory=lambda: np.array([]))
+    z: NDArray | float = field(default_factory=lambda: np.array([]))
 
-    def __getitem__(self, index: int | slice) -> NDArray:
+    def __getitem__(self, index: int | slice) -> "Quaternion":
         """Return stacked XYZ components as a 2D array, or select one component.
 
         :param index: Index or slice for accessing stacked vector components.
         :return: Stacked NumPy array of shape (3, N) or (K, N).
         """
         stacked = np.stack([self.w, self.x, self.y, self.z], axis=1)
-        return stacked[index].T
+        w, x, y, z = stacked[index].T
+        return Quaternion(w, x, y, z)
 
     def __mul__(self, quat_b: "Quaternion") -> "Quaternion":
         """Multiply two quaternions.
@@ -65,6 +67,22 @@ class Quaternion:
         y = self.w * q.y - self.x * q.z + self.y * q.w + self.z * q.x
         z = self.w * q.z + self.x * q.y - self.y * q.x + self.z * q.w
         return Quaternion(w, x, y, z)
+
+    def remap(self, rotation_matrix: NDArray) -> "Quaternion":
+        """Remap the quaternion to a new coordinate frame."""
+        pose_se3 = Rot.from_quat(self.as_list()).as_matrix()
+        pose_se3 = rotation_matrix.T @ pose_se3
+        quat = Rot.from_matrix(pose_se3).as_quat()
+        x, y, z, w = quat
+        return Quaternion(float(w), float(x), float(y), float(z))
+
+    def as_list(self, scalar_first: bool = False) -> list:
+        """Return a list of quaternions."""
+        if scalar_first:
+            quat = [self.w, self.x, self.y, self.z]
+        else:
+            quat = [self.x, self.y, self.z, self.w]
+        return quat
 
 
 @dataclass
