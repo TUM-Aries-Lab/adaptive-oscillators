@@ -6,7 +6,7 @@ import numpy as np
 from loguru import logger
 
 from adaptive_oscillator.controller import AOController
-from adaptive_oscillator.definitions import RESULTS_DIR, LogLevel, AOParameters
+from adaptive_oscillator.definitions import RESULTS_DIR, AOParameters, LogLevel
 from adaptive_oscillator.log_files import LogFiles, QuaternionParser
 from adaptive_oscillator.log_files.joint_angles import JointAngles, get_joint_angles
 from adaptive_oscillator.utils import setup_logger
@@ -26,15 +26,18 @@ def process_joint_data(joint_data: JointAngles, side: str) -> None:
         angles = getattr(joint_data, joint)
         velocities = np.diff(angles)
 
-        ao_config = AOParameters(n_harmonics=7, omega_init=1)
+        if joint in ["hip", "knee"]:
+            ao_config = AOParameters(n_harmonics=3, omega_init=1)
+        else:
+            ao_config = AOParameters()
         controller = AOController(config=ao_config)
         for t, ang_deg, vel_deg in zip(time[1:], angles[1:], velocities):
-            th = np.deg2rad(ang_deg)
-            dth = np.deg2rad(vel_deg)
+            th = np.deg2rad(ang_deg[1])
+            dth = np.deg2rad(vel_deg[1])
             controller.step(t=t, x=th, x_dot=dth)
 
         controller.plot_results(joint=joint, side=side, save_plot=False)
-        controller.write_results(filepath=RESULTS_DIR / f"results_{joint}_{side}.txt")
+        controller.write_results(filepath=RESULTS_DIR / f"results_{joint}_{side}_5.txt")
 
 
 def main(log_dir: str, show_plots: bool) -> None:

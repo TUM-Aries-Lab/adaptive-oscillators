@@ -71,7 +71,7 @@ class Quaternion:
     def remap(self, rotation_matrix: NDArray) -> "Quaternion":
         """Remap the quaternion to a new coordinate frame."""
         pose_se3 = Rot.from_quat(self.as_list()).as_matrix()
-        pose_se3 = rotation_matrix.T @ pose_se3
+        pose_se3 = pose_se3 @ rotation_matrix
         quat = Rot.from_matrix(pose_se3).as_quat()
         x, y, z, w = quat
         return Quaternion(float(w), float(x), float(y), float(z))
