@@ -3,7 +3,6 @@ SHELL := /bin/bash
 init:
 	python3 -m venv .venv
 	poetry install
-	poetry run pre-commit install
 	poetry env info
 	@echo "Created virtual environment"
 
@@ -29,10 +28,9 @@ clean:
 	rm -rf build/
 	rm -rf dist/
 	rm -rf juninit-pytest.xml
-	rm -rf logs/*
+	rm -rf data/logs/*
 	find . -name ".coverage*" -delete
 	find . -name --pycache__ -exec rm -r {} +
-	rm .coverage
 	rm coverage.xml
 
 update:

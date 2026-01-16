@@ -271,6 +271,7 @@ class QuaternionParser:
                 ax[ii].legend(loc="upper right")
                 ax[ii].grid(True)
                 plt.tight_layout()
+            plt.show()
         except Exception as err:
             logger.error(f"Exception: '{err}' for '{self.filepath}'.")
 
