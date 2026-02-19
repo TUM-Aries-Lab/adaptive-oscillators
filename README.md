@@ -1,23 +1,26 @@
 # Adaptive Oscillator
+
 [![Coverage Status](https://coveralls.io/repos/github/TUM-Aries-Lab/adaptive-oscillators/badge.svg?branch=main)](https://coveralls.io/github/TUM-Aries-Lab/template-python?branch=main)
 ![Docker Image CI](https://github.com/TUM-Aries-Lab/adaptive-oscillators/actions/workflows/ci.yml/badge.svg)
 
 AOs can be described as a mathematical tool able to synchronize with a rhythmic and periodic signal by continuously estimating its fundamental features (i.e. frequency, amplitude, phase, and offset). For their properties, AOs found applications in gait pattern estimation strategies, where they are used to mimic the dynamics of the neuromechanical oscillators in charge of the rhythmical human locomotion. In addition, as gait periodicity can be captured by sensors recording joint kinematics, their application does not require a complex sensory network.
 
 ## Install
+
 To install the library run: `pip install adaptive-oscillator`
 
 ## Development
-0. Install [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
+
+0. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 1. `make init` to create the virtual environment and install dependencies
 2. `make format` to format the code and check for errors
 3. `make test` to run the test suite
 4. `make clean` to delete the temporary files and directories
-5. `poetry publish --build` to build and publish to https://pypi.org/project/adaptive-oscillator
-
+5. `uv build` and `uv publish` to build and publish to https://pypi.org/project/adaptive-oscillator
 
 ## Usage
-```
+
+```python
 """Basic usage for the adaptive oscillator."""
 
 def main() -> None:
@@ -38,13 +41,17 @@ if __name__ == "__main__":
 ```
 
 ## Results
+
 The plot below shows the results being plotted in real time.
 
 <img src="docs/results.png" width="1000">
 
 ## Repo Structure
+
 The files and folders below are used for development purposes. This repo tree can be updated with `make tree`.
+
 <!-- TREE-START -->
+
 ```
 ├── docs
 │   ├── adaptive oscillators.pdf
@@ -86,4 +93,6 @@ The files and folders below are used for development purposes. This repo tree ca
 ├── pyproject.toml
 └── repo_tree.py
 ```
+
 <!-- TREE-END -->
+

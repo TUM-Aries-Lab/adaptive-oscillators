@@ -1,42 +1,51 @@
-[tool.poetry]
+[project]
 name = "adaptive-oscillator"
 version = "0.2.0"
 description = "Adaptive oscillator for gait phase identification."
-authors = ["Tony Smoragiewicz <tony.smoragiewicz@tum.de>"]
+authors = [{ name = "Tony Smoragiewicz", email = "tony.smoragiewicz@tum.de" }]
+requires-python = ">3.11, <3.14"
 readme = "README.md"
-package-mode = true
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "numpy>=2.2.3,<3",
+    "pytest>=8.3.5,<9",
+    "pytest-cov>=6.0.0,<7",
+    "loguru>=0.7.3,<0.8",
+    "pre-commit>=4.1.0,<5",
+    "poetry-core>=2.1.2,<3",
+    "pandas>=2.3.0,<3",
+    "matplotlib>=3.10.3,<4",
+    "scipy>=1.15.3,<2",
+    "plotly>=6.2.0,<7",
+    "dash>=3.1.1,<4",
+]
 
-[tool.poetry.urls]
+[project.urls]
 homepage = "https://github.com/TUM-Aries-Lab/adaptive-oscillators"
 
-[tool.poetry.dependencies]
-python = ">3.11, <3.14"
-numpy = "^2.2.3"
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-loguru = "^0.7.3"
-pre-commit = "^4.1.0"
-poetry-core = "^2.1.2"
-pandas = "^2.3.0"
-matplotlib = "^3.10.3"
-scipy = "^1.15.3"
-plotly = "^6.2.0"
-dash = "^3.1.1"
+[dependency-groups]
+dev = [
+    "ruff>=0.6.9,<0.7",
+    "mypy>=1.11,<2",
+    "pytest>=8.3,<9",
+    "pytest-cov>=6.0,<7",
+    "pandas-stubs>=2.2,<3",
+    "scipy-stubs>=1.11,<2",
+]
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.6.9"
-mypy = "^1.11"
-pytest = "^8.3"
-pytest-cov = "^6.0"
-pandas-stubs = "^2.2"
-scipy-stubs = "^1.11"
+[tool.uv]
+package = true
+
+[build-system]
+requires = ["uv_build>=0.10.2,<0.11.0"]
+build-backend = "uv_build"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 # Set the maximum allowed line length (PEP 8 default is 88)
